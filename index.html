@@ -45,7 +45,6 @@
 
         .app-container { display:flex; flex-direction:column; gap:20px; width:100%; max-width:1120px; }
 
-        /* 头部 - 苹果风格导航 */
         .header {
             background: rgba(255,255,255,0.8);
             backdrop-filter: saturate(180%) blur(20px);
@@ -99,7 +98,7 @@
 
         .btn {
             padding: 8px 16px;
-            border-radius: 980px; /* 苹果标志性的全圆角 */
+            border-radius: 980px;
             border: none;
             cursor: pointer;
             font-weight: 500;
@@ -129,7 +128,6 @@
 
         .main-body { display:flex; gap:20px; flex:1; flex-wrap:wrap; }
 
-        /* 侧栏 - 卡片式 */
         .side-panel {
             background: rgba(255,255,255,0.8);
             backdrop-filter: saturate(180%) blur(20px);
@@ -201,7 +199,6 @@
         .custom-module-form input[type="color"] { width:36px; height:32px; padding:2px; border-radius:6px; }
         .custom-module-form .name-input { width:90px; }
 
-        /* 画布区域 */
         .canvas-area {
             background: rgba(255,255,255,0.8);
             backdrop-filter: saturate(180%) blur(20px);
@@ -360,11 +357,12 @@
     </div>
     <footer class="status-bar">
         <div class="status-left">
-            <span id="statusText" class="badge badge-info">就绪 · 双击放置</span>
+            <span id="statusText" class="badge badge-info">就绪</span>
             <button class="btn btn-outline btn-sm" id="btnRename" style="display:none;">重命名</button>
             <span id="selectedInfo" style="font-size:0.75rem; color: var(--text-secondary);"></span>
         </div>
         <div class="status-right">
+            <button class="btn btn-accent btn-sm" id="btnPlace" style="display:none;">放置</button>
             <button class="btn btn-outline btn-xs" id="btnUndo" title="撤销">↶</button>
             <button class="btn btn-outline btn-xs" id="btnRedo" title="重做">↷</button>
             <span>R旋转 · 双指缩放</span>
@@ -387,6 +385,7 @@
     const zoomVal = document.getElementById('zoomVal');
     const btnRename = document.getElementById('btnRename');
     const rotateBtn = document.getElementById('rotateBtn');
+    const btnPlace = document.getElementById('btnPlace');
     const selectedInfo = document.getElementById('selectedInfo');
     const btnUndo = document.getElementById('btnUndo');
     const btnRedo = document.getElementById('btnRedo');
@@ -640,7 +639,9 @@
     }
 
     function updatePlacementUI() {
-        rotateBtn.style.display = appState === 'placing' ? 'flex' : 'none';
+        const isPlacing = appState === 'placing';
+        rotateBtn.style.display = isPlacing ? 'flex' : 'none';
+        btnPlace.style.display = isPlacing ? 'inline-block' : 'none';
     }
 
     function setStatus(type, msg) {
@@ -648,7 +649,7 @@
         statusText.className = 'badge badge-'+type;
         clearTimeout(statusText._timeout);
         statusText._timeout = setTimeout(()=>{
-            statusText.textContent = '就绪 · 双击放置';
+            statusText.textContent = '就绪';
             statusText.className = 'badge badge-info';
         }, 2500);
     }
@@ -668,7 +669,7 @@
         };
         appState='placing'; movingModuleId=null; isDragging=false; clearSelection();
         updateCardsHighlight(); updatePlacementUI(); render();
-        setStatus('info',`已选择：${tmpl.name}，双击网格放置`);
+        setStatus('info',`已选择：${tmpl.name}，移动预览后点击「放置」`);
     }
 
     function cancelPlacing() {
@@ -837,6 +838,7 @@
             return;
         }
 
+        // 放置模式：不放置，只移动预览
         if(appState === 'placing') {
             if(cell) {
                 hoveredGridX = cell.gx;
@@ -989,13 +991,12 @@
         render();
     }
 
+    // 双击事件：仅用于重命名
     canvas.addEventListener('dblclick', e => {
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
         if (!cell) return;
-        if (appState === 'placing' && selectedTemplate) {
-            placeModule(cell.gx, cell.gy, selectedTemplate);
-        } else if (appState === 'idle') {
+        if (appState === 'idle') {
             const mod = getModuleAt(cell.gx, cell.gy);
             if (mod) {
                 const newName = prompt('重命名模块：', mod.name);
@@ -1017,6 +1018,15 @@
     rotateBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         rotateTemplate();
+    });
+
+    // 放置按钮
+    btnPlace.addEventListener('click', () => {
+        if (appState === 'placing' && selectedTemplate && hoveredGridX >= 0 && hoveredGridY >= 0) {
+            placeModule(hoveredGridX, hoveredGridY, selectedTemplate);
+        } else {
+            setStatus('warning', '请先选择模块并移动到网格上');
+        }
     });
 
     btnUndo.addEventListener('click', undo);
