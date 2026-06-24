@@ -15,11 +15,10 @@
             --border: rgba(0,0,0,0.06);
             --text: #1d1d1f;
             --text-secondary: #86868b;
-            --text-tertiary: #aeaeb2;
-            --accent: #0071e3;
-            --accent-hover: #0060c0;
-            --accent-light: rgba(0,113,227,0.12);
-            --danger: #ff3b30;
+            --accent: #7a8b8c;   /* 莫兰迪灰蓝 */
+            --accent-hover: #5f6f70;
+            --accent-light: rgba(122,139,140,0.12);
+            --danger: #d19494;
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
             --shadow-md: 0 4px 20px rgba(0,0,0,0.06);
             --radius: 22px;
@@ -40,440 +39,164 @@
             padding: 16px 12px;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            touch-action: manipulation;
         }
 
-        .app-container {
-            display:flex;
-            flex-direction:column;
-            gap: 14px;
-            width:100%;
-            max-width: 1100px;
-        }
+        .app-container { display:flex; flex-direction:column; gap:14px; width:100%; max-width:1100px; }
 
-        /* 头部 */
         .header {
             background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: var(--radius);
-            padding: 12px 20px;
+            backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            border-radius: var(--radius); padding:12px 20px;
             box-shadow: var(--shadow-sm);
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            flex-wrap:wrap;
-            gap: 12px;
+            display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
             border: 1px solid rgba(255,255,255,0.8);
         }
-        .header .logo-area {
-            display:flex;
-            align-items:center;
-            gap: 8px;
-        }
+        .header .logo-area { display:flex; align-items:center; gap:8px; }
         .header .logo-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 9px;
-            background: var(--accent);
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            font-size: 18px;
-            color:#fff;
-            box-shadow: 0 2px 8px rgba(0,113,227,0.3);
+            width:32px; height:32px; border-radius:9px; background:var(--accent);
+            display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff;
+            box-shadow:0 2px 8px rgba(0,0,0,0.15);
         }
-        .header h1 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: -0.4px;
-        }
+        .header h1 { font-size:1.2rem; font-weight:600; letter-spacing:-0.4px; }
 
-        .settings-group {
-            display:flex;
-            align-items:center;
-            gap: 8px;
-            flex-wrap:wrap;
-        }
-        .settings-group label {
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
+        .settings-group { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+        .settings-group label { font-size:0.8rem; font-weight:500; color:var(--text-secondary); }
         .settings-group input[type="number"] {
-            width: 50px;
-            padding: 7px 8px;
-            border: 1px solid rgba(0,0,0,0.08);
-            border-radius: 10px;
-            font-size: 0.85rem;
-            text-align: center;
-            font-weight: 500;
-            color: var(--text);
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(15px);
-            font-family: var(--font-stack);
-            font-variant-numeric: tabular-nums;
-            transition: 0.15s;
+            width:50px; padding:7px 8px; border:1px solid rgba(0,0,0,0.08); border-radius:10px;
+            font-size:0.85rem; text-align:center; font-weight:500; color:var(--text);
+            background:rgba(255,255,255,0.5); backdrop-filter:blur(15px);
+            font-family:var(--font-stack); font-variant-numeric:tabular-nums; transition:0.15s;
         }
         .settings-group input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-            background: rgba(255,255,255,0.8);
+            outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-light);
+            background:rgba(255,255,255,0.8);
         }
-        .dim-sep {
-            font-weight: 500;
-            color: var(--text-tertiary);
-        }
+        .dim-sep { font-weight:500; color:var(--text-secondary); }
 
         .btn {
-            padding: 7px 14px;
-            border-radius: 10px;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.82rem;
-            letter-spacing: -0.2px;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            font-family: var(--font-stack);
-            white-space: nowrap;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            background: rgba(255,255,255,0.45);
-            border: 1px solid rgba(255,255,255,0.8);
+            padding:7px 14px; border-radius:10px; border:none; cursor:pointer;
+            font-weight:500; font-size:0.82rem; letter-spacing:-0.2px;
+            transition:all 0.2s cubic-bezier(0.4,0,0.2,1);
+            font-family:var(--font-stack); white-space:nowrap;
+            backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            background:rgba(255,255,255,0.45); border:1px solid rgba(255,255,255,0.8);
         }
-        .btn-accent {
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            box-shadow: 0 2px 8px rgba(0,113,227,0.25);
-        }
-        .btn-accent:hover {
-            background: var(--accent-hover);
-            box-shadow: 0 6px 16px rgba(0,113,227,0.35);
-            transform: translateY(-1px);
-        }
-        .btn-accent:active { transform: scale(0.98); }
-        .btn-outline {
-            background: rgba(255,255,255,0.45);
-            backdrop-filter: blur(20px);
-            color: var(--accent);
-            border: 1px solid rgba(0,0,0,0.06);
-        }
-        .btn-outline:hover {
-            background: rgba(255,255,255,0.75);
-            border-color: var(--accent);
-        }
-        .btn-sm { padding: 5px 10px; font-size: 0.78rem; }
+        .btn-accent { background:var(--accent); color:#fff; border:none; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+        .btn-accent:hover { background:var(--accent-hover); box-shadow:0 6px 16px rgba(0,0,0,0.15); transform:translateY(-1px); }
+        .btn-accent:active { transform:scale(0.98); }
+        .btn-outline { background:rgba(255,255,255,0.45); backdrop-filter:blur(20px); color:var(--accent); border:1px solid rgba(0,0,0,0.06); }
+        .btn-outline:hover { background:rgba(255,255,255,0.75); border-color:var(--accent); }
+        .btn-sm { padding:5px 10px; font-size:0.78rem; }
+        .btn-xs { padding:3px 7px; font-size:0.7rem; }
 
-        /* 主体 */
-        .main-body {
-            display:flex;
-            gap: 14px;
-            flex:1;
-            flex-wrap:wrap;
-        }
+        .main-body { display:flex; gap:14px; flex:1; flex-wrap:wrap; }
 
         .side-panel {
-            background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: var(--radius);
-            padding: 16px;
-            box-shadow: var(--shadow-sm);
-            width: 240px;
-            flex-shrink:0;
-            display:flex;
-            flex-direction:column;
-            gap: 18px;
-            border: 1px solid rgba(255,255,255,0.8);
-            max-height: 650px;
-            overflow-y: auto;
+            background:linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%);
+            backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px);
+            border-radius:var(--radius); padding:16px; box-shadow:var(--shadow-sm);
+            width:240px; flex-shrink:0; display:flex; flex-direction:column; gap:18px;
+            border:1px solid rgba(255,255,255,0.8); max-height:650px; overflow-y:auto;
         }
-        .side-panel h3 {
-            font-size: 0.88rem;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
+        .side-panel h3 { font-size:0.88rem; font-weight:600; letter-spacing:-0.3px; }
 
-        .preset-modules {
-            display:flex;
-            flex-wrap:wrap;
-            gap: 8px;
-        }
+        .preset-modules { display:flex; flex-wrap:wrap; gap:8px; }
         .module-card {
-            position: relative;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex-direction:column;
-            padding: 10px 6px;
-            border-radius: 12px;
-            cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.6);
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            min-width: 62px;
-            text-align: center;
-            font-weight: 500;
-            font-size: 0.78rem;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+            position:relative; display:flex; align-items:center; justify-content:center; flex-direction:column;
+            padding:10px 6px; border-radius:12px; cursor:pointer;
+            border:1px solid rgba(255,255,255,0.6);
+            background:rgba(255,255,255,0.5); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            min-width:62px; text-align:center; font-weight:500; font-size:0.78rem;
+            transition:all 0.2s cubic-bezier(0.4,0,0.2,1); box-shadow:0 1px 2px rgba(0,0,0,0.03);
         }
-        .module-card:hover {
-            background: rgba(255,255,255,0.8);
-            border-color: var(--accent);
-            box-shadow: 0 6px 20px rgba(0,113,227,0.15);
-            transform: translateY(-2px);
-        }
-        .module-card.active {
-            background: #fff;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-        }
-        .module-card .size-label {
-            font-size: 0.88rem;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-        .module-card .color-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-top: 4px;
-        }
+        .module-card:hover { background:rgba(255,255,255,0.8); border-color:var(--accent); box-shadow:0 6px 20px rgba(0,0,0,0.08); transform:translateY(-2px); }
+        .module-card.active { background:#fff; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-light); }
+        .module-card .size-label { font-size:0.88rem; font-weight:600; letter-spacing:-0.3px; }
+        .module-card .color-dot { width:8px; height:8px; border-radius:50%; margin-top:4px; }
         .module-card .delete-btn {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            width: 18px;
-            height: 18px;
-            background: rgba(0,0,0,0.2);
-            color: #fff;
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            line-height: 1;
-            cursor: pointer;
-            border: none;
-            transition: 0.15s;
+            position:absolute; top:4px; right:4px; width:18px; height:18px;
+            background:rgba(0,0,0,0.2); color:#fff; border-radius:50%;
+            display:none; align-items:center; justify-content:center; font-size:10px;
+            cursor:pointer; border:none; transition:0.15s;
         }
-        .module-card:hover .delete-btn {
-            display: flex;
-        }
-        .module-card .delete-btn:hover {
-            background: var(--danger);
-            transform: scale(1.1);
-        }
+        .module-card:hover .delete-btn { display:flex; }
+        .module-card .delete-btn:hover { background:var(--danger); transform:scale(1.1); }
 
-        .custom-module-form {
-            display:flex;
-            flex-direction:column;
-            gap: 8px;
-        }
-        .custom-module-form .row {
-            display:flex;
-            align-items:center;
-            gap: 6px;
-        }
-        .custom-module-form label {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
+        .custom-module-form { display:flex; flex-direction:column; gap:8px; }
+        .custom-module-form .row { display:flex; align-items:center; gap:6px; }
+        .custom-module-form label { font-size:0.78rem; color:var(--text-secondary); font-weight:500; }
         .custom-module-form input {
-            width: 48px;
-            padding: 7px 6px;
-            border: 1px solid rgba(0,0,0,0.08);
-            border-radius: 10px;
-            font-size: 0.82rem;
-            text-align: center;
-            font-weight: 500;
-            background: rgba(255,255,255,0.5);
-            backdrop-filter: blur(15px);
-            font-family: var(--font-stack);
-            font-variant-numeric: tabular-nums;
-            transition: 0.15s;
+            width:48px; padding:7px 6px; border:1px solid rgba(0,0,0,0.08); border-radius:10px;
+            font-size:0.82rem; text-align:center; font-weight:500;
+            background:rgba(255,255,255,0.5); backdrop-filter:blur(15px);
+            font-family:var(--font-stack); font-variant-numeric:tabular-nums; transition:0.15s;
         }
         .custom-module-form input:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-light);
-            background: rgba(255,255,255,0.8);
+            outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-light);
+            background:rgba(255,255,255,0.8);
         }
-        .custom-module-form input[type="color"] {
-            width: 36px;
-            height: 32px;
-            padding: 2px;
-            border-radius: 6px;
-        }
-        .custom-module-form .name-input {
-            width: 85px;
-        }
+        .custom-module-form input[type="color"] { width:36px; height:32px; padding:2px; border-radius:6px; }
+        .custom-module-form .name-input { width:85px; }
 
-        /* 画布区域 */
         .canvas-area {
-            background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: var(--radius);
-            padding: 16px;
-            box-shadow: var(--shadow-sm);
-            flex:1;
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            gap: 12px;
-            border: 1px solid rgba(255,255,255,0.8);
-            min-width: 260px;
+            background:linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%);
+            backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px);
+            border-radius:var(--radius); padding:16px; box-shadow:var(--shadow-sm);
+            flex:1; display:flex; flex-direction:column; align-items:center; gap:12px;
+            border:1px solid rgba(255,255,255,0.8); min-width:260px;
         }
         .canvas-wrapper {
-            position: relative;
-            overflow: hidden;
-            border-radius: var(--radius-sm);
-            background: #ffffff;
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            flex:1;
-            width:100%;
-            min-height: 360px;
-            border: 1px solid rgba(0,0,0,0.04);
-            cursor: grab;
-            touch-action: none;
-            box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);
+            position:relative; overflow:hidden; border-radius:var(--radius-sm);
+            background:#ffffff; display:flex; align-items:center; justify-content:center;
+            flex:1; width:100%; min-height:360px; border:1px solid rgba(0,0,0,0.04);
+            cursor:grab; touch-action:none; box-shadow:inset 0 1px 4px rgba(0,0,0,0.02);
         }
-        .canvas-wrapper.grabbing {
-            cursor: grabbing;
-        }
-        canvas {
-            display:block;
-            touch-action: none;
-            border-radius: 6px;
-        }
+        .canvas-wrapper.grabbing { cursor:grabbing; }
+        canvas { display:block; touch-action:none; border-radius:6px; }
 
-        .canvas-info {
-            display:flex;
-            align-items:center;
-            gap: 18px;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            flex-wrap: wrap;
-        }
-        .canvas-info strong {
-            font-weight: 600;
-            color: var(--text);
-            font-variant-numeric: tabular-nums;
-        }
-        .zoom-control {
-            display:flex;
-            align-items:center;
-            gap: 6px;
-        }
-        .zoom-control input[type="range"] {
-            width: 80px;
-            accent-color: var(--accent);
-        }
+        .canvas-info { display:flex; align-items:center; gap:18px; font-size:0.8rem; color:var(--text-secondary); flex-wrap:wrap; }
+        .canvas-info strong { font-weight:600; color:var(--text); font-variant-numeric:tabular-nums; }
+        .zoom-control { display:flex; align-items:center; gap:6px; }
+        .zoom-control input[type="range"] { width:80px; accent-color:var(--accent); }
 
         .status-bar {
-            background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: var(--radius);
-            padding: 10px 18px;
-            box-shadow: var(--shadow-sm);
-            display:flex;
-            align-items:center;
-            justify-content:space-between;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            border: 1px solid rgba(255,255,255,0.8);
-            flex-wrap: wrap;
-            gap: 10px;
+            background:linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 100%);
+            backdrop-filter:blur(30px); -webkit-backdrop-filter:blur(30px);
+            border-radius:var(--radius); padding:10px 18px; box-shadow:var(--shadow-sm);
+            display:flex; align-items:center; justify-content:space-between; font-size:0.78rem;
+            color:var(--text-secondary); border:1px solid rgba(255,255,255,0.8); flex-wrap:wrap; gap:10px;
         }
-        .badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-weight: 500;
-            font-size: 0.75rem;
-            letter-spacing: -0.2px;
-            backdrop-filter: blur(10px);
-            background: rgba(0,113,227,0.08);
-            color: var(--accent);
-        }
-        .badge-warning { background: rgba(255,149,0,0.1); color: #b86e30; }
-        .badge-success { background: rgba(52,199,89,0.1); color: #2e7d32; }
-        .status-left { display:flex; align-items:center; gap: 10px; }
+        .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-weight:500; font-size:0.75rem; letter-spacing:-0.2px; backdrop-filter:blur(10px); background:rgba(122,139,140,0.1); color:var(--accent); }
+        .badge-warning { background:rgba(209,148,148,0.1); color:#b86e30; }
+        .badge-success { background:rgba(150,174,150,0.15); color:#5b7a5b; }
+        .status-left { display:flex; align-items:center; gap:8px; }
+        .status-right { display:flex; align-items:center; gap:8px; }
 
         .rotate-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.65);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255,255,255,0.9);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.4rem;
-            transition: all 0.2s;
-            position: absolute;
-            bottom: 16px;
-            right: 16px;
-            z-index: 10;
-            color: var(--accent);
+            width:44px; height:44px; border-radius:50%;
+            background:rgba(255,255,255,0.65); backdrop-filter:blur(25px); -webkit-backdrop-filter:blur(25px);
+            border:1px solid rgba(255,255,255,0.9); box-shadow:0 4px 12px rgba(0,0,0,0.06);
+            display:none; align-items:center; justify-content:center; cursor:pointer;
+            font-size:1.4rem; transition:all 0.2s; position:absolute; bottom:16px; right:16px;
+            z-index:10; color:var(--accent);
         }
-        .rotate-btn:hover {
-            background: #fff;
-            box-shadow: 0 6px 20px rgba(0,113,227,0.2);
-            transform: scale(1.05);
-        }
+        .rotate-btn:hover { background:#fff; box-shadow:0 6px 20px rgba(0,0,0,0.1); transform:scale(1.05); }
 
         @media (max-width: 850px) {
-            .main-body {
-                flex-direction: column;
-            }
-            .side-panel {
-                width: 100%;
-                flex-direction: row;
-                flex-wrap: wrap;
-                max-height: none;
-                overflow-x: auto;
-                gap: 10px;
-            }
-            .side-panel > div {
-                flex: 1 1 auto;
-                min-width: 140px;
-            }
-            .canvas-wrapper {
-                min-height: 280px;
-            }
-            .header {
-                padding: 10px 14px;
-            }
-            .rotate-btn {
-                width: 40px;
-                height: 40px;
-                bottom: 12px;
-                right: 12px;
-                font-size: 1.2rem;
-            }
+            .main-body { flex-direction:column; }
+            .side-panel { width:100%; flex-direction:row; flex-wrap:wrap; max-height:none; overflow-x:auto; gap:10px; }
+            .side-panel > div { flex:1 1 auto; min-width:140px; }
+            .canvas-wrapper { min-height:280px; }
+            .header { padding:10px 14px; }
+            .rotate-btn { width:40px; height:40px; bottom:12px; right:12px; font-size:1.2rem; }
         }
     </style>
 </head>
 <body>
 <div class="app-container">
     <header class="header">
-        <div class="logo-area">
-            <div class="logo-icon">📐</div>
-            <h1>微缩模型排版</h1>
-        </div>
+        <div class="logo-area"><div class="logo-icon">📐</div><h1>微缩模型排版</h1></div>
         <div class="settings-group">
             <label>底板尺寸</label>
             <input type="number" id="gridWidth" value="8" min="1" max="40">
@@ -495,7 +218,7 @@
                     <div class="row">
                         <label>宽</label><input type="number" id="customW" value="3" min="1" max="40">
                         <label>高</label><input type="number" id="customH" value="3" min="1" max="40">
-                        <input type="color" id="customColor" value="#4CAF50">
+                        <input type="color" id="customColor" value="#b2a59f">
                     </div>
                     <div class="row">
                         <label>名称</label><input type="text" id="customName" value="自定义" class="name-input" placeholder="场景名称">
@@ -507,7 +230,7 @@
         <section class="canvas-area">
             <div class="canvas-wrapper" id="canvasWrapper">
                 <canvas id="mainCanvas"></canvas>
-                <div class="rotate-btn" id="rotateBtn" title="旋转模块 (90°)">🔄</div>
+                <div class="rotate-btn" id="rotateBtn" title="旋转模块">🔄</div>
             </div>
             <div class="canvas-info">
                 <span>已占用 <strong id="statUsed">0</strong>/<strong id="statTotal">64</strong></span>
@@ -522,11 +245,15 @@
     </div>
     <footer class="status-bar">
         <div class="status-left">
-            <span id="statusText" class="badge badge-info">就绪</span>
+            <span id="statusText" class="badge badge-info">就绪 · 双击放置</span>
             <button class="btn btn-outline btn-sm" id="btnRename" style="display:none;">重命名</button>
             <span id="selectedInfo" style="font-size:0.75rem; color: var(--text-secondary);"></span>
         </div>
-        <span>旋转按钮 · 空白拖拽平移 · 双指缩放</span>
+        <div class="status-right">
+            <button class="btn btn-outline btn-xs" id="btnUndo" title="撤销">↶</button>
+            <button class="btn btn-outline btn-xs" id="btnRedo" title="重做">↷</button>
+            <span>R旋转 · 双指缩放</span>
+        </div>
     </footer>
 </div>
 
@@ -546,6 +273,8 @@
     const btnRename = document.getElementById('btnRename');
     const rotateBtn = document.getElementById('rotateBtn');
     const selectedInfo = document.getElementById('selectedInfo');
+    const btnUndo = document.getElementById('btnUndo');
+    const btnRedo = document.getElementById('btnRedo');
 
     const DEFAULT_CELL_SIZE = 52;
     let gridWidth = 8, gridHeight = 8, cellSize = DEFAULT_CELL_SIZE, zoom = 1.0;
@@ -557,24 +286,29 @@
     let movingModuleId = null, movingModuleOrigX = null, movingModuleOrigY = null;
     let isDragging = false;
     let selectedModuleId = null;
-    let mouseDownModuleId = null;
     let longPressTimer;
 
     let initialPinchDist = 0;
     let initialZoom = 1.0;
     let panning = false;
     let panStartX = 0, panStartY = 0;
-    let panScrollStartX = 0, panScrollStartY = 0;
+    let panStartCanvasX = 0, panStartCanvasY = 0;
+    let hasMoved = false;
 
     let animationFrameId = null;
     let animatingModule = null;
     const PLACEMENT_ANIM_DURATION = 150;
 
+    // 撤销重做历史
+    const MAX_HISTORY = 50;
+    let history = [];
+    let historyIndex = -1;
+
+    // 莫兰迪色系 (低饱和度)
     const paletteColors = [
-        '#4CAF50','#2196F3','#FF9800','#9C27B0','#F44336',
-        '#00BCD4','#FFEB3B','#795548','#607D8B','#E91E63',
-        '#3F51B5','#009688','#CDDC39','#FF5722','#8BC34A',
-        '#673AB7','#03A9F4','#FFC107','#555555','#26A69A'
+        '#b2a59f', '#a7b1a9', '#8fa3a6', '#b8a9b0', '#c1b4c2',
+        '#9a8c83', '#c4b5ad', '#a3b0b6', '#d1c4c9', '#b5a9a6',
+        '#b0a89c', '#a4a8a0', '#9ca9ad', '#b7adb3', '#c9c0c6'
     ];
     let paletteIndex = 0;
 
@@ -598,6 +332,49 @@
 
     function getNextColor() { return paletteColors[paletteIndex++ % paletteColors.length]; }
 
+    // ---------- 历史记录 ----------
+    function saveState() {
+        // 删除历史中当前位置之后的状态
+        if (historyIndex < history.length - 1) {
+            history = history.slice(0, historyIndex + 1);
+        }
+        const snapshot = placedModules.map(m => ({...m})); // 浅拷贝足够，因为属性都是基本类型
+        history.push(snapshot);
+        if (history.length > MAX_HISTORY) history.shift();
+        historyIndex = history.length - 1;
+        updateUndoRedoButtons();
+    }
+
+    function loadState(snapshot) {
+        placedModules = snapshot.map(m => ({...m}));
+        // 清理选中和动画
+        clearSelection();
+        animatingModule = null;
+        render();
+    }
+
+    function undo() {
+        if (historyIndex > 0) {
+            historyIndex--;
+            loadState(history[historyIndex]);
+            setStatus('info', '已撤销');
+        }
+    }
+
+    function redo() {
+        if (historyIndex < history.length - 1) {
+            historyIndex++;
+            loadState(history[historyIndex]);
+            setStatus('info', '已重做');
+        }
+    }
+
+    function updateUndoRedoButtons() {
+        btnUndo.style.opacity = historyIndex > 0 ? '1' : '0.4';
+        btnRedo.style.opacity = historyIndex < history.length - 1 ? '1' : '0.4';
+    }
+
+    // ---------- 核心操作 (需嵌入 saveState) ----------
     function getCanvasCoordsFromEvent(e) {
         const rect = canvas.getBoundingClientRect();
         const cx = e.touches ? e.touches[0].clientX : e.clientX;
@@ -628,6 +405,7 @@
 
     function placeModule(gx, gy, template) {
         if(!isPlacementValid(gx,gy,template.width,template.height)) return false;
+        saveState();
         const newMod = {
             id: moduleIdCounter++,
             name: template.name || `${template.width}×${template.height}`,
@@ -646,39 +424,8 @@
         return true;
     }
 
-    function startPlacementAnimation(moduleId) {
-        const mod = placedModules.find(m => m.id === moduleId);
-        if (!mod) return;
-        mod.animScale = 0.85;
-        animatingModule = {
-            id: moduleId,
-            startTime: performance.now(),
-            duration: PLACEMENT_ANIM_DURATION,
-            fromScale: 0.85,
-            toScale: 1.0
-        };
-        if (animationFrameId) cancelAnimationFrame(animationFrameId);
-        function animate(now) {
-            if (!animatingModule) return;
-            const mod = placedModules.find(m => m.id === animatingModule.id);
-            if (!mod) { animatingModule = null; return; }
-            const elapsed = now - animatingModule.startTime;
-            const progress = Math.min(elapsed / animatingModule.duration, 1.0);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            mod.animScale = animatingModule.fromScale + (animatingModule.toScale - animatingModule.fromScale) * eased;
-            render();
-            if (progress < 1.0) {
-                animationFrameId = requestAnimationFrame(animate);
-            } else {
-                mod.animScale = 1.0;
-                animatingModule = null;
-                render();
-            }
-        }
-        animationFrameId = requestAnimationFrame(animate);
-    }
-
     function removeModule(id) {
+        saveState();
         const idx = placedModules.findIndex(m=>m.id===id);
         if(idx>=0) {
             const r = placedModules.splice(idx,1)[0];
@@ -691,6 +438,7 @@
     function moveModuleTo(id, newX, newY) {
         const mod = placedModules.find(m=>m.id===id);
         if(!mod || !isPlacementValid(newX,newY,mod.width,mod.height,id)) return false;
+        saveState();
         mod.gridX = newX; mod.gridY = newY;
         render();
         setStatus('info', `已移动：${mod.name}`);
@@ -700,6 +448,7 @@
     function renameModule(id, newName) {
         const mod = placedModules.find(m=>m.id===id);
         if(mod && newName.trim()) {
+            saveState();
             mod.name = newName.trim();
             render();
             updateSelectionInfo();
@@ -734,6 +483,7 @@
 
     function clearAll() {
         if(placedModules.length && confirm('清空所有模块？')) {
+            saveState();
             placedModules = [];
             appState='idle'; selectedTemplate=null; movingModuleId=null; clearSelection();
             updatePlacementUI();
@@ -751,11 +501,7 @@
     }
 
     function updatePlacementUI() {
-        if (appState === 'placing') {
-            rotateBtn.style.display = 'flex';
-        } else {
-            rotateBtn.style.display = 'none';
-        }
+        rotateBtn.style.display = appState === 'placing' ? 'flex' : 'none';
     }
 
     function setStatus(type, msg) {
@@ -763,8 +509,8 @@
         statusText.className = 'badge badge-'+type;
         clearTimeout(statusText._timeout);
         statusText._timeout = setTimeout(()=>{
-            statusText.textContent='就绪';
-            statusText.className='badge badge-info';
+            statusText.textContent = '就绪 · 双击放置';
+            statusText.className = 'badge badge-info';
         }, 2500);
     }
 
@@ -783,13 +529,13 @@
         };
         appState='placing'; movingModuleId=null; isDragging=false; clearSelection();
         updateCardsHighlight(); updatePlacementUI(); render();
-        setStatus('info',`已选择：${tmpl.name}，点击网格放置`);
+        setStatus('info',`已选择：${tmpl.name}，双击网格放置`);
     }
 
     function cancelPlacing() {
         if(appState==='placing') { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); }
         if(appState==='moving') {
-            if(movingModuleId && movingModuleOrigX!==null) {
+            if(movingModuleId) {
                 const mod = placedModules.find(m=>m.id===movingModuleId);
                 if(mod) { mod.gridX=movingModuleOrigX; mod.gridY=movingModuleOrigY; }
             }
@@ -799,10 +545,8 @@
     }
 
     function updateCanvasSize() {
-        const w = gridWidth * cellSize;
-        const h = gridHeight * cellSize;
-        canvas.width = w;
-        canvas.height = h;
+        const w = gridWidth * cellSize, h = gridHeight * cellSize;
+        canvas.width = w; canvas.height = h;
         canvas.style.width = (w * zoom) + 'px';
         canvas.style.height = (h * zoom) + 'px';
     }
@@ -815,7 +559,6 @@
         render();
     }
 
-    // 绘制圆角矩形路径
     function roundRectPath(ctx, x, y, w, h, r) {
         ctx.beginPath();
         ctx.moveTo(x + r, y);
@@ -854,11 +597,9 @@
             ctx.font = `${Math.max(8, cellSize*0.2)}px ${getComputedStyle(document.body).fontFamily}`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            for(let x=0; x<gridWidth; x++) {
-                for(let y=0; y<gridHeight; y++) {
+            for(let x=0; x<gridWidth; x++)
+                for(let y=0; y<gridHeight; y++)
                     ctx.fillText(`${x+1},${y+1}`, (x+0.5)*cellSize, (y+0.5)*cellSize);
-                }
-            }
         }
 
         for(const mod of placedModules) {
@@ -870,14 +611,14 @@
         if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) {
             const valid = isPlacementValid(hoveredGridX,hoveredGridY,selectedTemplate.width,selectedTemplate.height);
             drawModule(hoveredGridX,hoveredGridY,selectedTemplate.width,selectedTemplate.height,
-                selectedTemplate.color,selectedTemplate.name, valid?0.55:0.3, false, valid?'#a3c8f0':'#f5b0a8', false, 1.0);
+                selectedTemplate.color,selectedTemplate.name, valid?0.55:0.3, false, valid?'#8fa3a6':'#d19494', false, 1.0);
         }
         if(appState==='moving' && movingModuleId && hoveredGridX>=0 && hoveredGridY>=0) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) {
                 const valid = isPlacementValid(hoveredGridX,hoveredGridY,mod.width,mod.height,movingModuleId);
                 drawModule(hoveredGridX,hoveredGridY,mod.width,mod.height,mod.color,mod.name,
-                    valid?0.6:0.3, true, valid?'#a3c8f0':'#f5b0a8', false, 1.0);
+                    valid?0.6:0.3, true, valid?'#8fa3a6':'#d19494', false, 1.0);
             }
         }
         updateStats();
@@ -886,7 +627,7 @@
     function drawModule(gx,gy,mw,mh,color,name,alpha,ghost=false,borderColor=null,selected=false,scale=1.0) {
         const x=gx*cellSize, y=gy*cellSize, w=mw*cellSize, h=mh*cellSize;
         const pad = Math.max(1, cellSize*0.06);
-        const radius = Math.min(cellSize*0.25, 14); // 圆角半径基于单元格大小
+        const radius = Math.min(cellSize*0.25, 14);
 
         ctx.save();
         const cx = x + w/2, cy = y + h/2;
@@ -894,33 +635,22 @@
         ctx.scale(scale, scale);
         ctx.translate(-cx, -cy);
 
-        const rectX = x + pad;
-        const rectY = y + pad;
-        const rectW = w - pad*2;
-        const rectH = h - pad*2;
-
-        // 绘制圆角矩形背景
+        const rectX = x + pad, rectY = y + pad, rectW = w - pad*2, rectH = h - pad*2;
         ctx.fillStyle = hexToRgba(color, alpha);
         roundRectPath(ctx, rectX, rectY, rectW, rectH, radius);
         ctx.fill();
 
-        // 边框
         ctx.strokeStyle = borderColor || (ghost?'rgba(255,255,255,0.9)':'rgba(0,0,0,0.15)');
         ctx.lineWidth = ghost?2.5:1.8;
         if(ghost) ctx.setLineDash([5,3]);
-        if (selected && !ghost) {
-            ctx.strokeStyle = '#0071e3';
-            ctx.lineWidth = 3;
-            ctx.setLineDash([4,2]);
-        }
+        if(selected && !ghost) { ctx.strokeStyle = '#7a8b8c'; ctx.lineWidth = 3; ctx.setLineDash([4,2]); }
         roundRectPath(ctx, rectX, rectY, rectW, rectH, radius);
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // 文字
-        if(Math.min(rectW, rectH) > 18 && alpha > 0.4) {
+        if(Math.min(rectW,rectH) > 18 && alpha > 0.4) {
             ctx.fillStyle = 'rgba(0,0,0,0.6)';
-            const fontSize = Math.max(7, Math.min(cellSize*0.35, Math.min(rectW, rectH)*0.35));
+            const fontSize = Math.max(7, Math.min(cellSize*0.35, Math.min(rectW,rectH)*0.35));
             ctx.font = `600 ${fontSize}px ${getComputedStyle(document.body).fontFamily}`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
@@ -938,9 +668,7 @@
         const total = gridWidth * gridHeight;
         const used = new Set();
         for(const m of placedModules) for(let dx=0;dx<m.width;dx++) for(let dy=0;dy<m.height;dy++) used.add(`${m.gridX+dx},${m.gridY+dy}`);
-        statUsed.textContent=used.size;
-        statTotal.textContent=total;
-        statModules.textContent=placedModules.length;
+        statUsed.textContent=used.size; statTotal.textContent=total; statModules.textContent=placedModules.length;
         statRatio.textContent=total?Math.round((used.size/total)*100)+'%':'0%';
     }
 
@@ -951,6 +679,7 @@
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    // ---------- 事件处理 (双击放置) ----------
     function onPointerDown(e) {
         e.preventDefault();
         const touches = e.touches;
@@ -962,34 +691,43 @@
 
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
+        const clientX = touches ? touches[0].clientX : e.clientX;
+        const clientY = touches ? touches[0].clientY : e.clientY;
 
-        if(e.button===2 || (touches && touches.length>1)) {
+        if(e.button === 2 || (touches && touches.length > 1)) {
             if(cell && appState==='idle') { const m = getModuleAt(cell.gx,cell.gy); if(m) removeModule(m.id); }
             return;
         }
 
-        if(appState==='placing' && selectedTemplate && cell) {
-            placeModule(cell.gx, cell.gy, selectedTemplate);
-            return;
-        }
-
-        if(appState==='moving' && movingModuleId && cell) {
-            if(moveModuleTo(movingModuleId, cell.gx, cell.gy)) {
-                appState='idle'; movingModuleId=null; isDragging=false;
-                updatePlacementUI();
+        // 放置模式：只更新预览，不放置
+        if(appState === 'placing') {
+            if(cell) {
+                hoveredGridX = cell.gx;
+                hoveredGridY = cell.gy;
+                render();
             }
             return;
         }
 
-        if(appState==='idle' && cell) {
+        // 移动模式中放下模块
+        if(appState === 'moving' && movingModuleId && cell) {
+            if(moveModuleTo(movingModuleId, cell.gx, cell.gy)) {
+                appState = 'idle'; movingModuleId = null; isDragging = false; updatePlacementUI();
+            }
+            return;
+        }
+
+        // 空闲状态
+        if(appState === 'idle' && cell) {
             const mod = getModuleAt(cell.gx, cell.gy);
             if(mod) {
-                movingModuleOrigX=mod.gridX; movingModuleOrigY=mod.gridY;
+                movingModuleOrigX = mod.gridX; movingModuleOrigY = mod.gridY;
                 mouseDownModuleId = mod.id;
                 isDragging = false;
+                hasMoved = false;
                 clearTimeout(longPressTimer);
                 longPressTimer = setTimeout(() => {
-                    if(!isDragging && mouseDownModuleId === mod.id && appState==='idle') {
+                    if(!hasMoved && mouseDownModuleId === mod.id) {
                         const newName = prompt('重命名模块：', mod.name);
                         if(newName) renameModule(mod.id, newName);
                         mouseDownModuleId = null;
@@ -998,12 +736,11 @@
                 }, 600);
             } else {
                 clearSelection();
-                panning = true;
-                panStartX = touches ? touches[0].clientX : e.clientX;
-                panStartY = touches ? touches[0].clientY : e.clientY;
-                panScrollStartX = canvasWrapper.scrollLeft;
-                panScrollStartY = canvasWrapper.scrollTop;
-                canvasWrapper.classList.add('grabbing');
+                panStartX = clientX;
+                panStartY = clientY;
+                panStartCanvasX = canvasWrapper.scrollLeft;
+                panStartCanvasY = canvasWrapper.scrollTop;
+                hasMoved = false;
                 appState = 'panning';
             }
             return;
@@ -1020,17 +757,21 @@
             return;
         }
 
+        const clientX = touches ? touches[0].clientX : e.clientX;
+        const clientY = touches ? touches[0].clientY : e.clientY;
+
         if(appState === 'panning') {
-            if(!touches && e.buttons !== 1) {
-                onPointerUp(e);
-                return;
-            }
-            const clientX = touches ? touches[0].clientX : e.clientX;
-            const clientY = touches ? touches[0].clientY : e.clientY;
             const dx = clientX - panStartX;
             const dy = clientY - panStartY;
-            canvasWrapper.scrollLeft = panScrollStartX - dx;
-            canvasWrapper.scrollTop = panScrollStartY - dy;
+            if(!hasMoved && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+                hasMoved = true;
+                canvasWrapper.classList.add('grabbing');
+            }
+            if(hasMoved) {
+                canvasWrapper.scrollLeft = panStartCanvasX - dx;
+                canvasWrapper.scrollTop = panStartCanvasY - dy;
+                return;
+            }
             return;
         }
 
@@ -1044,8 +785,9 @@
             if(mod) {
                 const dx = Math.abs(coords.x - (mod.gridX * cellSize));
                 const dy = Math.abs(coords.y - (mod.gridY * cellSize));
-                if(dx>5 || dy>5) {
+                if(dx > 5 || dy > 5) {
                     clearTimeout(longPressTimer);
+                    hasMoved = true;
                     isDragging = true;
                     movingModuleId = mouseDownModuleId;
                     appState = 'moving';
@@ -1055,60 +797,79 @@
                 }
             }
         }
-        if(appState==='moving' && movingModuleId && cell) {
+        if(appState === 'moving' && movingModuleId && cell) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
-            if(mod) { mod.gridX=cell.gx; mod.gridY=cell.gy; }
+            if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
         }
         render();
     }
 
     function onPointerUp(e) {
         e.preventDefault();
-        if(e.touches && e.touches.length < 2) {
-            initialPinchDist = 0;
-        }
+        if(e.touches && e.touches.length < 2) initialPinchDist = 0;
 
         if(appState === 'panning') {
-            panning = false;
             canvasWrapper.classList.remove('grabbing');
             appState = 'idle';
+            hasMoved = false;
             return;
         }
 
         clearTimeout(longPressTimer);
-        if(appState==='moving' && movingModuleId) {
+
+        if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             const finalX = mod?mod.gridX:0, finalY = mod?mod.gridY:0;
             if(!moveModuleTo(movingModuleId, finalX, finalY)) {
-                if(mod) { mod.gridX=movingModuleOrigX; mod.gridY=movingModuleOrigY; }
+                if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
                 setStatus('warning','无法放置，已恢复原位');
             }
-            appState='idle'; movingModuleId=null; isDragging=false;
+            appState = 'idle'; movingModuleId = null; isDragging = false;
             updatePlacementUI();
-        } else if(mouseDownModuleId && !isDragging && appState==='idle') {
+        } else if(mouseDownModuleId && !hasMoved && !isDragging) {
             selectModule(mouseDownModuleId);
         }
+
         mouseDownModuleId = null;
+        hasMoved = false;
+        isDragging = false;
         render();
     }
 
     function onPointerLeave(e) {
         clearTimeout(longPressTimer);
-        initialPinchDist = 0;
-        hoveredGridX=-1; hoveredGridY=-1;
-        if(appState==='panning') {
+        if(appState === 'panning') {
             canvasWrapper.classList.remove('grabbing');
-            appState='idle';
+            appState = 'idle';
         }
-        if(appState==='moving' && movingModuleId) {
+        if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
-            if(mod) { mod.gridX=movingModuleOrigX; mod.gridY=movingModuleOrigY; }
-            appState='idle'; movingModuleId=null; isDragging=false;
+            if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
+            appState = 'idle'; movingModuleId = null; isDragging = false;
             updatePlacementUI();
         }
-        mouseDownModuleId=null;
+        hoveredGridX = -1; hoveredGridY = -1;
+        mouseDownModuleId = null;
+        hasMoved = false;
         render();
     }
+
+    // 双击事件：放置 或 重命名
+    canvas.addEventListener('dblclick', e => {
+        const coords = getCanvasCoordsFromEvent(e);
+        const cell = getGridCell(coords.x, coords.y);
+        if (!cell) return;
+        if (appState === 'placing' && selectedTemplate) {
+            // 双击放置
+            placeModule(cell.gx, cell.gy, selectedTemplate);
+        } else if (appState === 'idle') {
+            const mod = getModuleAt(cell.gx, cell.gy);
+            if (mod) {
+                const newName = prompt('重命名模块：', mod.name);
+                if (newName) renameModule(mod.id, newName);
+            }
+        }
+    });
 
     canvas.addEventListener('mousedown', onPointerDown);
     canvas.addEventListener('mousemove', onPointerMove);
@@ -1119,29 +880,22 @@
     canvas.addEventListener('touchend', onPointerUp);
     canvas.addEventListener('touchcancel', onPointerLeave);
     canvas.addEventListener('contextmenu', e=>e.preventDefault());
-    canvas.addEventListener('dblclick', e => {
-        const coords = getCanvasCoordsFromEvent(e);
-        const cell = getGridCell(coords.x, coords.y);
-        if(cell && appState==='idle') {
-            const mod = getModuleAt(cell.gx, cell.gy);
-            if(mod) {
-                const newName = prompt('重命名模块：', mod.name);
-                if(newName) renameModule(mod.id, newName);
-            }
-        }
-    });
 
     rotateBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         rotateTemplate();
     });
 
+    btnUndo.addEventListener('click', undo);
+    btnRedo.addEventListener('click', redo);
+
     document.addEventListener('keydown', e => {
         if(e.key==='Escape') cancelPlacing();
         if((e.key==='Delete'||e.key==='Backspace') && selectedModuleId) {
-            removeModule(selectedModuleId);
-            clearSelection();
+            removeModule(selectedModuleId); clearSelection();
         }
+        if(e.ctrlKey && e.key==='z') { e.preventDefault(); undo(); }
+        if(e.ctrlKey && e.key==='y') { e.preventDefault(); redo(); }
     });
 
     document.getElementById('btnApplyGrid').addEventListener('click', ()=>{
@@ -1150,14 +904,12 @@
         if(isNaN(nw)||isNaN(nh)||nw<1||nh<1) return;
         const out = placedModules.filter(m=>m.gridX+m.width>nw||m.gridY+m.height>nh);
         if(out.length && !confirm(`有${out.length}个模块超出边界将被移除，继续？`)) return;
+        saveState();
         placedModules = placedModules.filter(m=>m.gridX+m.width<=nw && m.gridY+m.height<=nh);
         gridWidth=nw; gridHeight=nh;
-        document.getElementById('gridWidth').value=nw;
-        document.getElementById('gridHeight').value=nh;
-        cancelPlacing();
-        updateCanvasSize();
-        autoFitZoom();
-        render();
+        document.getElementById('gridWidth').value=nw; document.getElementById('gridHeight').value=nh;
+        cancelPlacing(); updateCanvasSize(); autoFitZoom(); render();
+        setStatus('info','底板尺寸已更新');
     });
     document.getElementById('btnClearAll').addEventListener('click', clearAll);
     document.getElementById('btnAddCustom').addEventListener('click', ()=>{
@@ -1180,9 +932,7 @@
         }
     });
 
-    zoomSlider.addEventListener('input', ()=>{
-        applyZoom(parseInt(zoomSlider.value) / 100);
-    });
+    zoomSlider.addEventListener('input', ()=> applyZoom(parseInt(zoomSlider.value)/100) );
 
     function renderPresetModules() {
         presetModulesEl.innerHTML = '';
@@ -1190,12 +940,7 @@
             const card = document.createElement('div');
             card.className = 'module-card';
             card.dataset.templateId = 'tmpl_'+idx;
-            card.innerHTML = `
-                <span class="size-label">${tmpl.width}×${tmpl.height}</span>
-                <span class="color-dot" style="background:${tmpl.color};"></span>
-                <small style="font-size:0.7rem; color: var(--text-secondary);">${tmpl.name}</small>
-                <div class="delete-btn" data-idx="${idx}">✕</div>
-            `;
+            card.innerHTML = `<span class="size-label">${tmpl.width}×${tmpl.height}</span><span class="color-dot" style="background:${tmpl.color};"></span><small style="font-size:0.7rem; color:var(--text-secondary);">${tmpl.name}</small><div class="delete-btn" data-idx="${idx}">✕</div>`;
             card.addEventListener('click', (e) => {
                 if(e.target.classList.contains('delete-btn')) return;
                 selectTemplate(idx);
@@ -1203,12 +948,7 @@
             card.querySelector('.delete-btn').addEventListener('click', (e) => {
                 e.stopPropagation();
                 availableTemplates.splice(idx, 1);
-                if(selectedTemplate && selectedTemplate._cardId === 'tmpl_'+idx) {
-                    appState = 'idle';
-                    selectedTemplate = null;
-                    updateCardsHighlight();
-                    updatePlacementUI();
-                }
+                if(selectedTemplate && selectedTemplate._cardId==='tmpl_'+idx) { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); }
                 renderPresetModules();
             });
             presetModulesEl.appendChild(card);
@@ -1218,19 +958,11 @@
 
     function autoFitZoom() {
         const rect = canvasWrapper.getBoundingClientRect();
-        const availW = rect.width - 40;
-        const availH = rect.height - 40;
-        if (availW <= 0 || availH <= 0) {
-            zoom = 1.0;
-        } else {
-            const fitW = availW / (gridWidth * cellSize);
-            const fitH = availH / (gridHeight * cellSize);
-            zoom = Math.min(fitW, fitH, 2.0);
-            zoom = Math.max(0.1, Math.min(2.0, zoom));
-        }
-        zoom = Math.round(zoom * 100) / 100;
-        zoomSlider.value = Math.round(zoom * 100);
-        zoomVal.textContent = Math.round(zoom * 100) + '%';
+        const availW = rect.width - 40, availH = rect.height - 40;
+        if(availW<=0||availH<=0) zoom=1.0;
+        else { const fitW=availW/(gridWidth*cellSize), fitH=availH/(gridHeight*cellSize); zoom=Math.min(fitW,fitH,2.0); zoom=Math.max(0.1,Math.min(2.0,zoom)); }
+        zoom = Math.round(zoom*100)/100;
+        zoomSlider.value=Math.round(zoom*100); zoomVal.textContent=Math.round(zoom*100)+'%';
         updateCanvasSize();
     }
 
@@ -1239,10 +971,13 @@
         window._resizeTimer = setTimeout(()=>{ autoFitZoom(); render(); }, 200);
     });
 
+    // 初始保存状态
+    saveState();
     renderPresetModules();
     updateCanvasSize();
     autoFitZoom();
     render();
+    updateUndoRedoButtons();
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
