@@ -123,6 +123,14 @@
             border: 1px solid rgba(0,0,0,0.08);
         }
         .btn-outline:hover { background: #fff; border-color: var(--accent); }
+
+        .btn-danger {
+            background: rgba(255,59,48,0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255,59,48,0.2);
+        }
+        .btn-danger:hover { background: rgba(255,59,48,0.15); border-color: var(--danger); }
+
         .btn-sm { padding:6px 14px; font-size:0.78rem; }
         .btn-xs { padding:4px 10px; font-size:0.7rem; }
 
@@ -359,6 +367,7 @@
         <div class="status-left">
             <span id="statusText" class="badge badge-info">就绪</span>
             <button class="btn btn-outline btn-sm" id="btnRename" style="display:none;">重命名</button>
+            <button class="btn btn-danger btn-sm" id="btnDelete" style="display:none;">删除</button>
             <span id="selectedInfo" style="font-size:0.75rem; color: var(--text-secondary);"></span>
         </div>
         <div class="status-right">
@@ -384,6 +393,7 @@
     const zoomSlider = document.getElementById('zoomSlider');
     const zoomVal = document.getElementById('zoomVal');
     const btnRename = document.getElementById('btnRename');
+    const btnDelete = document.getElementById('btnDelete');
     const rotateBtn = document.getElementById('rotateBtn');
     const btnPlace = document.getElementById('btnPlace');
     const selectedInfo = document.getElementById('selectedInfo');
@@ -597,6 +607,7 @@
     function clearSelection() {
         selectedModuleId = null;
         btnRename.style.display = 'none';
+        btnDelete.style.display = 'none';
         selectedInfo.textContent = '';
         render();
     }
@@ -606,6 +617,7 @@
         const mod = placedModules.find(m=>m.id===id);
         if(mod) {
             btnRename.style.display = 'inline-block';
+            btnDelete.style.display = 'inline-block';
             selectedInfo.textContent = `已选中：${mod.name} (${mod.width}×${mod.height})`;
         }
         render();
@@ -669,7 +681,7 @@
         };
         appState='placing'; movingModuleId=null; isDragging=false; clearSelection();
         updateCardsHighlight(); updatePlacementUI(); render();
-        setStatus('info',`已选择：${tmpl.name}，移动预览后点击「放置」`);
+        setStatus('info',`已选择：${tmpl.name}，点击网格放置或使用下方按钮`);
     }
 
     function cancelPlacing() {
@@ -819,6 +831,9 @@
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    // ------ 修改后的事件处理 (支持点击放置，预览保持) ------
+    let placingStartCell = null; // 放置模式下的按下格子
+
     function onPointerDown(e) {
         e.preventDefault();
         const touches = e.touches;
@@ -838,11 +853,13 @@
             return;
         }
 
-        // 放置模式：不放置，只移动预览
+        // 放置模式：记录点击格子，开始检测点击或拖拽
         if(appState === 'placing') {
             if(cell) {
                 hoveredGridX = cell.gx;
                 hoveredGridY = cell.gy;
+                placingStartCell = {gx: cell.gx, gy: cell.gy};
+                hasMoved = false; // 重置移动标记
                 render();
             }
             return;
@@ -914,6 +931,30 @@
 
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
+
+        // 放置模式下的移动：更新预览并标记已移动
+        if(appState === 'placing') {
+            if(cell) {
+                // 如果移动超过阈值，则标记为移动，不再触发点击放置
+                if(placingStartCell && (cell.gx !== placingStartCell.gx || cell.gy !== placingStartCell.gy)) {
+                    if(!hasMoved) {
+                        // 检测移动距离
+                        const startX = placingStartCell.gx * cellSize + cellSize/2;
+                        const startY = placingStartCell.gy * cellSize + cellSize/2;
+                        const dx = coords.x - startX;
+                        const dy = coords.y - startY;
+                        if(Math.abs(dx) > 5 || Math.abs(dy) > 5) {
+                            hasMoved = true;
+                        }
+                    }
+                }
+                hoveredGridX = cell.gx;
+                hoveredGridY = cell.gy;
+                render();
+            }
+            return;
+        }
+
         hoveredGridX = cell?cell.gx:-1;
         hoveredGridY = cell?cell.gy:-1;
 
@@ -954,6 +995,18 @@
 
         clearTimeout(longPressTimer);
 
+        // 放置模式：如果没有移动，则在起始格子放置
+        if(appState === 'placing' && selectedTemplate) {
+            if(placingStartCell && !hasMoved) {
+                placeModule(placingStartCell.gx, placingStartCell.gy, selectedTemplate);
+            }
+            placingStartCell = null;
+            hasMoved = false;
+            // 不改变appState，放置成功会自动变为idle；失败则保持placing状态
+            render();
+            return;
+        }
+
         if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             const finalX = mod?mod.gridX:0, finalY = mod?mod.gridY:0;
@@ -975,6 +1028,11 @@
 
     function onPointerLeave(e) {
         clearTimeout(longPressTimer);
+        // 放置模式下不清空预览，保持最后位置
+        if(appState !== 'placing') {
+            hoveredGridX = -1;
+            hoveredGridY = -1;
+        }
         if(appState === 'panning') {
             canvasWrapper.classList.remove('grabbing');
             appState = 'idle';
@@ -985,13 +1043,12 @@
             appState = 'idle'; movingModuleId = null; isDragging = false;
             updatePlacementUI();
         }
-        hoveredGridX = -1; hoveredGridY = -1;
         mouseDownModuleId = null;
         hasMoved = false;
         render();
     }
 
-    // 双击事件：仅用于重命名
+    // 双击仅用于重命名
     canvas.addEventListener('dblclick', e => {
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
@@ -1020,12 +1077,18 @@
         rotateTemplate();
     });
 
-    // 放置按钮
     btnPlace.addEventListener('click', () => {
         if (appState === 'placing' && selectedTemplate && hoveredGridX >= 0 && hoveredGridY >= 0) {
             placeModule(hoveredGridX, hoveredGridY, selectedTemplate);
         } else {
             setStatus('warning', '请先选择模块并移动到网格上');
+        }
+    });
+
+    btnDelete.addEventListener('click', () => {
+        if (selectedModuleId) {
+            removeModule(selectedModuleId);
+            clearSelection();
         }
     });
 
@@ -1035,7 +1098,8 @@
     document.addEventListener('keydown', e => {
         if(e.key==='Escape') cancelPlacing();
         if((e.key==='Delete'||e.key==='Backspace') && selectedModuleId) {
-            removeModule(selectedModuleId); clearSelection();
+            removeModule(selectedModuleId);
+            clearSelection();
         }
         if(e.ctrlKey && e.key==='z') { e.preventDefault(); undo(); }
         if(e.ctrlKey && e.key==='y') { e.preventDefault(); redo(); }
