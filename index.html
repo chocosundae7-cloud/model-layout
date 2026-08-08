@@ -110,8 +110,11 @@
             touch-action: none;
             flex: 1;
             min-height: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        canvas { display: block; }
+        canvas { display: block; flex-shrink: 0; }
         .canvas-info { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; color: var(--text-secondary); margin-top: 8px; }
         .canvas-info strong { font-weight: 500; color: var(--text-dark); }
         .zoom-row { display: flex; align-items: center; gap: 6px; }
@@ -202,7 +205,7 @@
     </div>
 
     <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
-        <span id="statusText" class="badge" style="background:rgba(94,122,74,0.08); color:var(--accent); padding:4px 12px; border-radius:12px; font-size:0.75rem;">就绪</span>
+        <span id="statusText" style="background:rgba(94,122,74,0.08); color:var(--accent); padding:4px 12px; border-radius:12px; font-size:0.75rem;">就绪</span>
         <button class="btn btn-sm" id="btnSave">💾 保存</button>
         <button class="btn btn-sm" id="btnLoad">📂 加载</button>
         <button class="btn btn-sm" id="btnExport">📷 导出JPG</button>
@@ -486,7 +489,6 @@
         canvas.style.height = h * zoom + 'px';
     }
 
-    // 让底板在wrapper内居中
     function centerCanvas() {
         const cw = canvasWrapper.clientWidth;
         const ch = canvasWrapper.clientHeight;
@@ -496,7 +498,6 @@
         canvasWrapper.scrollTop = (canvasH - ch) / 2;
     }
 
-    // 缩放后直接居中
     function applyZoom(newZoom) {
         zoom = Math.min(2.0, Math.max(0.2, newZoom));
         updateCanvasSize();
