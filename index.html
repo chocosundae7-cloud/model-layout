@@ -234,6 +234,7 @@
                 <div style="display:flex; gap:6px; margin-left:auto;">
                     <button class="btn btn-sm" id="btnSave">💾 保存</button>
                     <button class="btn btn-sm" id="btnLoad">📂 加载</button>
+                    <button class="btn btn-sm" id="btnExport">📷 导出JPG</button>
                     <button class="btn btn-accent btn-sm" id="btnPlace" style="display:none;">放置</button>
                     <button class="btn btn-sm" id="btnUndo">↶</button>
                     <button class="btn btn-sm" id="btnRedo">↷</button>
@@ -247,13 +248,13 @@
         <div class="help-content">
             <h3>📖 使用指南</h3>
             <p>1. <strong>选择模块</strong>：点击左侧预设模块或自定义模块。</p>
-            <p>2. <strong>放置模块</strong>：在网格上<strong>单击</strong>即可放置。可用底部“放置”按钮或直接点击网格。</p>
+            <p>2. <strong>放置模块</strong>：在网格上<strong>单击</strong>即可放置。</p>
             <p>3. <strong>移动模块</strong>：按住已放置的模块并拖动到新位置。</p>
-            <p>4. <strong>选中与删除</strong>：单击模块出现蓝框，再点底部红色“删除”按钮（或键盘Delete键）。</p>
-            <p>5. <strong>旋转</strong>：进入放置模式后，右下角出现旋转按钮，点击旋转90°。</p>
-            <p>6. <strong>缩放与平移</strong>：用滑块或双指缩放，空白区域拖拽平移画布。</p>
+            <p>4. <strong>选中与删除</strong>：单击模块出现蓝框，再点底部红色“删除”按钮。</p>
+            <p>5. <strong>旋转</strong>：进入放置模式后，右下角出现旋转按钮。</p>
+            <p>6. <strong>缩放与平移</strong>：用滑块或双指缩放，空白区域拖拽平移。</p>
             <p>7. <strong>撤销/重做</strong>：点击 ↶/↷ 按钮或 Ctrl+Z/Y。</p>
-            <p>8. <strong>保存/加载</strong>：保存布局到浏览器本地，下次可加载恢复。</p>
+            <p>8. <strong>导出JPG</strong>：点击底部“📷 导出JPG”将当前排版保存为图片。</p>
             <p>9. <strong>尺寸标注</strong>：底部和右侧标尺显示底板实际尺寸（每格=2.5cm）。</p>
             <button class="close-btn" id="btnCloseHelp">知道了</button>
         </div>
@@ -281,12 +282,13 @@
         const btnRedo = document.getElementById('btnRedo');
         const btnSave = document.getElementById('btnSave');
         const btnLoad = document.getElementById('btnLoad');
+        const btnExport = document.getElementById('btnExport');
         const btnHelp = document.getElementById('btnHelp');
         const helpModal = document.getElementById('helpModal');
         const btnCloseHelp = document.getElementById('btnCloseHelp');
 
         const DEFAULT_CELL_SIZE = 52;
-        const CM_PER_CELL = 2.5;  // 每个格子代表2.5cm
+        const CM_PER_CELL = 2.5;
         let gridWidth = 8, gridHeight = 8, cellSize = DEFAULT_CELL_SIZE, zoom = 1.0;
         let placedModules = [];
         let moduleIdCounter = 0;
@@ -384,6 +386,22 @@
                 updateCanvasSize(); clearSelection(); render();
                 setStatus('success', '布局已加载');
             } catch (e) { setStatus('warning', '加载失败'); }
+        }
+
+        // ---------- 导出JPG ----------
+        function exportToJPG() {
+            // 将canvas内容转换为Blob并下载
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `怪兽沙盒排版_${gridWidth}x${gridHeight}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                setStatus('success', '排版图已导出');
+            }, 'image/jpeg', 0.95);
         }
 
         // ---------- 坐标与碰撞 ----------
@@ -583,7 +601,6 @@
             render(); setStatus('info','已取消');
         }
 
-        // 标注边距
         const LABEL_MARGIN_BOTTOM = 30;
         const LABEL_MARGIN_RIGHT = 45;
 
@@ -627,7 +644,6 @@
             const gridW = gridWidth * cellSize;
             const gridH = gridHeight * cellSize;
 
-            // 网格线
             for(let x=0; x<=gridWidth; x++) {
                 const isMajor = (x % 4 === 0);
                 ctx.strokeStyle = isMajor ? '#c0b7aa' : '#e8e3db';
@@ -641,22 +657,18 @@
                 ctx.beginPath(); ctx.moveTo(0,y*cellSize); ctx.lineTo(gridW, y*cellSize); ctx.stroke();
             }
 
-            // 边缘粗线
             ctx.strokeStyle = '#1D1D1F';
             ctx.lineWidth = 2.5;
             ctx.strokeRect(0, 0, gridW, gridH);
 
-            // 坐标标注（底部和右侧）
             ctx.fillStyle = '#1D1D1F';
             ctx.font = `500 ${Math.max(9, cellSize*0.18)}px ${getComputedStyle(document.body).fontFamily}`;
             ctx.textAlign = 'center';
             ctx.textBaseline = 'top';
-            // 底部标尺
             for(let x=0; x<=gridWidth; x++) {
                 const cm = (x * CM_PER_CELL).toFixed(1);
                 ctx.fillText(cm, x*cellSize, gridH + 4);
             }
-            // 总长文字
             ctx.fillText(`${(gridWidth*CM_PER_CELL).toFixed(1)}cm`, gridW/2, gridH + 20);
 
             ctx.textAlign = 'right';
@@ -665,7 +677,6 @@
                 const cm = (y * CM_PER_CELL).toFixed(1);
                 ctx.fillText(cm, gridW + 4, y*cellSize);
             }
-            // 总高文字旋转
             ctx.save();
             ctx.translate(gridW + 22, gridH/2);
             ctx.rotate(-Math.PI/2);
@@ -673,7 +684,6 @@
             ctx.fillText(`${(gridHeight*CM_PER_CELL).toFixed(1)}cm`, 0, 0);
             ctx.restore();
 
-            // 坐标小字
             if(zoom * cellSize >= 14) {
                 ctx.fillStyle = '#b5aaa0';
                 ctx.font = `${Math.max(8, cellSize*0.2)}px ${getComputedStyle(document.body).fontFamily}`;
@@ -988,6 +998,7 @@
         btnRedo.addEventListener('click', redo);
         btnSave.addEventListener('click', saveToStorage);
         btnLoad.addEventListener('click', loadFromStorage);
+        btnExport.addEventListener('click', exportToJPG);
 
         btnHelp.addEventListener('click', () => { helpModal.classList.add('open'); });
         btnCloseHelp.addEventListener('click', () => { helpModal.classList.remove('open'); });
