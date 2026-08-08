@@ -85,11 +85,11 @@
         .btn-sm { padding: 6px 14px; font-size: 0.78rem; }
         .btn-tool { width: 100%; margin-bottom: 6px; }
 
-        /* 画布区域 + 右侧工具栏 */
         .canvas-row {
             display: flex;
             gap: 12px;
             flex: 1;
+            min-height: 0; /* 防止flex溢出 */
         }
         .canvas-area {
             background: var(--card-bg);
@@ -99,14 +99,17 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
         .canvas-wrapper {
-            position: relative; overflow: hidden;
-            border-radius: var(--radius-sm); background: #FFFFFF;
+            position: relative;
+            overflow: auto;
+            border-radius: var(--radius-sm);
+            background: #FFFFFF;
             border: 1px solid var(--border-light);
             touch-action: none;
             flex: 1;
-            min-height: 350px;
+            min-height: 0;
         }
         canvas { display: block; }
         .canvas-info { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; color: var(--text-secondary); margin-top: 8px; }
@@ -114,7 +117,6 @@
         .zoom-row { display: flex; align-items: center; gap: 6px; }
         .zoom-row input[type="range"] { width: 70px; accent-color: var(--accent); }
 
-        /* 右侧工具栏 */
         .toolbar {
             display: flex;
             flex-direction: column;
@@ -152,7 +154,6 @@
     <button class="help-icon" id="btnHelp">?</button>
 </div>
 <div class="app-container">
-    <!-- 模块选择区 -->
     <div class="card" style="padding:12px;">
         <div class="section-title">📦 预设模块</div>
         <div class="preset-grid" id="presetModules"></div>
@@ -166,7 +167,6 @@
         </div>
     </div>
 
-    <!-- 画布+工具栏 -->
     <div class="canvas-row">
         <div class="canvas-area">
             <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
@@ -191,7 +191,6 @@
             </div>
         </div>
 
-        <!-- 右侧工具栏 -->
         <div class="toolbar">
             <button class="btn btn-tool" id="btnUndo" title="撤销">↶</button>
             <button class="btn btn-tool" id="btnRedo" title="重做">↷</button>
@@ -202,7 +201,6 @@
         </div>
     </div>
 
-    <!-- 底部操作行 -->
     <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
         <span id="statusText" class="badge" style="background:rgba(94,122,74,0.08); color:var(--accent); padding:4px 12px; border-radius:12px; font-size:0.75rem;">就绪</span>
         <button class="btn btn-sm" id="btnSave">💾 保存</button>
@@ -258,7 +256,7 @@
     let gridWidth = 8, gridHeight = 8, cellSize = DEFAULT_CELL_SIZE, zoom = 1.0;
     let placedModules = [];
     let moduleIdCounter = 0;
-    let appState = 'idle';       // idle | placing | moving | panning
+    let appState = 'idle';
     let selectedTemplate = null;
     let hoveredGridX = -1, hoveredGridY = -1;
     let movingModuleId = null, movingModuleOrigX = null, movingModuleOrigY = null;
@@ -307,7 +305,7 @@
 
     function getNextColor() { return paletteColors[paletteIndex++ % paletteColors.length]; }
 
-    // 历史记录
+    // 历史
     function saveState() {
         if (historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
         history.push(placedModules.map(m => ({...m})));
@@ -315,14 +313,9 @@
         else historyIndex = history.length - 1;
         updateUndoRedoButtons();
     }
-    function loadState(snapshot) {
-        placedModules = snapshot.map(m => ({...m}));
-        clearSelection();
-        animatingModule = null;
-        render();
-    }
-    function undo() { if (historyIndex > 0) { historyIndex--; loadState(history[historyIndex]); setStatus('info', '已撤销'); } }
-    function redo() { if (historyIndex < history.length - 1) { historyIndex++; loadState(history[historyIndex]); setStatus('info', '已重做'); } }
+    function loadState(snapshot) { placedModules = snapshot.map(m => ({...m})); clearSelection(); animatingModule = null; render(); }
+    function undo() { if (historyIndex > 0) { historyIndex--; loadState(history[historyIndex]); setStatus('info','已撤销'); } }
+    function redo() { if (historyIndex < history.length - 1) { historyIndex++; loadState(history[historyIndex]); setStatus('info','已重做'); } }
     function updateUndoRedoButtons() {
         btnUndo.style.opacity = historyIndex > 0 ? '1' : '0.5';
         btnRedo.style.opacity = historyIndex < history.length - 1 ? '1' : '0.5';
@@ -330,11 +323,11 @@
 
     function saveToStorage() {
         localStorage.setItem('monster_layout', JSON.stringify({gridWidth, gridHeight, placedModules}));
-        setStatus('success', '布局已保存');
+        setStatus('success','布局已保存');
     }
     function loadFromStorage() {
         const saved = localStorage.getItem('monster_layout');
-        if(!saved) { setStatus('warning', '没有已保存的布局'); return; }
+        if(!saved) { setStatus('warning','没有已保存的布局'); return; }
         try {
             const data = JSON.parse(saved);
             gridWidth = data.gridWidth || 8; gridHeight = data.gridHeight || 8;
@@ -344,8 +337,8 @@
             moduleIdCounter = placedModules.reduce((max,m)=>Math.max(max,m.id||0),0)+1;
             history = [placedModules.map(m=>({...m}))]; historyIndex = 0;
             updateCanvasSize(); clearSelection(); render();
-            setStatus('success', '布局已加载');
-        } catch(e) { setStatus('warning', '加载失败'); }
+            setStatus('success','布局已加载');
+        } catch(e) { setStatus('warning','加载失败'); }
     }
 
     function exportToJPG() {
@@ -363,11 +356,10 @@
             a.href = url; a.download = `怪兽沙盒排版_${gridWidth}x${gridHeight}.jpg`;
             document.body.appendChild(a); a.click(); document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            setStatus('success', '排版图已导出');
+            setStatus('success','排版图已导出');
         }, 'image/jpeg', 0.95);
     }
 
-    // 坐标
     function getCanvasCoordsFromEvent(e) {
         const rect = canvas.getBoundingClientRect();
         const cx = e.touches ? e.touches[0].clientX : e.clientX;
@@ -425,82 +417,37 @@
         animationFrameId = requestAnimationFrame(animate);
     }
 
-    function removeModule(id) {
-        saveState();
-        const idx = placedModules.findIndex(m=>m.id===id);
-        if(idx>=0) {
-            placedModules.splice(idx,1);
-            if(selectedModuleId === id) clearSelection();
-            render();
-            setStatus('warning', '已删除模块');
-        }
-    }
-
+    function removeModule(id) { saveState(); const idx = placedModules.findIndex(m=>m.id===id); if(idx>=0) { placedModules.splice(idx,1); if(selectedModuleId === id) clearSelection(); render(); setStatus('warning','已删除模块'); } }
     function moveModuleTo(id, newX, newY) {
         const mod = placedModules.find(m=>m.id===id);
         if(!mod || !isPlacementValid(newX,newY,mod.width,mod.height,id)) return false;
         saveState();
         mod.gridX = newX; mod.gridY = newY;
-        render();
-        setStatus('info', `已移动：${mod.name}`);
+        render(); setStatus('info', `已移动：${mod.name}`);
         return true;
     }
-
     function renameModule(id, newName) {
         const mod = placedModules.find(m=>m.id===id);
-        if(mod && newName.trim()) {
-            saveState();
-            mod.name = newName.trim();
-            render();
-            updateSelectionInfo();
-            setStatus('info', `已重命名：${mod.name}`);
-        }
+        if(mod && newName.trim()) { saveState(); mod.name = newName.trim(); render(); updateSelectionInfo(); setStatus('info',`已重命名：${mod.name}`); }
     }
 
-    function clearSelection() {
-        selectedModuleId = null;
-        btnDelete.style.display = 'none';
-        btnRename.style.display = 'none';
-        selectedInfo.textContent = '';
-        render();
-    }
-
+    function clearSelection() { selectedModuleId = null; btnDelete.style.display = 'none'; btnRename.style.display = 'none'; selectedInfo.textContent = ''; render(); }
     function selectModule(id) {
         selectedModuleId = id;
         const mod = placedModules.find(m=>m.id===id);
-        if(mod) {
-            btnDelete.style.display = 'block';
-            btnRename.style.display = 'inline-block';
-            selectedInfo.textContent = `选中：${mod.name}`;
-        }
+        if(mod) { btnDelete.style.display = 'block'; btnRename.style.display = 'inline-block'; selectedInfo.textContent = `选中：${mod.name}`; }
         render();
     }
-
     function updateSelectionInfo() {
-        if(selectedModuleId) {
-            const mod = placedModules.find(m=>m.id===selectedModuleId);
-            if(mod) selectedInfo.textContent = `选中：${mod.name}`;
-            else clearSelection();
-        }
+        if(selectedModuleId) { const mod = placedModules.find(m=>m.id===selectedModuleId); if(mod) selectedInfo.textContent = `选中：${mod.name}`; else clearSelection(); }
     }
 
     function clearAll() {
-        if(placedModules.length && confirm('清空所有模块？')) {
-            saveState();
-            placedModules = [];
-            appState='idle'; selectedTemplate=null; clearSelection();
-            updatePlacementUI();
-            render(); setStatus('warning','已清空');
-        }
+        if(placedModules.length && confirm('清空所有模块？')) { saveState(); placedModules = []; appState='idle'; selectedTemplate=null; clearSelection(); updatePlacementUI(); render(); setStatus('warning','已清空'); }
     }
 
     function rotateTemplate() {
-        if(appState==='placing' && selectedTemplate) {
-            const w=selectedTemplate.width, h=selectedTemplate.height;
-            selectedTemplate.width=h; selectedTemplate.height=w;
-            setStatus('info',`已旋转：${selectedTemplate.name}`);
-            render();
-        }
+        if(appState==='placing' && selectedTemplate) { const w=selectedTemplate.width, h=selectedTemplate.height; selectedTemplate.width=h; selectedTemplate.height=w; setStatus('info',`已旋转：${selectedTemplate.name}`); render(); }
     }
 
     function updatePlacementUI() {
@@ -509,12 +456,7 @@
         btnRotate.style.display = isPlacing ? 'block' : 'none';
     }
 
-    function setStatus(type, msg) {
-        statusText.textContent = msg;
-        statusText.className = 'badge badge-'+type;
-        clearTimeout(statusText._timeout);
-        statusText._timeout = setTimeout(()=>{ statusText.textContent='就绪'; statusText.className='badge badge-info'; }, 2500);
-    }
+    function setStatus(type, msg) { statusText.textContent = msg; clearTimeout(statusText._timeout); statusText._timeout = setTimeout(()=>{ statusText.textContent='就绪'; }, 2500); }
 
     function updateCardsHighlight() {
         document.querySelectorAll('.module-card').forEach(card => {
@@ -530,10 +472,7 @@
         setStatus('info',`已选择：${tmpl.name}，移动预览后点击 ✅ 放置`);
     }
 
-    function cancelPlacing() {
-        if(appState==='placing') { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); }
-        render(); setStatus('info','已取消');
-    }
+    function cancelPlacing() { if(appState==='placing') { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); } render(); setStatus('info','已取消'); }
 
     const LABEL_MARGIN_BOTTOM = 30;
     const LABEL_MARGIN_RIGHT = 45;
@@ -547,19 +486,31 @@
         canvas.style.height = h * zoom + 'px';
     }
 
+    // 缩放中心保持在wrapper中央
     function applyZoom(newZoom) {
         const rect = canvasWrapper.getBoundingClientRect();
         const cx = rect.width / 2;
         const cy = rect.height / 2;
         const oldZoom = zoom;
         zoom = Math.min(2.0, Math.max(0.2, newZoom));
-        // 保持中心点不变
+        // 更新画布尺寸
+        updateCanvasSize();
+        // 调整滚动位置以保持中心点不变
         canvasWrapper.scrollLeft = (canvasWrapper.scrollLeft + cx) * (zoom / oldZoom) - cx;
         canvasWrapper.scrollTop = (canvasWrapper.scrollTop + cy) * (zoom / oldZoom) - cy;
         zoomSlider.value = Math.round(zoom * 100);
         zoomVal.textContent = Math.round(zoom * 100) + '%';
-        updateCanvasSize();
         render();
+    }
+
+    // 让底板在wrapper内居中
+    function centerCanvas() {
+        const cw = canvasWrapper.clientWidth;
+        const ch = canvasWrapper.clientHeight;
+        const canvasW = canvas.width * zoom;
+        const canvasH = canvas.height * zoom;
+        canvasWrapper.scrollLeft = (canvasW - cw) / 2;
+        canvasWrapper.scrollTop = (canvasH - ch) / 2;
     }
 
     function roundRectPath(ctx, x, y, w, h, r) {
@@ -642,7 +593,7 @@
     }
     function getTouchDist(touches){ if(touches.length<2) return 0; const dx=touches[0].clientX-touches[1].clientX, dy=touches[0].clientY-touches[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
 
-    // ---------- 新交互事件 ----------
+    // 交互
     function onPointerDown(e) {
         e.preventDefault();
         const touches = e.touches;
@@ -700,21 +651,14 @@
         }
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
-        if(appState === 'placing') {
-            if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); }
-            return;
-        }
+        if(appState === 'placing') { if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); } return; }
         hoveredGridX = cell?cell.gx:-1; hoveredGridY = cell?cell.gy:-1;
         if(movingModuleId && !isDragging && cell) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) {
                 const dx = Math.abs(coords.x - (mod.gridX*cellSize));
                 const dy = Math.abs(coords.y - (mod.gridY*cellSize));
-                if(dx > 10 || dy > 10) {
-                    clearTimeout(longPressTimer);
-                    hasMoved = true; isDragging = true;
-                    appState = 'moving'; setStatus('info','移动中...');
-                }
+                if(dx > 10 || dy > 10) { clearTimeout(longPressTimer); hasMoved = true; isDragging = true; appState = 'moving'; setStatus('info','移动中...'); }
             }
         }
         if(appState === 'moving' && movingModuleId && cell) {
@@ -744,32 +688,18 @@
             appState = 'idle'; resetMoveState(); render();
             return;
         }
-        if(movingModuleId && !hasMoved && !isDragging) {
-            selectModule(movingModuleId);
-            resetMoveState();
-            render();
-            return;
-        }
-        resetMoveState();
-        render();
+        if(movingModuleId && !hasMoved && !isDragging) { selectModule(movingModuleId); resetMoveState(); render(); return; }
+        resetMoveState(); render();
     }
 
     function onPointerLeave(e) {
         clearTimeout(longPressTimer);
         if(appState === 'panning') appState = 'idle';
-        if(appState === 'moving' && movingModuleId) {
-            const mod = placedModules.find(m=>m.id===movingModuleId);
-            if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
-            appState = 'idle'; resetMoveState();
-        }
-        hoveredGridX = -1; hoveredGridY = -1;
-        render();
+        if(appState === 'moving' && movingModuleId) { const mod = placedModules.find(m=>m.id===movingModuleId); if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; } appState = 'idle'; resetMoveState(); }
+        hoveredGridX = -1; hoveredGridY = -1; render();
     }
 
-    function resetMoveState() {
-        movingModuleId = null; movingModuleOrigX = null; movingModuleOrigY = null;
-        isDragging = false; hasMoved = false;
-    }
+    function resetMoveState() { movingModuleId = null; movingModuleOrigX = null; movingModuleOrigY = null; isDragging = false; hasMoved = false; }
 
     canvas.addEventListener('mousedown', onPointerDown);
     canvas.addEventListener('mousemove', onPointerMove);
@@ -781,12 +711,7 @@
     canvas.addEventListener('touchcancel', onPointerLeave);
     canvas.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 按钮事件
-    btnPlace.addEventListener('click', () => {
-        if(appState === 'placing' && selectedTemplate && hoveredGridX >= 0 && hoveredGridY >= 0) {
-            placeModule(hoveredGridX, hoveredGridY, selectedTemplate);
-        } else setStatus('warning', '请先移动预览到目标位置');
-    });
+    btnPlace.addEventListener('click', () => { if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) placeModule(hoveredGridX, hoveredGridY, selectedTemplate); else setStatus('warning','请先移动预览到目标位置'); });
     btnRotate.addEventListener('click', rotateTemplate);
     btnDelete.addEventListener('click', () => { if(selectedModuleId) { removeModule(selectedModuleId); clearSelection(); } });
     btnUndo.addEventListener('click', undo);
@@ -794,9 +719,7 @@
     btnSave.addEventListener('click', saveToStorage);
     btnLoad.addEventListener('click', loadFromStorage);
     btnExport.addEventListener('click', exportToJPG);
-    btnRename.addEventListener('click', () => {
-        if(selectedModuleId) { const mod = placedModules.find(m=>m.id===selectedModuleId); if(mod) { const n = prompt('新名称：', mod.name); if(n) renameModule(mod.id, n); } }
-    });
+    btnRename.addEventListener('click', () => { if(selectedModuleId) { const mod = placedModules.find(m=>m.id===selectedModuleId); if(mod) { const n = prompt('新名称：', mod.name); if(n) renameModule(mod.id, n); } } });
 
     btnHelp.addEventListener('click', () => helpModal.classList.add('open'));
     btnCloseHelp.addEventListener('click', () => helpModal.classList.remove('open'));
@@ -819,7 +742,7 @@
         placedModules = placedModules.filter(m=>m.gridX+m.width<=nw && m.gridY+m.height<=nh);
         gridWidth=nw; gridHeight=nh;
         document.getElementById('gridWidth').value=nw; document.getElementById('gridHeight').value=nh;
-        cancelPlacing(); updateCanvasSize(); render();
+        cancelPlacing(); updateCanvasSize(); centerCanvas(); render();
         setStatus('info','底板尺寸已更新');
     });
     document.getElementById('btnClearAll').addEventListener('click', clearAll);
@@ -843,12 +766,7 @@
             card.dataset.templateId = 'tmpl_'+idx;
             card.innerHTML = `<span class="size-label">${tmpl.width}×${tmpl.height}</span><span class="color-dot" style="background:${tmpl.color};"></span><span class="name-label">${tmpl.name}</span><div class="delete-btn">✕</div>`;
             card.addEventListener('click', e => { if(e.target.classList.contains('delete-btn')) return; selectTemplate(idx); });
-            card.querySelector('.delete-btn').addEventListener('click', e => {
-                e.stopPropagation();
-                availableTemplates.splice(idx,1);
-                if(selectedTemplate && selectedTemplate._cardId==='tmpl_'+idx) { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); }
-                renderPresetModules();
-            });
+            card.querySelector('.delete-btn').addEventListener('click', e => { e.stopPropagation(); availableTemplates.splice(idx,1); if(selectedTemplate && selectedTemplate._cardId==='tmpl_'+idx) { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); } renderPresetModules(); });
             presetModulesEl.appendChild(card);
         });
         updateCardsHighlight();
@@ -866,16 +784,17 @@
         zoomSlider.value = Math.round(zoom*100);
         zoomVal.textContent = Math.round(zoom*100)+'%';
         updateCanvasSize();
+        centerCanvas();
+        render();
     }
 
     window.addEventListener('resize', () => {
         clearTimeout(window._resizeTimer);
-        window._resizeTimer = setTimeout(()=>{ autoFitZoom(); render(); }, 200);
+        window._resizeTimer = setTimeout(()=>{ autoFitZoom(); }, 200);
     });
 
     history.push(placedModules.map(m=>({...m}))); historyIndex = 0;
-    renderPresetModules(); updateCanvasSize(); autoFitZoom(); render();
-    updateUndoRedoButtons();
+    renderPresetModules(); updateCanvasSize(); autoFitZoom();
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
