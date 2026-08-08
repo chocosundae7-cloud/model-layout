@@ -162,7 +162,6 @@
             cursor: pointer; z-index: 10; color: var(--accent); border: 1px solid #E5E5E5;
         }
 
-        /* 帮助模态框 */
         .help-modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center;
@@ -243,7 +242,6 @@
         </div>
     </div>
 
-    <!-- 使用帮助模态框 -->
     <div class="help-modal" id="helpModal">
         <div class="help-content">
             <h3>📖 使用指南</h3>
@@ -388,9 +386,8 @@
             } catch (e) { setStatus('warning', '加载失败'); }
         }
 
-        // ---------- 导出JPG (居中带留白) ----------
         function exportToJPG() {
-            const PADDING = 40; // 四周留白
+            const PADDING = 40;
             const srcW = canvas.width;
             const srcH = canvas.height;
             const dstW = srcW + PADDING * 2;
@@ -401,14 +398,10 @@
             exportCanvas.height = dstH;
             const exportCtx = exportCanvas.getContext('2d');
 
-            // 白色背景
             exportCtx.fillStyle = '#FFFFFF';
             exportCtx.fillRect(0, 0, dstW, dstH);
-
-            // 将原画布内容绘制到新画布，居中
             exportCtx.drawImage(canvas, PADDING, PADDING);
 
-            // 导出
             exportCanvas.toBlob(function(blob) {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -789,6 +782,7 @@
             return Math.sqrt(dx*dx + dy*dy);
         }
 
+        // ---------- 优化后的交互事件 (修复单击选中) ----------
         let placingStartCell = null;
 
         function onPointerDown(e) {
@@ -872,7 +866,7 @@
             if(appState === 'panning') {
                 const dx = clientX - panStartX;
                 const dy = clientY - panStartY;
-                if(!hasMoved && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+                if(!hasMoved && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) {
                     hasMoved = true;
                 }
                 if(hasMoved) {
@@ -902,7 +896,7 @@
                 if(mod) {
                     const dx = Math.abs(coords.x - (mod.gridX * cellSize));
                     const dy = Math.abs(coords.y - (mod.gridY * cellSize));
-                    if(dx > 5 || dy > 5) {
+                    if(dx > 10 || dy > 10) {   // 提高移动阈值
                         clearTimeout(longPressTimer);
                         hasMoved = true;
                         isDragging = true;
@@ -946,9 +940,14 @@
             if(appState === 'moving' && movingModuleId) {
                 const mod = placedModules.find(m=>m.id===movingModuleId);
                 const finalX = mod?mod.gridX:0, finalY = mod?mod.gridY:0;
-                if(!moveModuleTo(movingModuleId, finalX, finalY)) {
-                    if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
-                    setStatus('warning','无法放置，已恢复原位');
+                // 如果模块位置未改变，视为单击选中
+                if(finalX === movingModuleOrigX && finalY === movingModuleOrigY) {
+                    selectModule(movingModuleId);
+                } else {
+                    if(!moveModuleTo(movingModuleId, finalX, finalY)) {
+                        if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
+                        setStatus('warning','无法放置，已恢复原位');
+                    }
                 }
                 appState = 'idle'; movingModuleId = null; isDragging = false;
                 updatePlacementUI();
