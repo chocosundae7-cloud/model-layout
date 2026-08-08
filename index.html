@@ -19,7 +19,6 @@
             --accent-hover: #4D6338;
             --danger: #C46A5C;
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow-md: 0 4px 16px rgba(0,0,0,0.06);
             --radius: 12px;
             --radius-sm: 8px;
             --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
@@ -78,7 +77,6 @@
             color: var(--text-secondary);
         }
 
-        /* 通用卡片 */
         .card {
             background: var(--card-bg);
             border-radius: var(--radius);
@@ -86,7 +84,6 @@
             padding: 16px;
         }
 
-        /* 模块选择区 */
         .modules-section {
             display: flex;
             flex-direction: column;
@@ -130,163 +127,86 @@
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(94,122,74,0.1);
         }
-        .module-card .size-label {
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-        .module-card .color-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            margin: 4px 0;
-        }
-        .module-card .name-label {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
+        .module-card .size-label { font-size: 0.85rem; font-weight: 500; }
+        .module-card .color-dot { width: 8px; height: 8px; border-radius: 50%; margin: 4px 0; }
+        .module-card .name-label { font-size: 0.7rem; color: var(--text-secondary); }
         .module-card .delete-btn {
-            position: absolute;
-            top: 4px; right: 4px;
+            position: absolute; top: 4px; right: 4px;
             width: 16px; height: 16px;
-            background: rgba(0,0,0,0.2);
-            color: white;
-            border-radius: 50%;
-            font-size: 10px;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+            background: rgba(0,0,0,0.2); color: white; border-radius: 50%;
+            font-size: 10px; display: none; align-items: center; justify-content: center; cursor: pointer;
         }
         .module-card:hover .delete-btn { display: flex; }
 
         .custom-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
+            display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
         }
         .custom-form input {
-            width: 48px;
-            padding: 6px 8px;
-            border: 1px solid #E5E5E5;
-            border-radius: 6px;
-            font-size: 0.82rem;
-            text-align: center;
-            font-family: var(--font-sans);
+            width: 48px; padding: 6px 8px;
+            border: 1px solid #E5E5E5; border-radius: 6px;
+            font-size: 0.82rem; text-align: center; font-family: var(--font-sans);
         }
         .custom-form input[type="color"] { width: 32px; height: 32px; padding: 2px; }
         .custom-form .name-input { width: 80px; }
+
         .btn {
-            padding: 8px 16px;
-            border-radius: 8px;
-            border: none;
-            background: #F5F5F7;
-            color: var(--text-dark);
-            font-weight: 500;
-            font-size: 0.82rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: var(--font-sans);
-            border: 1px solid #E5E5E5;
-            white-space: nowrap;
+            padding: 8px 16px; border-radius: 8px; border: none;
+            background: #F5F5F7; color: var(--text-dark);
+            font-weight: 500; font-size: 0.82rem; cursor: pointer;
+            transition: all 0.2s; font-family: var(--font-sans);
+            border: 1px solid #E5E5E5; white-space: nowrap;
         }
-        .btn-accent {
-            background: var(--accent);
-            color: white;
-            border: none;
-        }
+        .btn-accent { background: var(--accent); color: white; border: none; }
         .btn-accent:active { background: var(--accent-hover); }
-        .btn-danger {
-            background: rgba(196,106,92,0.08);
-            color: var(--danger);
-            border: 1px solid rgba(196,106,92,0.2);
-        }
+        .btn-danger { background: rgba(196,106,92,0.08); color: var(--danger); border: 1px solid rgba(196,106,92,0.2); }
         .btn-sm { padding: 5px 12px; font-size: 0.78rem; }
 
         /* 画布区域 */
-        .canvas-section {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .canvas-section { display: flex; flex-direction: column; gap: 8px; }
         .canvas-wrapper {
-            position: relative;
-            overflow: hidden;
-            border-radius: var(--radius-sm);
-            background: #FFFFFF;
+            position: relative; overflow: hidden;
+            border-radius: var(--radius-sm); background: #FFFFFF;
             border: 1px solid var(--border-light);
             touch-action: none;
-            height: 420px;
-            width: 100%;
+            height: 420px; width: 100%;
         }
-        @media (orientation: landscape) {
-            .canvas-wrapper {
-                height: 320px;
-            }
-        }
-        canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
+        @media (orientation: landscape) { .canvas-wrapper { height: 320px; } }
+        canvas { display: block; width: 100%; height: 100%; }
+
         .canvas-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
+            display: flex; flex-wrap: wrap; gap: 12px;
+            font-size: 0.78rem; color: var(--text-secondary);
         }
         .canvas-info strong { font-weight: 500; color: var(--text-dark); }
 
-        /* 状态栏 */
         .status-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
+            display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+            font-size: 0.78rem; color: var(--text-secondary);
         }
         .badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 0.72rem;
-            font-weight: 500;
-            background: rgba(94,122,74,0.08);
-            color: var(--accent);
+            display: inline-block; padding: 2px 10px; border-radius: 12px;
+            font-size: 0.72rem; font-weight: 500;
+            background: rgba(94,122,74,0.08); color: var(--accent);
         }
         .badge-warning { background: rgba(196,106,92,0.08); color: #b84c3a; }
         .badge-success { background: rgba(94,122,74,0.08); color: #3d5a2b; }
 
-        /* 旋转按钮 */
         .rotate-btn {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.9);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            cursor: pointer;
-            z-index: 10;
-            color: var(--accent);
-            border: 1px solid #E5E5E5;
+            position: absolute; bottom: 12px; right: 12px;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none; align-items: center; justify-content: center;
+            font-size: 1.2rem; cursor: pointer; z-index: 10;
+            color: var(--accent); border: 1px solid #E5E5E5;
         }
     </style>
 </head>
 <body>
-    <!-- 顶部标题栏 -->
     <div class="header">
         <h1>怪兽沙盒模块排版工具</h1>
         <span class="menu-icon">☰</span>
     </div>
 
-    <!-- 主内容 -->
     <div class="app-container">
         <!-- 模块选择区 -->
         <div class="modules-section card">
@@ -305,10 +225,21 @@
 
         <!-- 画布区域 -->
         <div class="canvas-section card">
+            <!-- 底板尺寸调整 -->
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
+                <span style="font-size:0.85rem; font-weight:500;">底板尺寸</span>
+                <input type="number" id="gridWidth" value="8" min="1" max="40" style="width:50px; padding:6px; border:1px solid #E5E5E5; border-radius:6px; text-align:center; font-size:0.85rem; font-family:var(--font-sans);">
+                <span style="font-size:0.85rem; color:var(--text-secondary);">×</span>
+                <input type="number" id="gridHeight" value="8" min="1" max="40" style="width:50px; padding:6px; border:1px solid #E5E5E5; border-radius:6px; text-align:center; font-size:0.85rem; font-family:var(--font-sans);">
+                <button class="btn btn-sm" id="btnApplyGrid">应用</button>
+                <button class="btn btn-sm" id="btnClearAll" style="margin-left:auto;">清空</button>
+            </div>
+
             <div class="canvas-wrapper" id="canvasWrapper">
                 <canvas id="mainCanvas"></canvas>
                 <div class="rotate-btn" id="rotateBtn">↺</div>
             </div>
+
             <div class="canvas-info">
                 <span>占用 <strong id="statUsed">0</strong>/<strong id="statTotal">64</strong></span>
                 <span>模块 <strong id="statModules">0</strong></span>
@@ -318,6 +249,7 @@
                     <span id="zoomVal">100%</span>
                 </span>
             </div>
+
             <div class="status-bar">
                 <span id="statusText" class="badge">就绪</span>
                 <button class="btn btn-sm" id="btnRename" style="display:none;">重命名</button>
@@ -446,7 +378,8 @@
             if (!saved) { setStatus('warning', '没有已保存的布局'); return; }
             try {
                 const data = JSON.parse(saved);
-                gridWidth = data.gridWidth || 8; gridHeight = data.gridHeight || 8;
+                gridWidth = data.gridWidth || 8;
+                gridHeight = data.gridHeight || 8;
                 document.getElementById('gridWidth').value = gridWidth;
                 document.getElementById('gridHeight').value = gridHeight;
                 placedModules = data.placedModules || [];
@@ -791,7 +724,7 @@
             return Math.sqrt(dx*dx + dy*dy);
         }
 
-        // ---------- 事件处理 (仅在画布内阻止默认行为) ----------
+        // ---------- 事件处理 ----------
         let placingStartCell = null;
 
         function onPointerDown(e) {
@@ -1029,7 +962,8 @@
             if(e.ctrlKey && e.key==='y') { e.preventDefault(); redo(); }
         });
 
-        document.getElementById('btnApplyGrid')?.addEventListener('click', ()=>{
+        // 底板尺寸应用按钮
+        document.getElementById('btnApplyGrid').addEventListener('click', ()=>{
             const nw = parseInt(document.getElementById('gridWidth').value);
             const nh = parseInt(document.getElementById('gridHeight').value);
             if(isNaN(nw)||isNaN(nh)||nw<1||nh<1) return;
@@ -1045,7 +979,9 @@
             render();
             setStatus('info','底板尺寸已更新');
         });
-        document.getElementById('btnClearAll')?.addEventListener('click', clearAll);
+
+        document.getElementById('btnClearAll').addEventListener('click', clearAll);
+
         document.getElementById('btnAddCustom').addEventListener('click', ()=>{
             const cw=parseInt(document.getElementById('customW').value);
             const ch=parseInt(document.getElementById('customH').value);
