@@ -34,101 +34,129 @@
             align-items: center;
             -webkit-font-smoothing: antialiased;
         }
-        .app-container { width: 100%; max-width: 800px; display: flex; flex-direction: column; gap: 16px; padding: 0 16px 16px; }
+        .app-container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 0 12px 16px;
+        }
         .header {
             background: #FFFFFF; padding: 14px 16px;
             display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid var(--border-light);
-            position: sticky; top: 0; z-index: 50; width: 100%; max-width: 800px; margin: 0 auto;
+            position: sticky; top: 0; z-index: 50; width: 100%; max-width: 900px; margin: 0 auto;
         }
-        .header h1 { font-size: 1.1rem; font-weight: 500; letter-spacing: -0.3px; color: var(--text-dark); }
+        .header h1 { font-size: 1.1rem; font-weight: 500; }
         .help-icon {
             width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: white;
             display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: bold; cursor: pointer; border: none;
         }
         .card { background: var(--card-bg); border-radius: var(--radius); box-shadow: var(--shadow-sm); padding: 16px; }
         .section-title { font-size: 0.9rem; font-weight: 500; color: var(--text-dark); display: flex; align-items: center; gap: 6px; }
-        .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap: 8px; }
-        @media (orientation: landscape) { .preset-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
+        .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(85px, 1fr)); gap: 8px; }
         .module-card {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 10px 6px; border-radius: var(--radius-sm); background: #FFFFFF; box-shadow: var(--shadow-sm);
+            padding: 10px 4px; border-radius: var(--radius-sm); background: #FFFFFF; box-shadow: var(--shadow-sm);
             cursor: pointer; position: relative; border: 1px solid transparent; transition: all 0.2s; text-align: center;
         }
-        .module-card:active { transform: scale(0.97); }
         .module-card.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(94,122,74,0.1); }
         .module-card .size-label { font-size: 0.85rem; font-weight: 500; }
         .module-card .color-dot { width: 8px; height: 8px; border-radius: 50%; margin: 4px 0; }
         .module-card .name-label { font-size: 0.7rem; color: var(--text-secondary); }
         .module-card .delete-btn {
             position: absolute; top: 4px; right: 4px; width: 16px; height: 16px;
-            background: rgba(0,0,0,0.2); color: white; border-radius: 50%;
-            font-size: 10px; display: none; align-items: center; justify-content: center; cursor: pointer;
+            background: rgba(0,0,0,0.2); color: white; border-radius: 50%; font-size: 10px;
+            display: none; align-items: center; justify-content: center; cursor: pointer;
         }
         .module-card:hover .delete-btn { display: flex; }
         .custom-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-        .custom-form input {
-            width: 48px; padding: 6px 8px; border: 1px solid #E5E5E5; border-radius: 6px;
-            font-size: 0.82rem; text-align: center; font-family: var(--font-sans);
-        }
-        .custom-form input[type="color"] { width: 32px; height: 32px; padding: 2px; }
-        .custom-form .name-input { width: 80px; }
+        .custom-form input { width: 48px; padding: 6px 8px; border:1px solid #E5E5E5; border-radius:6px; font-size:0.82rem; text-align:center; }
+        .custom-form input[type="color"] { width:32px; height:32px; padding:2px; }
+        .custom-form .name-input { width:80px; }
         .btn {
-            padding: 8px 16px; border-radius: 8px; border: none; background: #F5F5F7; color: var(--text-dark);
-            font-weight: 500; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; font-family: var(--font-sans);
-            border: 1px solid #E5E5E5; white-space: nowrap;
+            padding: 10px 18px; border-radius: 8px; border: none; background: #F5F5F7; color: var(--text-dark);
+            font-weight: 500; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; font-family: var(--font-sans);
+            border: 1px solid #E5E5E5; white-space: nowrap; min-height: 44px; display: flex; align-items: center; justify-content: center;
         }
         .btn-accent { background: var(--accent); color: white; border: none; }
-        .btn-accent:active { background: var(--accent-hover); }
         .btn-danger { background: var(--danger); color: white; border: none; }
-        .btn-danger:active { background: #a84c3e; }
-        .btn-sm { padding: 5px 12px; font-size: 0.78rem; }
-        .canvas-section { display: flex; flex-direction: column; gap: 8px; }
+        .btn-sm { padding: 6px 14px; font-size: 0.78rem; }
+        .btn-tool { width: 100%; margin-bottom: 6px; }
+
+        /* 画布区域 + 右侧工具栏 */
+        .canvas-row {
+            display: flex;
+            gap: 12px;
+            flex: 1;
+        }
+        .canvas-area {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-sm);
+            padding: 12px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
         .canvas-wrapper {
-            position: relative; overflow: auto; border-radius: var(--radius-sm); background: #FFFFFF;
-            border: 1px solid var(--border-light); touch-action: none; height: 420px; width: 100%;
+            position: relative; overflow: hidden;
+            border-radius: var(--radius-sm); background: #FFFFFF;
+            border: 1px solid var(--border-light);
+            touch-action: none;
+            flex: 1;
+            min-height: 350px;
         }
-        @media (orientation: landscape) { .canvas-wrapper { height: 320px; } }
         canvas { display: block; }
-        .canvas-info { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.78rem; color: var(--text-secondary); }
+        .canvas-info { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; color: var(--text-secondary); margin-top: 8px; }
         .canvas-info strong { font-weight: 500; color: var(--text-dark); }
-        .status-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-secondary); }
-        .badge {
-            display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 500;
-            background: rgba(94,122,74,0.08); color: var(--accent);
+        .zoom-row { display: flex; align-items: center; gap: 6px; }
+        .zoom-row input[type="range"] { width: 70px; accent-color: var(--accent); }
+
+        /* 右侧工具栏 */
+        .toolbar {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 80px;
+            flex-shrink: 0;
         }
-        .badge-warning { background: rgba(196,106,92,0.08); color: #b84c3a; }
-        .badge-success { background: rgba(94,122,74,0.08); color: #3d5a2b; }
-        .rotate-btn {
-            position: absolute; bottom: 12px; right: 12px; width: 40px; height: 40px;
-            border-radius: 50%; background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: none; align-items: center; justify-content: center; font-size: 1.2rem;
-            cursor: pointer; z-index: 10; color: var(--accent); border: 1px solid #E5E5E5;
+        .toolbar .btn {
+            min-height: 50px;
+            font-size: 0.8rem;
+            padding: 8px 4px;
+            border-radius: 10px;
         }
+
         .help-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 100;
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.5); display: none; align-items:center; justify-content:center; z-index:100;
         }
-        .help-modal.open { display: flex; }
-        .help-content {
-            background: white; border-radius: 16px; padding: 24px; max-width: 360px; width: 90%;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.2); text-align: left; line-height: 1.6;
-        }
-        .help-content h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--accent); }
-        .help-content p { font-size: 0.85rem; margin-bottom: 8px; color: var(--text-dark); }
-        .help-content .close-btn {
-            margin-top: 12px; padding: 8px 20px; border-radius: 8px; background: var(--accent);
-            color: white; border: none; font-weight: bold; cursor: pointer; width: 100%;
+        .help-modal.open { display:flex; }
+        .help-content { background:white; border-radius:16px; padding:24px; max-width:360px; width:90%; }
+        .help-content h3 { margin-bottom:12px; color:var(--accent); }
+        .help-content p { font-size:0.85rem; margin-bottom:8px; }
+        .help-content .close-btn { margin-top:12px; padding:8px 20px; border-radius:8px; background:var(--accent); color:white; border:none; font-weight:bold; cursor:pointer; width:100%; }
+
+        @media (max-width: 600px) {
+            .toolbar { width: 70px; }
+            .btn-tool { font-size: 0.75rem; min-height: 44px; }
+            .canvas-row { gap: 8px; }
         }
     </style>
 </head>
 <body>
-<div class="header"><h1>怪兽沙盒模块排版工具</h1><button class="help-icon" id="btnHelp">?</button></div>
+<div class="header">
+    <h1>怪兽沙盒模块排版工具</h1>
+    <button class="help-icon" id="btnHelp">?</button>
+</div>
 <div class="app-container">
-    <div class="modules-section card">
+    <!-- 模块选择区 -->
+    <div class="card" style="padding:12px;">
         <div class="section-title">📦 预设模块</div>
         <div class="preset-grid" id="presetModules"></div>
-        <div class="section-title" style="margin-top:12px;">✏️ 自定义模块</div>
+        <div class="section-title" style="margin-top:10px;">✏️ 自定义模块</div>
         <div class="custom-form">
             <span style="font-size:0.8rem;">宽</span><input type="number" id="customW" value="3" min="1" max="40">
             <span style="font-size:0.8rem;">高</span><input type="number" id="customH" value="3" min="1" max="40">
@@ -137,59 +165,67 @@
             <button class="btn btn-accent btn-sm" id="btnAddCustom">添加</button>
         </div>
     </div>
-    <div class="canvas-section card">
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
-            <span style="font-size:0.85rem; font-weight:500;">底板尺寸</span>
-            <input type="number" id="gridWidth" value="8" min="1" max="40" style="width:50px; padding:6px; border:1px solid #E5E5E5; border-radius:6px; text-align:center; font-size:0.85rem;">
-            <span style="font-size:0.85rem; color:var(--text-secondary);">×</span>
-            <input type="number" id="gridHeight" value="8" min="1" max="40" style="width:50px; padding:6px; border:1px solid #E5E5E5; border-radius:6px; text-align:center; font-size:0.85rem;">
-            <button class="btn btn-sm" id="btnApplyGrid">应用</button>
-            <button class="btn btn-sm" id="btnClearAll" style="margin-left:auto;">清空</button>
-        </div>
-        <div class="canvas-wrapper" id="canvasWrapper">
-            <canvas id="mainCanvas"></canvas>
-            <div class="rotate-btn" id="rotateBtn">↺</div>
-        </div>
-        <div class="canvas-info">
-            <span>占用 <strong id="statUsed">0</strong>/<strong id="statTotal">64</strong></span>
-            <span>模块 <strong id="statModules">0</strong></span>
-            <span>占用率 <strong id="statRatio">0%</strong></span>
-            <span style="margin-left:auto; display:flex; align-items:center; gap:6px;">
-                缩放 <input type="range" id="zoomSlider" min="10" max="200" value="100" step="5" style="width:80px;">
-                <span id="zoomVal">100%</span>
-            </span>
-        </div>
-        <div class="status-bar">
-            <span id="statusText" class="badge">就绪</span>
-            <button class="btn btn-sm" id="btnRename" style="display:none;">重命名</button>
-            <button class="btn btn-danger btn-sm" id="btnDelete" style="display:none;">🗑 删除</button>
-            <span id="selectedInfo" style="font-size:0.75rem; color:var(--text-secondary);"></span>
-            <div style="display:flex; gap:6px; margin-left:auto;">
-                <button class="btn btn-sm" id="btnSave">💾 保存</button>
-                <button class="btn btn-sm" id="btnLoad">📂 加载</button>
-                <button class="btn btn-sm" id="btnExport">📷 导出JPG</button>
-                <button class="btn btn-accent btn-sm" id="btnPlace" style="display:none;">放置</button>
-                <button class="btn btn-sm" id="btnUndo">↶</button>
-                <button class="btn btn-sm" id="btnRedo">↷</button>
+
+    <!-- 画布+工具栏 -->
+    <div class="canvas-row">
+        <div class="canvas-area">
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px;">
+                <span style="font-size:0.85rem;">底板</span>
+                <input type="number" id="gridWidth" value="8" min="1" max="40" style="width:45px; padding:6px; border:1px solid #E5E5E5; border-radius:6px; text-align:center; font-size:0.85rem;">
+                <span style="font-size:0.85rem;">×</span>
+                <input type="number" id="gridHeight" value="8" min="1" max="40" style="width:45px; padding:6px; border:1px solid #E5E5E5; border-radius:6px; text-align:center; font-size:0.85rem;">
+                <button class="btn btn-sm" id="btnApplyGrid">应用</button>
+                <button class="btn btn-sm" id="btnClearAll" style="margin-left:auto;">清空</button>
+            </div>
+            <div class="canvas-wrapper" id="canvasWrapper">
+                <canvas id="mainCanvas"></canvas>
+            </div>
+            <div class="canvas-info">
+                <span>占用 <strong id="statUsed">0</strong>/<strong id="statTotal">64</strong></span>
+                <span>模块 <strong id="statModules">0</strong></span>
+                <span>占用率 <strong id="statRatio">0%</strong></span>
+                <div class="zoom-row" style="margin-left:auto;">
+                    🔍 <input type="range" id="zoomSlider" min="20" max="200" value="100" step="5">
+                    <span id="zoomVal">100%</span>
+                </div>
             </div>
         </div>
+
+        <!-- 右侧工具栏 -->
+        <div class="toolbar">
+            <button class="btn btn-tool" id="btnUndo" title="撤销">↶</button>
+            <button class="btn btn-tool" id="btnRedo" title="重做">↷</button>
+            <button class="btn btn-tool btn-danger" id="btnDelete" style="display:none;" title="删除选中">🗑</button>
+            <button class="btn btn-tool btn-accent" id="btnPlace" style="display:none;" title="放置模块">✅</button>
+            <button class="btn btn-tool" id="btnRotate" style="display:none;" title="旋转模块">↺</button>
+            <span id="selectedInfo" style="font-size:0.7rem; text-align:center; color:var(--text-secondary);"></span>
+        </div>
+    </div>
+
+    <!-- 底部操作行 -->
+    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+        <span id="statusText" class="badge" style="background:rgba(94,122,74,0.08); color:var(--accent); padding:4px 12px; border-radius:12px; font-size:0.75rem;">就绪</span>
+        <button class="btn btn-sm" id="btnSave">💾 保存</button>
+        <button class="btn btn-sm" id="btnLoad">📂 加载</button>
+        <button class="btn btn-sm" id="btnExport">📷 导出JPG</button>
+        <button class="btn btn-sm" id="btnRename" style="display:none;">✎ 重命名</button>
     </div>
 </div>
+
 <div class="help-modal" id="helpModal">
     <div class="help-content">
         <h3>📖 使用指南</h3>
-        <p>1. <strong>选择模块</strong>：点击左侧预设模块或自定义模块。</p>
-        <p>2. <strong>放置模块</strong>：在网格上<strong>单击</strong>即可放置。</p>
-        <p>3. <strong>移动模块</strong>：按住已放置的模块并拖动到新位置。</p>
-        <p>4. <strong>选中与删除</strong>：单击模块出现蓝框，再点底部红色“删除”按钮。</p>
-        <p>5. <strong>旋转</strong>：进入放置模式后，右下角出现旋转按钮。</p>
-        <p>6. <strong>缩放与平移</strong>：用滑块或双指缩放，空白区域拖拽平移。</p>
-        <p>7. <strong>撤销/重做</strong>：点击 ↶/↷ 按钮或 Ctrl+Z/Y。</p>
-        <p>8. <strong>导出JPG</strong>：点击底部“📷 导出JPG”将当前排版保存为图片。</p>
-        <p>9. <strong>尺寸标注</strong>：底部和右侧标尺显示底板实际尺寸（每格=2.5cm）。</p>
+        <p>1. 选择模块 → 进入放置模式。</p>
+        <p>2. 在网格上滑动预览位置，点击右侧 ✅ 确认放置。</p>
+        <p>3. 单击已放模块可选中，右侧出现删除按钮。</p>
+        <p>4. 拖拽模块可移动位置（空白区域可平移画布）。</p>
+        <p>5. 旋转：放置模式下右侧出现 ↺ 按钮。</p>
+        <p>6. 缩放：双指或底部滑块（以中心缩放）。</p>
+        <p>7. 撤销/重做：右侧按钮或 Ctrl+Z/Y。</p>
         <button class="close-btn" id="btnCloseHelp">知道了</button>
     </div>
 </div>
+
 <script>
 (function() {
     const canvas = document.getElementById('mainCanvas');
@@ -205,8 +241,8 @@
     const zoomVal = document.getElementById('zoomVal');
     const btnRename = document.getElementById('btnRename');
     const btnDelete = document.getElementById('btnDelete');
-    const rotateBtn = document.getElementById('rotateBtn');
     const btnPlace = document.getElementById('btnPlace');
+    const btnRotate = document.getElementById('btnRotate');
     const selectedInfo = document.getElementById('selectedInfo');
     const btnUndo = document.getElementById('btnUndo');
     const btnRedo = document.getElementById('btnRedo');
@@ -222,7 +258,7 @@
     let gridWidth = 8, gridHeight = 8, cellSize = DEFAULT_CELL_SIZE, zoom = 1.0;
     let placedModules = [];
     let moduleIdCounter = 0;
-    let appState = 'idle';
+    let appState = 'idle';       // idle | placing | moving | panning
     let selectedTemplate = null;
     let hoveredGridX = -1, hoveredGridY = -1;
     let movingModuleId = null, movingModuleOrigX = null, movingModuleOrigY = null;
@@ -234,8 +270,7 @@
     let initialZoom = 1.0;
     let panning = false;
     let panStartX = 0, panStartY = 0;
-    let panStartCanvasX = 0, panStartCanvasY = 0;
-    let hasMoved = false;
+    let panStartScrollX = 0, panStartScrollY = 0;
 
     let animationFrameId = null;
     let animatingModule = null;
@@ -272,6 +307,7 @@
 
     function getNextColor() { return paletteColors[paletteIndex++ % paletteColors.length]; }
 
+    // 历史记录
     function saveState() {
         if (historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
         history.push(placedModules.map(m => ({...m})));
@@ -279,42 +315,37 @@
         else historyIndex = history.length - 1;
         updateUndoRedoButtons();
     }
-
     function loadState(snapshot) {
         placedModules = snapshot.map(m => ({...m}));
         clearSelection();
         animatingModule = null;
         render();
     }
-
     function undo() { if (historyIndex > 0) { historyIndex--; loadState(history[historyIndex]); setStatus('info', '已撤销'); } }
     function redo() { if (historyIndex < history.length - 1) { historyIndex++; loadState(history[historyIndex]); setStatus('info', '已重做'); } }
-
     function updateUndoRedoButtons() {
-        btnUndo.style.opacity = historyIndex > 0 ? '1' : '0.4';
-        btnRedo.style.opacity = historyIndex < history.length - 1 ? '1' : '0.4';
+        btnUndo.style.opacity = historyIndex > 0 ? '1' : '0.5';
+        btnRedo.style.opacity = historyIndex < history.length - 1 ? '1' : '0.5';
     }
 
     function saveToStorage() {
-        const data = { gridWidth, gridHeight, placedModules: placedModules.map(m => ({...m})) };
-        localStorage.setItem('monster_layout', JSON.stringify(data));
+        localStorage.setItem('monster_layout', JSON.stringify({gridWidth, gridHeight, placedModules}));
         setStatus('success', '布局已保存');
     }
-
     function loadFromStorage() {
         const saved = localStorage.getItem('monster_layout');
-        if (!saved) { setStatus('warning', '没有已保存的布局'); return; }
+        if(!saved) { setStatus('warning', '没有已保存的布局'); return; }
         try {
             const data = JSON.parse(saved);
             gridWidth = data.gridWidth || 8; gridHeight = data.gridHeight || 8;
             document.getElementById('gridWidth').value = gridWidth;
             document.getElementById('gridHeight').value = gridHeight;
             placedModules = data.placedModules || [];
-            moduleIdCounter = placedModules.reduce((max, m) => Math.max(max, m.id || 0), 0) + 1;
-            history = [placedModules.map(m => ({...m}))]; historyIndex = 0;
+            moduleIdCounter = placedModules.reduce((max,m)=>Math.max(max,m.id||0),0)+1;
+            history = [placedModules.map(m=>({...m}))]; historyIndex = 0;
             updateCanvasSize(); clearSelection(); render();
             setStatus('success', '布局已加载');
-        } catch (e) { setStatus('warning', '加载失败'); }
+        } catch(e) { setStatus('warning', '加载失败'); }
     }
 
     function exportToJPG() {
@@ -329,28 +360,24 @@
         exportCanvas.toBlob(blob => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `怪兽沙盒排版_${gridWidth}x${gridHeight}.jpg`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            a.href = url; a.download = `怪兽沙盒排版_${gridWidth}x${gridHeight}.jpg`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
             URL.revokeObjectURL(url);
             setStatus('success', '排版图已导出');
         }, 'image/jpeg', 0.95);
     }
 
+    // 坐标
     function getCanvasCoordsFromEvent(e) {
         const rect = canvas.getBoundingClientRect();
         const cx = e.touches ? e.touches[0].clientX : e.clientX;
         const cy = e.touches ? e.touches[0].clientY : e.clientY;
         return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
     }
-
     function getGridCell(cx, cy) {
         const gx = Math.floor(cx / cellSize), gy = Math.floor(cy / cellSize);
         return (gx>=0 && gx<gridWidth && gy>=0 && gy<gridHeight) ? {gx,gy} : null;
     }
-
     function getModuleBounds(m) { return { x1:m.gridX, y1:m.gridY, x2:m.gridX+m.width-1, y2:m.gridY+m.height-1 }; }
     function rectsOverlap(a,b) { return !(a.x2<b.x1 || a.x1>b.x2 || a.y2<b.y1 || a.y1>b.y2); }
     function isPlacementValid(gx,gy,w,h,excludeId=null) {
@@ -367,18 +394,10 @@
     function placeModule(gx, gy, template) {
         if(!isPlacementValid(gx,gy,template.width,template.height)) return false;
         saveState();
-        const newMod = {
-            id: moduleIdCounter++,
-            name: template.name || `${template.width}×${template.height}`,
-            width: template.width, height: template.height,
-            gridX: gx, gridY: gy, color: template.color,
-            animScale: 0.85
-        };
+        const newMod = { id: moduleIdCounter++, name: template.name, width: template.width, height: template.height, gridX: gx, gridY: gy, color: template.color, animScale: 0.85 };
         placedModules.push(newMod);
-        appState = 'idle';
-        selectedTemplate = null;
-        updateCardsHighlight();
-        updatePlacementUI();
+        appState = 'idle'; selectedTemplate = null;
+        updateCardsHighlight(); updatePlacementUI();
         startPlacementAnimation(newMod.id);
         render();
         setStatus('success', `已放置：${newMod.name}`);
@@ -410,10 +429,10 @@
         saveState();
         const idx = placedModules.findIndex(m=>m.id===id);
         if(idx>=0) {
-            const r = placedModules.splice(idx,1)[0];
+            placedModules.splice(idx,1);
             if(selectedModuleId === id) clearSelection();
             render();
-            setStatus('warning', `已移除：${r.name}`);
+            setStatus('warning', '已删除模块');
         }
     }
 
@@ -440,8 +459,8 @@
 
     function clearSelection() {
         selectedModuleId = null;
-        btnRename.style.display = 'none';
         btnDelete.style.display = 'none';
+        btnRename.style.display = 'none';
         selectedInfo.textContent = '';
         render();
     }
@@ -450,9 +469,9 @@
         selectedModuleId = id;
         const mod = placedModules.find(m=>m.id===id);
         if(mod) {
+            btnDelete.style.display = 'block';
             btnRename.style.display = 'inline-block';
-            btnDelete.style.display = 'inline-block';
-            selectedInfo.textContent = `已选中：${mod.name}`;
+            selectedInfo.textContent = `选中：${mod.name}`;
         }
         render();
     }
@@ -460,7 +479,7 @@
     function updateSelectionInfo() {
         if(selectedModuleId) {
             const mod = placedModules.find(m=>m.id===selectedModuleId);
-            if(mod) selectedInfo.textContent = `已选中：${mod.name}`;
+            if(mod) selectedInfo.textContent = `选中：${mod.name}`;
             else clearSelection();
         }
     }
@@ -469,7 +488,7 @@
         if(placedModules.length && confirm('清空所有模块？')) {
             saveState();
             placedModules = [];
-            appState='idle'; selectedTemplate=null; movingModuleId=null; clearSelection();
+            appState='idle'; selectedTemplate=null; clearSelection();
             updatePlacementUI();
             render(); setStatus('warning','已清空');
         }
@@ -486,8 +505,8 @@
 
     function updatePlacementUI() {
         const isPlacing = appState === 'placing';
-        rotateBtn.style.display = isPlacing ? 'flex' : 'none';
-        btnPlace.style.display = isPlacing ? 'inline-block' : 'none';
+        btnPlace.style.display = isPlacing ? 'block' : 'none';
+        btnRotate.style.display = isPlacing ? 'block' : 'none';
     }
 
     function setStatus(type, msg) {
@@ -506,20 +525,13 @@
     function selectTemplate(index) {
         const tmpl = availableTemplates[index];
         selectedTemplate = { width:tmpl.width, height:tmpl.height, color:tmpl.color, name:tmpl.name, _cardId:'tmpl_'+index };
-        appState='placing'; movingModuleId=null; isDragging=false; clearSelection();
+        appState='placing'; clearSelection();
         updateCardsHighlight(); updatePlacementUI(); render();
-        setStatus('info',`已选择：${tmpl.name}，单击网格放置`);
+        setStatus('info',`已选择：${tmpl.name}，移动预览后点击 ✅ 放置`);
     }
 
     function cancelPlacing() {
         if(appState==='placing') { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); }
-        if(appState==='moving') {
-            if(movingModuleId) {
-                const mod = placedModules.find(m=>m.id===movingModuleId);
-                if(mod) { mod.gridX=movingModuleOrigX; mod.gridY=movingModuleOrigY; }
-            }
-            appState='idle'; movingModuleId=null; isDragging=false;
-        }
         render(); setStatus('info','已取消');
     }
 
@@ -536,7 +548,14 @@
     }
 
     function applyZoom(newZoom) {
-        zoom = Math.min(2.0, Math.max(0.1, newZoom));
+        const rect = canvasWrapper.getBoundingClientRect();
+        const cx = rect.width / 2;
+        const cy = rect.height / 2;
+        const oldZoom = zoom;
+        zoom = Math.min(2.0, Math.max(0.2, newZoom));
+        // 保持中心点不变
+        canvasWrapper.scrollLeft = (canvasWrapper.scrollLeft + cx) * (zoom / oldZoom) - cx;
+        canvasWrapper.scrollTop = (canvasWrapper.scrollTop + cy) * (zoom / oldZoom) - cy;
         zoomSlider.value = Math.round(zoom * 100);
         zoomVal.textContent = Math.round(zoom * 100) + '%';
         updateCanvasSize();
@@ -544,28 +563,17 @@
     }
 
     function roundRectPath(ctx, x, y, w, h, r) {
-        ctx.beginPath();
-        ctx.moveTo(x + r, y);
-        ctx.lineTo(x + w - r, y);
-        ctx.arcTo(x + w, y, x + w, y + r, r);
-        ctx.lineTo(x + w, y + h - r);
-        ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
-        ctx.lineTo(x + r, y + h);
-        ctx.arcTo(x, y + h, x, y + h - r, r);
-        ctx.lineTo(x, y + r);
-        ctx.arcTo(x, y, x + r, y, r);
-        ctx.closePath();
+        ctx.beginPath(); ctx.moveTo(x+r,y); ctx.lineTo(x+w-r,y); ctx.arcTo(x+w,y,x+w,y+r,r);
+        ctx.lineTo(x+w,y+h-r); ctx.arcTo(x+w,y+h,x+w-r,y+h,r);
+        ctx.lineTo(x+r,y+h); ctx.arcTo(x,y+h,x,y+h-r,r);
+        ctx.lineTo(x,y+r); ctx.arcTo(x,y,x+r,y,r); ctx.closePath();
     }
 
     function render() {
         const w = canvas.width, h = canvas.height;
         ctx.clearRect(0,0,w,h);
-        ctx.fillStyle = '#fefefc';
-        ctx.fillRect(0,0,w,h);
-
-        const gridW = gridWidth * cellSize;
-        const gridH = gridHeight * cellSize;
-
+        ctx.fillStyle = '#fefefc'; ctx.fillRect(0,0,w,h);
+        const gridW = gridWidth * cellSize, gridH = gridHeight * cellSize;
         for(let x=0; x<=gridWidth; x++) {
             ctx.strokeStyle = (x%4===0)?'#c0b7aa':'#e8e3db';
             ctx.lineWidth = (x%4===0)?1.2:0.5;
@@ -576,30 +584,18 @@
             ctx.lineWidth = (y%4===0)?1.2:0.5;
             ctx.beginPath(); ctx.moveTo(0,y*cellSize); ctx.lineTo(gridW, y*cellSize); ctx.stroke();
         }
-        ctx.strokeStyle = '#1D1D1F';
-        ctx.lineWidth = 2.5;
-        ctx.strokeRect(0, 0, gridW, gridH);
-
-        ctx.fillStyle = '#1D1D1F';
-        ctx.font = `500 ${Math.max(9, cellSize*0.18)}px sans-serif`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'top';
+        ctx.strokeStyle = '#1D1D1F'; ctx.lineWidth = 2.5; ctx.strokeRect(0,0,gridW,gridH);
+        ctx.fillStyle = '#1D1D1F'; ctx.font = `500 ${Math.max(9, cellSize*0.18)}px sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'top';
         for(let x=0; x<=gridWidth; x++) ctx.fillText((x*CM_PER_CELL).toFixed(1), x*cellSize, gridH+4);
         ctx.fillText(`${(gridWidth*CM_PER_CELL).toFixed(1)}cm`, gridW/2, gridH+20);
-
-        ctx.textAlign = 'right';
-        ctx.textBaseline = 'middle';
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
         for(let y=0; y<=gridHeight; y++) ctx.fillText((y*CM_PER_CELL).toFixed(1), gridW+4, y*cellSize);
-        ctx.save();
-        ctx.translate(gridW+22, gridH/2);
-        ctx.rotate(-Math.PI/2);
-        ctx.textAlign = 'center';
-        ctx.fillText(`${(gridHeight*CM_PER_CELL).toFixed(1)}cm`, 0, 0);
-        ctx.restore();
+        ctx.save(); ctx.translate(gridW+22, gridH/2); ctx.rotate(-Math.PI/2);
+        ctx.textAlign = 'center'; ctx.fillText(`${(gridHeight*CM_PER_CELL).toFixed(1)}cm`, 0, 0); ctx.restore();
 
         if(zoom*cellSize >= 14) {
-            ctx.fillStyle = '#b5aaa0';
-            ctx.font = `${Math.max(8, cellSize*0.2)}px sans-serif`;
+            ctx.fillStyle = '#b5aaa0'; ctx.font = `${Math.max(8, cellSize*0.2)}px sans-serif`;
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
             for(let x=0; x<gridWidth; x++) for(let y=0; y<gridHeight; y++)
                 ctx.fillText(`${x+1},${y+1}`, (x+0.5)*cellSize, (y+0.5)*cellSize);
@@ -607,137 +603,80 @@
 
         for(const mod of placedModules) {
             const isSelected = (mod.id === selectedModuleId);
-            const scale = mod.animScale || 1.0;
-            drawModule(mod.gridX, mod.gridY, mod.width, mod.height, mod.color, mod.name, 1.0, false, null, isSelected, scale);
+            drawModule(mod.gridX, mod.gridY, mod.width, mod.height, mod.color, mod.name, 1.0, false, null, isSelected, mod.animScale||1.0);
         }
 
         if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) {
             const valid = isPlacementValid(hoveredGridX,hoveredGridY,selectedTemplate.width,selectedTemplate.height);
             drawModule(hoveredGridX,hoveredGridY,selectedTemplate.width,selectedTemplate.height,
-                selectedTemplate.color,selectedTemplate.name, valid?0.55:0.3, false, valid?'#5E7A4A':'#C4825C', false, 1.0);
-        }
-        if(appState==='moving' && movingModuleId && hoveredGridX>=0 && hoveredGridY>=0) {
-            const mod = placedModules.find(m=>m.id===movingModuleId);
-            if(mod) {
-                const valid = isPlacementValid(hoveredGridX,hoveredGridY,mod.width,mod.height,movingModuleId);
-                drawModule(hoveredGridX,hoveredGridY,mod.width,mod.height,mod.color,mod.name,
-                    valid?0.6:0.3, true, valid?'#5E7A4A':'#C4825C', false, 1.0);
-            }
+                selectedTemplate.color,selectedTemplate.name, valid?0.55:0.3, false, valid?'#5E7A4A':'#C4825C');
         }
         updateStats();
     }
 
     function drawModule(gx,gy,mw,mh,color,name,alpha,ghost=false,borderColor=null,selected=false,scale=1.0) {
         const x=gx*cellSize, y=gy*cellSize, w=mw*cellSize, h=mh*cellSize;
-        const pad = 2, radius = Math.min(cellSize*0.2, 12);
-        ctx.save();
-        const cx = x + w/2, cy = y + h/2;
-        ctx.translate(cx, cy); ctx.scale(scale, scale); ctx.translate(-cx, -cy);
-        const rectX=x+pad, rectY=y+pad, rectW=w-pad*2, rectH=h-pad*2;
+        const pad=2, radius=Math.min(cellSize*0.2,12);
+        ctx.save(); const cx=x+w/2, cy=y+h/2;
+        ctx.translate(cx,cy); ctx.scale(scale,scale); ctx.translate(-cx,-cy);
+        const rx=x+pad, ry=y+pad, rw=w-pad*2, rh=h-pad*2;
         ctx.fillStyle = hexToRgba(color, alpha);
-        roundRectPath(ctx, rectX, rectY, rectW, rectH, radius);
-        ctx.fill();
+        roundRectPath(ctx, rx, ry, rw, rh, radius); ctx.fill();
         ctx.strokeStyle = borderColor || (ghost?'rgba(255,255,255,0.9)':'rgba(0,0,0,0.15)');
-        ctx.lineWidth = ghost?2.5:1.5;
-        if(ghost) ctx.setLineDash([5,3]);
+        ctx.lineWidth = ghost?2.5:1.5; if(ghost) ctx.setLineDash([5,3]);
         if(selected && !ghost) { ctx.strokeStyle = '#5E7A4A'; ctx.lineWidth = 3; ctx.setLineDash([4,2]); }
-        roundRectPath(ctx, rectX, rectY, rectW, rectH, radius);
-        ctx.stroke(); ctx.setLineDash([]);
-        if(Math.min(rectW,rectH)>18 && alpha>0.4) {
+        roundRectPath(ctx, rx, ry, rw, rh, radius); ctx.stroke(); ctx.setLineDash([]);
+        if(Math.min(rw,rh)>18 && alpha>0.4) {
             ctx.fillStyle = 'rgba(0,0,0,0.7)';
-            ctx.font = `500 ${Math.max(7, Math.min(cellSize*0.35, Math.min(rectW,rectH)*0.35))}px sans-serif`;
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.fillText(name, cx, cy);
+            ctx.font = `500 ${Math.max(7, Math.min(cellSize*0.35, Math.min(rw,rh)*0.35))}px sans-serif`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(name, cx, cy);
         }
         ctx.restore();
     }
-
-    function hexToRgba(hex,a) {
-        const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-        return `rgba(${r},${g},${b},${a})`;
-    }
-
-    function updateStats() {
-        const total = gridWidth * gridHeight;
-        const used = new Set();
+    function hexToRgba(hex,a){ const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},${a})`; }
+    function updateStats(){
+        const total=gridWidth*gridHeight; const used=new Set();
         for(const m of placedModules) for(let dx=0;dx<m.width;dx++) for(let dy=0;dy<m.height;dy++) used.add(`${m.gridX+dx},${m.gridY+dy}`);
         statUsed.textContent=used.size; statTotal.textContent=total; statModules.textContent=placedModules.length;
         statRatio.textContent=total?Math.round((used.size/total)*100)+'%':'0%';
     }
+    function getTouchDist(touches){ if(touches.length<2) return 0; const dx=touches[0].clientX-touches[1].clientX, dy=touches[0].clientY-touches[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
 
-    function getTouchDist(touches) {
-        if(touches.length < 2) return 0;
-        const dx = touches[0].clientX - touches[1].clientX;
-        const dy = touches[0].clientY - touches[1].clientY;
-        return Math.sqrt(dx*dx + dy*dy);
-    }
-
-    // ---------- 完全重写的交互逻辑 ----------
-    let moveTargetCell = null;
-
-    function resetMoveState() {
-        movingModuleId = null;
-        movingModuleOrigX = null;
-        movingModuleOrigY = null;
-        isDragging = false;
-        hasMoved = false;
-        moveTargetCell = null;
-    }
-
+    // ---------- 新交互事件 ----------
     function onPointerDown(e) {
         e.preventDefault();
         const touches = e.touches;
-        if(touches && touches.length === 2) {
-            initialPinchDist = getTouchDist(touches);
-            initialZoom = zoom;
-            return;
-        }
-
+        if(touches && touches.length === 2) { initialPinchDist = getTouchDist(touches); initialZoom = zoom; return; }
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
-        const clientX = touches ? touches[0].clientX : e.clientX;
-        const clientY = touches ? touches[0].clientY : e.clientY;
-
         if(e.button === 2 || (touches && touches.length > 1)) {
             if(cell && appState==='idle') { const m = getModuleAt(cell.gx,cell.gy); if(m) removeModule(m.id); }
             return;
         }
-
         if(appState === 'placing') {
-            if(cell) {
-                hoveredGridX = cell.gx; hoveredGridY = cell.gy;
-                placeModule(cell.gx, cell.gy, selectedTemplate);
-            }
+            if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); }
             return;
         }
-
         if(appState === 'idle' && cell) {
             const mod = getModuleAt(cell.gx, cell.gy);
             if(mod) {
-                // 准备移动或点击
-                movingModuleOrigX = mod.gridX;
-                movingModuleOrigY = mod.gridY;
-                movingModuleId = mod.id;
-                isDragging = false;
-                hasMoved = false;
-                moveTargetCell = null;
+                movingModuleOrigX = mod.gridX; movingModuleOrigY = mod.gridY;
+                movingModuleId = mod.id; isDragging = false; hasMoved = false;
                 clearTimeout(longPressTimer);
                 longPressTimer = setTimeout(() => {
                     if(!hasMoved && movingModuleId === mod.id) {
-                        const newName = prompt('重命名模块：', mod.name);
+                        const newName = prompt('重命名：', mod.name);
                         if(newName) renameModule(mod.id, newName);
-                        resetMoveState();
-                        clearSelection();
+                        resetMoveState(); clearSelection();
                     }
                 }, 600);
             } else {
                 clearSelection();
-                panStartX = clientX;
-                panStartY = clientY;
-                panStartCanvasX = canvasWrapper.scrollLeft;
-                panStartCanvasY = canvasWrapper.scrollTop;
-                hasMoved = false;
-                appState = 'panning';
+                panStartX = touches ? touches[0].clientX : e.clientX;
+                panStartY = touches ? touches[0].clientY : e.clientY;
+                panStartScrollX = canvasWrapper.scrollLeft;
+                panStartScrollY = canvasWrapper.scrollTop;
+                hasMoved = false; appState = 'panning';
             }
             return;
         }
@@ -751,57 +690,36 @@
             applyZoom(initialZoom * newDist / initialPinchDist);
             return;
         }
-
         const clientX = touches ? touches[0].clientX : e.clientX;
         const clientY = touches ? touches[0].clientY : e.clientY;
-
         if(appState === 'panning') {
-            const dx = clientX - panStartX;
-            const dy = clientY - panStartY;
-            if(!hasMoved && (Math.abs(dx) > 10 || Math.abs(dy) > 10)) hasMoved = true;
-            if(hasMoved) {
-                canvasWrapper.scrollLeft = panStartCanvasX - dx;
-                canvasWrapper.scrollTop = panStartCanvasY - dy;
-            }
+            const dx = clientX - panStartX, dy = clientY - panStartY;
+            if(!hasMoved && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) hasMoved = true;
+            if(hasMoved) { canvasWrapper.scrollLeft = panStartScrollX - dx; canvasWrapper.scrollTop = panStartScrollY - dy; }
             return;
         }
-
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
-
         if(appState === 'placing') {
             if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); }
             return;
         }
-
-        hoveredGridX = cell?cell.gx:-1;
-        hoveredGridY = cell?cell.gy:-1;
-
-        if(movingModuleId && cell) {
+        hoveredGridX = cell?cell.gx:-1; hoveredGridY = cell?cell.gy:-1;
+        if(movingModuleId && !isDragging && cell) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) {
-                const dx = Math.abs(coords.x - (movingModuleOrigX * cellSize));
-                const dy = Math.abs(coords.y - (movingModuleOrigY * cellSize));
-                if(dx > 12 || dy > 12) {
+                const dx = Math.abs(coords.x - (mod.gridX*cellSize));
+                const dy = Math.abs(coords.y - (mod.gridY*cellSize));
+                if(dx > 10 || dy > 10) {
                     clearTimeout(longPressTimer);
-                    if(!isDragging) {
-                        isDragging = true;
-                        hasMoved = true;
-                        appState = 'moving';
-                        setStatus('info','移动中...');
-                    }
-                    moveTargetCell = {gx: cell.gx, gy: cell.gy};
-                    // 预览位置
-                    mod.gridX = cell.gx;
-                    mod.gridY = cell.gy;
+                    hasMoved = true; isDragging = true;
+                    appState = 'moving'; setStatus('info','移动中...');
                 }
             }
         }
-
         if(appState === 'moving' && movingModuleId && cell) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
-            moveTargetCell = {gx: cell.gx, gy: cell.gy};
         }
         render();
     }
@@ -809,70 +727,48 @@
     function onPointerUp(e) {
         e.preventDefault();
         if(e.touches && e.touches.length < 2) initialPinchDist = 0;
-
-        if(appState === 'panning') {
-            appState = 'idle'; hasMoved = false; return;
-        }
-
+        if(appState === 'panning') { appState = 'idle'; hasMoved = false; return; }
         clearTimeout(longPressTimer);
-
-        // 处理移动结束
         if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
-            if(mod) {
-                // 使用抬起时的实际手指位置
-                const coords = getCanvasCoordsFromEvent(e);
-                const cell = getGridCell(coords.x, coords.y);
-                let finalX = mod.gridX, finalY = mod.gridY;
-                if(cell) {
-                    finalX = cell.gx;
-                    finalY = cell.gy;
-                }
-                // 如果位置没变，当做点击选中
-                if(finalX === movingModuleOrigX && finalY === movingModuleOrigY) {
-                    mod.gridX = movingModuleOrigX;
-                    mod.gridY = movingModuleOrigY;
-                    selectModule(movingModuleId);
-                } else {
-                    if(!moveModuleTo(movingModuleId, finalX, finalY)) {
-                        mod.gridX = movingModuleOrigX;
-                        mod.gridY = movingModuleOrigY;
-                        setStatus('warning','无法放置到该位置');
-                    }
+            const finalX = mod?mod.gridX:0, finalY = mod?mod.gridY:0;
+            if(finalX === movingModuleOrigX && finalY === movingModuleOrigY) {
+                if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
+                selectModule(movingModuleId);
+            } else {
+                if(!moveModuleTo(movingModuleId, finalX, finalY)) {
+                    if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
+                    setStatus('warning','无法放置到该位置');
                 }
             }
-            appState = 'idle';
-            resetMoveState();
-            updatePlacementUI();
-            render();
+            appState = 'idle'; resetMoveState(); render();
             return;
         }
-
-        // 未移动的点击
         if(movingModuleId && !hasMoved && !isDragging) {
             selectModule(movingModuleId);
             resetMoveState();
             render();
             return;
         }
-
-        // 清除任何遗留移动状态
         resetMoveState();
         render();
     }
 
     function onPointerLeave(e) {
         clearTimeout(longPressTimer);
-        if(appState === 'panning') { appState = 'idle'; }
+        if(appState === 'panning') appState = 'idle';
         if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
-            appState = 'idle';
-            resetMoveState();
-            updatePlacementUI();
+            appState = 'idle'; resetMoveState();
         }
         hoveredGridX = -1; hoveredGridY = -1;
         render();
+    }
+
+    function resetMoveState() {
+        movingModuleId = null; movingModuleOrigX = null; movingModuleOrigY = null;
+        isDragging = false; hasMoved = false;
     }
 
     canvas.addEventListener('mousedown', onPointerDown);
@@ -885,32 +781,22 @@
     canvas.addEventListener('touchcancel', onPointerLeave);
     canvas.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 双击重命名
-    canvas.addEventListener('dblclick', e => {
-        if(appState !== 'idle') return;
-        const coords = getCanvasCoordsFromEvent(e);
-        const cell = getGridCell(coords.x, coords.y);
-        if(cell) {
-            const mod = getModuleAt(cell.gx, cell.gy);
-            if(mod) {
-                const newName = prompt('重命名模块：', mod.name);
-                if(newName) renameModule(mod.id, newName);
-            }
-        }
-    });
-
-    rotateBtn.addEventListener('click', e => { e.stopPropagation(); rotateTemplate(); });
+    // 按钮事件
     btnPlace.addEventListener('click', () => {
-        if (appState === 'placing' && selectedTemplate && hoveredGridX >= 0 && hoveredGridY >= 0)
+        if(appState === 'placing' && selectedTemplate && hoveredGridX >= 0 && hoveredGridY >= 0) {
             placeModule(hoveredGridX, hoveredGridY, selectedTemplate);
-        else setStatus('warning', '请先选择模块并移动到网格上');
+        } else setStatus('warning', '请先移动预览到目标位置');
     });
+    btnRotate.addEventListener('click', rotateTemplate);
     btnDelete.addEventListener('click', () => { if(selectedModuleId) { removeModule(selectedModuleId); clearSelection(); } });
     btnUndo.addEventListener('click', undo);
     btnRedo.addEventListener('click', redo);
     btnSave.addEventListener('click', saveToStorage);
     btnLoad.addEventListener('click', loadFromStorage);
     btnExport.addEventListener('click', exportToJPG);
+    btnRename.addEventListener('click', () => {
+        if(selectedModuleId) { const mod = placedModules.find(m=>m.id===selectedModuleId); if(mod) { const n = prompt('新名称：', mod.name); if(n) renameModule(mod.id, n); } }
+    });
 
     btnHelp.addEventListener('click', () => helpModal.classList.add('open'));
     btnCloseHelp.addEventListener('click', () => helpModal.classList.remove('open'));
@@ -946,12 +832,7 @@
         renderPresetModules();
         selectTemplate(availableTemplates.length-1);
     });
-    btnRename.addEventListener('click', ()=>{
-        if(selectedModuleId) {
-            const mod = placedModules.find(m=>m.id===selectedModuleId);
-            if(mod) { const newName = prompt('重命名：', mod.name); if(newName) renameModule(mod.id, newName); }
-        }
-    });
+
     zoomSlider.addEventListener('input', ()=> applyZoom(parseInt(zoomSlider.value)/100) );
 
     function renderPresetModules() {
@@ -964,7 +845,7 @@
             card.addEventListener('click', e => { if(e.target.classList.contains('delete-btn')) return; selectTemplate(idx); });
             card.querySelector('.delete-btn').addEventListener('click', e => {
                 e.stopPropagation();
-                availableTemplates.splice(idx, 1);
+                availableTemplates.splice(idx,1);
                 if(selectedTemplate && selectedTemplate._cardId==='tmpl_'+idx) { appState='idle'; selectedTemplate=null; updateCardsHighlight(); updatePlacementUI(); }
                 renderPresetModules();
             });
@@ -979,7 +860,7 @@
         if(availW<=0||availH<=0) zoom=1.0;
         else {
             zoom = Math.min(availW/(gridWidth*cellSize+LABEL_MARGIN_RIGHT), availH/(gridHeight*cellSize+LABEL_MARGIN_BOTTOM), 2.0);
-            zoom = Math.max(0.1, Math.min(2.0, zoom));
+            zoom = Math.max(0.2, Math.min(2.0, zoom));
         }
         zoom = Math.round(zoom*100)/100;
         zoomSlider.value = Math.round(zoom*100);
@@ -992,12 +873,8 @@
         window._resizeTimer = setTimeout(()=>{ autoFitZoom(); render(); }, 200);
     });
 
-    history.push(placedModules.map(m=>({...m})));
-    historyIndex = 0;
-    renderPresetModules();
-    updateCanvasSize();
-    autoFitZoom();
-    render();
+    history.push(placedModules.map(m=>({...m}))); historyIndex = 0;
+    renderPresetModules(); updateCanvasSize(); autoFitZoom(); render();
     updateUndoRedoButtons();
 
     if ('serviceWorker' in navigator) {
