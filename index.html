@@ -388,10 +388,28 @@
             } catch (e) { setStatus('warning', '加载失败'); }
         }
 
-        // ---------- 导出JPG ----------
+        // ---------- 导出JPG (居中带留白) ----------
         function exportToJPG() {
-            // 将canvas内容转换为Blob并下载
-            canvas.toBlob(function(blob) {
+            const PADDING = 40; // 四周留白
+            const srcW = canvas.width;
+            const srcH = canvas.height;
+            const dstW = srcW + PADDING * 2;
+            const dstH = srcH + PADDING * 2;
+
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = dstW;
+            exportCanvas.height = dstH;
+            const exportCtx = exportCanvas.getContext('2d');
+
+            // 白色背景
+            exportCtx.fillStyle = '#FFFFFF';
+            exportCtx.fillRect(0, 0, dstW, dstH);
+
+            // 将原画布内容绘制到新画布，居中
+            exportCtx.drawImage(canvas, PADDING, PADDING);
+
+            // 导出
+            exportCanvas.toBlob(function(blob) {
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
