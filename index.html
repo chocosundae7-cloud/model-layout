@@ -46,7 +46,6 @@
             padding: 0 16px 16px;
         }
 
-        /* 顶部标题栏 */
         .header {
             background: #FFFFFF;
             padding: 14px 16px;
@@ -67,14 +66,16 @@
             letter-spacing: -0.3px;
             color: var(--text-dark);
         }
-        .header .menu-icon {
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+        .header .help-icon {
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
         }
 
         .card {
@@ -84,66 +85,36 @@
             padding: 16px;
         }
 
-        .modules-section {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .section-title {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
+        .modules-section { display: flex; flex-direction: column; gap: 12px; }
+        .section-title { font-size: 0.9rem; font-weight: 500; color: var(--text-dark); display: flex; align-items: center; gap: 6px; }
         .preset-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
             gap: 8px;
         }
-        @media (orientation: landscape) {
-            .preset-grid {
-                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            }
-        }
+        @media (orientation: landscape) { .preset-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
         .module-card {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 6px;
-            border-radius: var(--radius-sm);
-            background: #FFFFFF;
-            box-shadow: var(--shadow-sm);
-            cursor: pointer;
-            position: relative;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-            text-align: center;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 10px 6px; border-radius: var(--radius-sm);
+            background: #FFFFFF; box-shadow: var(--shadow-sm);
+            cursor: pointer; position: relative; border: 1px solid transparent;
+            transition: all 0.2s; text-align: center;
         }
         .module-card:active { transform: scale(0.97); }
-        .module-card.active {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(94,122,74,0.1);
-        }
+        .module-card.active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(94,122,74,0.1); }
         .module-card .size-label { font-size: 0.85rem; font-weight: 500; }
         .module-card .color-dot { width: 8px; height: 8px; border-radius: 50%; margin: 4px 0; }
         .module-card .name-label { font-size: 0.7rem; color: var(--text-secondary); }
         .module-card .delete-btn {
-            position: absolute; top: 4px; right: 4px;
-            width: 16px; height: 16px;
+            position: absolute; top: 4px; right: 4px; width: 16px; height: 16px;
             background: rgba(0,0,0,0.2); color: white; border-radius: 50%;
             font-size: 10px; display: none; align-items: center; justify-content: center; cursor: pointer;
         }
         .module-card:hover .delete-btn { display: flex; }
 
-        .custom-form {
-            display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
-        }
+        .custom-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
         .custom-form input {
-            width: 48px; padding: 6px 8px;
-            border: 1px solid #E5E5E5; border-radius: 6px;
+            width: 48px; padding: 6px 8px; border: 1px solid #E5E5E5; border-radius: 6px;
             font-size: 0.82rem; text-align: center; font-family: var(--font-sans);
         }
         .custom-form input[type="color"] { width: 32px; height: 32px; padding: 2px; }
@@ -158,61 +129,68 @@
         }
         .btn-accent { background: var(--accent); color: white; border: none; }
         .btn-accent:active { background: var(--accent-hover); }
-        .btn-danger { background: rgba(196,106,92,0.08); color: var(--danger); border: 1px solid rgba(196,106,92,0.2); }
+        .btn-danger { background: var(--danger); color: white; border: none; }
+        .btn-danger:active { background: #a84c3e; }
         .btn-sm { padding: 5px 12px; font-size: 0.78rem; }
 
-        /* 画布区域 */
         .canvas-section { display: flex; flex-direction: column; gap: 8px; }
         .canvas-wrapper {
-            position: relative; overflow: hidden;
+            position: relative; overflow: auto;
             border-radius: var(--radius-sm); background: #FFFFFF;
             border: 1px solid var(--border-light);
             touch-action: none;
             height: 420px; width: 100%;
         }
         @media (orientation: landscape) { .canvas-wrapper { height: 320px; } }
-        canvas { display: block; width: 100%; height: 100%; }
+        canvas { display: block; }
 
-        .canvas-info {
-            display: flex; flex-wrap: wrap; gap: 12px;
-            font-size: 0.78rem; color: var(--text-secondary);
-        }
+        .canvas-info { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.78rem; color: var(--text-secondary); }
         .canvas-info strong { font-weight: 500; color: var(--text-dark); }
 
-        .status-bar {
-            display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
-            font-size: 0.78rem; color: var(--text-secondary);
-        }
+        .status-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-secondary); }
         .badge {
             display: inline-block; padding: 2px 10px; border-radius: 12px;
-            font-size: 0.72rem; font-weight: 500;
-            background: rgba(94,122,74,0.08); color: var(--accent);
+            font-size: 0.72rem; font-weight: 500; background: rgba(94,122,74,0.08); color: var(--accent);
         }
         .badge-warning { background: rgba(196,106,92,0.08); color: #b84c3a; }
         .badge-success { background: rgba(94,122,74,0.08); color: #3d5a2b; }
 
         .rotate-btn {
-            position: absolute; bottom: 12px; right: 12px;
-            width: 40px; height: 40px; border-radius: 50%;
-            background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            display: none; align-items: center; justify-content: center;
-            font-size: 1.2rem; cursor: pointer; z-index: 10;
-            color: var(--accent); border: 1px solid #E5E5E5;
+            position: absolute; bottom: 12px; right: 12px; width: 40px; height: 40px;
+            border-radius: 50%; background: rgba(255,255,255,0.9); box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: none; align-items: center; justify-content: center; font-size: 1.2rem;
+            cursor: pointer; z-index: 10; color: var(--accent); border: 1px solid #E5E5E5;
+        }
+
+        /* 帮助模态框 */
+        .help-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center;
+            z-index: 100;
+        }
+        .help-modal.open { display: flex; }
+        .help-content {
+            background: white; border-radius: 16px; padding: 24px; max-width: 360px; width: 90%;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2); text-align: left; line-height: 1.6;
+        }
+        .help-content h3 { font-size: 1.1rem; margin-bottom: 12px; color: var(--accent); }
+        .help-content p { font-size: 0.85rem; margin-bottom: 8px; color: var(--text-dark); }
+        .help-content .close-btn {
+            margin-top: 12px; padding: 8px 20px; border-radius: 8px; background: var(--accent);
+            color: white; border: none; font-weight: bold; cursor: pointer; width: 100%;
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>怪兽沙盒模块排版工具</h1>
-        <span class="menu-icon">☰</span>
+        <button class="help-icon" id="btnHelp">?</button>
     </div>
 
     <div class="app-container">
-        <!-- 模块选择区 -->
         <div class="modules-section card">
             <div class="section-title">📦 预设模块</div>
             <div class="preset-grid" id="presetModules"></div>
-
             <div class="section-title" style="margin-top:12px;">✏️ 自定义模块</div>
             <div class="custom-form">
                 <span style="font-size:0.8rem;">宽</span><input type="number" id="customW" value="3" min="1" max="40">
@@ -223,9 +201,7 @@
             </div>
         </div>
 
-        <!-- 画布区域 -->
         <div class="canvas-section card">
-            <!-- 底板尺寸调整 -->
             <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap;">
                 <span style="font-size:0.85rem; font-weight:500;">底板尺寸</span>
                 <input type="number" id="gridWidth" value="8" min="1" max="40" style="width:50px; padding:6px; border:1px solid #E5E5E5; border-radius:6px; text-align:center; font-size:0.85rem; font-family:var(--font-sans);">
@@ -253,7 +229,7 @@
             <div class="status-bar">
                 <span id="statusText" class="badge">就绪</span>
                 <button class="btn btn-sm" id="btnRename" style="display:none;">重命名</button>
-                <button class="btn btn-danger btn-sm" id="btnDelete" style="display:none;">删除</button>
+                <button class="btn btn-danger btn-sm" id="btnDelete" style="display:none;">🗑 删除</button>
                 <span id="selectedInfo" style="font-size:0.75rem; color:var(--text-secondary);"></span>
                 <div style="display:flex; gap:6px; margin-left:auto;">
                     <button class="btn btn-sm" id="btnSave">💾 保存</button>
@@ -263,6 +239,23 @@
                     <button class="btn btn-sm" id="btnRedo">↷</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 使用帮助模态框 -->
+    <div class="help-modal" id="helpModal">
+        <div class="help-content">
+            <h3>📖 使用指南</h3>
+            <p>1. <strong>选择模块</strong>：点击左侧预设模块或自定义模块。</p>
+            <p>2. <strong>放置模块</strong>：在网格上<strong>单击</strong>即可放置。可用底部“放置”按钮或直接点击网格。</p>
+            <p>3. <strong>移动模块</strong>：按住已放置的模块并拖动到新位置。</p>
+            <p>4. <strong>选中与删除</strong>：单击模块出现蓝框，再点底部红色“删除”按钮（或键盘Delete键）。</p>
+            <p>5. <strong>旋转</strong>：进入放置模式后，右下角出现旋转按钮，点击旋转90°。</p>
+            <p>6. <strong>缩放与平移</strong>：用滑块或双指缩放，空白区域拖拽平移画布。</p>
+            <p>7. <strong>撤销/重做</strong>：点击 ↶/↷ 按钮或 Ctrl+Z/Y。</p>
+            <p>8. <strong>保存/加载</strong>：保存布局到浏览器本地，下次可加载恢复。</p>
+            <p>9. <strong>尺寸标注</strong>：底部和右侧标尺显示底板实际尺寸（每格=2.5cm）。</p>
+            <button class="close-btn" id="btnCloseHelp">知道了</button>
         </div>
     </div>
 
@@ -288,8 +281,12 @@
         const btnRedo = document.getElementById('btnRedo');
         const btnSave = document.getElementById('btnSave');
         const btnLoad = document.getElementById('btnLoad');
+        const btnHelp = document.getElementById('btnHelp');
+        const helpModal = document.getElementById('helpModal');
+        const btnCloseHelp = document.getElementById('btnCloseHelp');
 
         const DEFAULT_CELL_SIZE = 52;
+        const CM_PER_CELL = 2.5;  // 每个格子代表2.5cm
         let gridWidth = 8, gridHeight = 8, cellSize = DEFAULT_CELL_SIZE, zoom = 1.0;
         let placedModules = [];
         let moduleIdCounter = 0;
@@ -378,8 +375,7 @@
             if (!saved) { setStatus('warning', '没有已保存的布局'); return; }
             try {
                 const data = JSON.parse(saved);
-                gridWidth = data.gridWidth || 8;
-                gridHeight = data.gridHeight || 8;
+                gridWidth = data.gridWidth || 8; gridHeight = data.gridHeight || 8;
                 document.getElementById('gridWidth').value = gridWidth;
                 document.getElementById('gridHeight').value = gridHeight;
                 placedModules = data.placedModules || [];
@@ -509,7 +505,7 @@
             if(mod) {
                 btnRename.style.display = 'inline-block';
                 btnDelete.style.display = 'inline-block';
-                selectedInfo.textContent = `已选中：${mod.name} (${mod.width}×${mod.height})`;
+                selectedInfo.textContent = `已选中：${mod.name}`;
             }
             render();
         }
@@ -517,7 +513,7 @@
         function updateSelectionInfo() {
             if(selectedModuleId) {
                 const mod = placedModules.find(m=>m.id===selectedModuleId);
-                if(mod) selectedInfo.textContent = `已选中：${mod.name} (${mod.width}×${mod.height})`;
+                if(mod) selectedInfo.textContent = `已选中：${mod.name}`;
                 else clearSelection();
             }
         }
@@ -572,7 +568,7 @@
             };
             appState='placing'; movingModuleId=null; isDragging=false; clearSelection();
             updateCardsHighlight(); updatePlacementUI(); render();
-            setStatus('info',`已选择：${tmpl.name}，点击画布放置`);
+            setStatus('info',`已选择：${tmpl.name}，单击网格放置`);
         }
 
         function cancelPlacing() {
@@ -587,9 +583,13 @@
             render(); setStatus('info','已取消');
         }
 
+        // 标注边距
+        const LABEL_MARGIN_BOTTOM = 30;
+        const LABEL_MARGIN_RIGHT = 45;
+
         function updateCanvasSize() {
-            const w = gridWidth * cellSize;
-            const h = gridHeight * cellSize;
+            const w = gridWidth * cellSize + LABEL_MARGIN_RIGHT;
+            const h = gridHeight * cellSize + LABEL_MARGIN_BOTTOM;
             canvas.width = w;
             canvas.height = h;
             canvas.style.width = w * zoom + 'px';
@@ -624,19 +624,56 @@
             ctx.fillStyle = '#fefefc';
             ctx.fillRect(0,0,w,h);
 
+            const gridW = gridWidth * cellSize;
+            const gridH = gridHeight * cellSize;
+
+            // 网格线
             for(let x=0; x<=gridWidth; x++) {
                 const isMajor = (x % 4 === 0);
                 ctx.strokeStyle = isMajor ? '#c0b7aa' : '#e8e3db';
                 ctx.lineWidth = isMajor ? 1.2 : 0.5;
-                ctx.beginPath(); ctx.moveTo(x*cellSize,0); ctx.lineTo(x*cellSize, h); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(x*cellSize,0); ctx.lineTo(x*cellSize, gridH); ctx.stroke();
             }
             for(let y=0; y<=gridHeight; y++) {
                 const isMajor = (y % 4 === 0);
                 ctx.strokeStyle = isMajor ? '#c0b7aa' : '#e8e3db';
                 ctx.lineWidth = isMajor ? 1.2 : 0.5;
-                ctx.beginPath(); ctx.moveTo(0,y*cellSize); ctx.lineTo(w, y*cellSize); ctx.stroke();
+                ctx.beginPath(); ctx.moveTo(0,y*cellSize); ctx.lineTo(gridW, y*cellSize); ctx.stroke();
             }
 
+            // 边缘粗线
+            ctx.strokeStyle = '#1D1D1F';
+            ctx.lineWidth = 2.5;
+            ctx.strokeRect(0, 0, gridW, gridH);
+
+            // 坐标标注（底部和右侧）
+            ctx.fillStyle = '#1D1D1F';
+            ctx.font = `500 ${Math.max(9, cellSize*0.18)}px ${getComputedStyle(document.body).fontFamily}`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            // 底部标尺
+            for(let x=0; x<=gridWidth; x++) {
+                const cm = (x * CM_PER_CELL).toFixed(1);
+                ctx.fillText(cm, x*cellSize, gridH + 4);
+            }
+            // 总长文字
+            ctx.fillText(`${(gridWidth*CM_PER_CELL).toFixed(1)}cm`, gridW/2, gridH + 20);
+
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for(let y=0; y<=gridHeight; y++) {
+                const cm = (y * CM_PER_CELL).toFixed(1);
+                ctx.fillText(cm, gridW + 4, y*cellSize);
+            }
+            // 总高文字旋转
+            ctx.save();
+            ctx.translate(gridW + 22, gridH/2);
+            ctx.rotate(-Math.PI/2);
+            ctx.textAlign = 'center';
+            ctx.fillText(`${(gridHeight*CM_PER_CELL).toFixed(1)}cm`, 0, 0);
+            ctx.restore();
+
+            // 坐标小字
             if(zoom * cellSize >= 14) {
                 ctx.fillStyle = '#b5aaa0';
                 ctx.font = `${Math.max(8, cellSize*0.2)}px ${getComputedStyle(document.body).fontFamily}`;
@@ -724,7 +761,6 @@
             return Math.sqrt(dx*dx + dy*dy);
         }
 
-        // ---------- 事件处理 ----------
         let placingStartCell = null;
 
         function onPointerDown(e) {
@@ -953,6 +989,10 @@
         btnSave.addEventListener('click', saveToStorage);
         btnLoad.addEventListener('click', loadFromStorage);
 
+        btnHelp.addEventListener('click', () => { helpModal.classList.add('open'); });
+        btnCloseHelp.addEventListener('click', () => { helpModal.classList.remove('open'); });
+        helpModal.addEventListener('click', (e) => { if(e.target === helpModal) helpModal.classList.remove('open'); });
+
         document.addEventListener('keydown', e => {
             if(e.key==='Escape') cancelPlacing();
             if((e.key==='Delete'||e.key==='Backspace') && selectedModuleId) {
@@ -962,7 +1002,6 @@
             if(e.ctrlKey && e.key==='y') { e.preventDefault(); redo(); }
         });
 
-        // 底板尺寸应用按钮
         document.getElementById('btnApplyGrid').addEventListener('click', ()=>{
             const nw = parseInt(document.getElementById('gridWidth').value);
             const nh = parseInt(document.getElementById('gridHeight').value);
@@ -979,9 +1018,7 @@
             render();
             setStatus('info','底板尺寸已更新');
         });
-
         document.getElementById('btnClearAll').addEventListener('click', clearAll);
-
         document.getElementById('btnAddCustom').addEventListener('click', ()=>{
             const cw=parseInt(document.getElementById('customW').value);
             const ch=parseInt(document.getElementById('customH').value);
@@ -1009,12 +1046,7 @@
                 const card = document.createElement('div');
                 card.className = 'module-card';
                 card.dataset.templateId = 'tmpl_'+idx;
-                card.innerHTML = `
-                    <span class="size-label">${tmpl.width}×${tmpl.height}</span>
-                    <span class="color-dot" style="background:${tmpl.color};"></span>
-                    <span class="name-label">${tmpl.name}</span>
-                    <div class="delete-btn">✕</div>
-                `;
+                card.innerHTML = `<span class="size-label">${tmpl.width}×${tmpl.height}</span><span class="color-dot" style="background:${tmpl.color};"></span><span class="name-label">${tmpl.name}</span><div class="delete-btn">✕</div>`;
                 card.addEventListener('click', (e) => {
                     if(e.target.classList.contains('delete-btn')) return;
                     selectTemplate(idx);
@@ -1038,8 +1070,8 @@
             const availH = rect.height - 20;
             if(availW<=0||availH<=0) zoom=1.0;
             else {
-                const fitW = availW / (gridWidth * cellSize);
-                const fitH = availH / (gridHeight * cellSize);
+                const fitW = availW / (gridWidth * cellSize + LABEL_MARGIN_RIGHT);
+                const fitH = availH / (gridHeight * cellSize + LABEL_MARGIN_BOTTOM);
                 zoom = Math.min(fitW, fitH, 2.0);
                 zoom = Math.max(0.1, Math.min(2.0, zoom));
             }
