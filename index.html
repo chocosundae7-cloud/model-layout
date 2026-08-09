@@ -94,28 +94,18 @@
         }
         .toolbar .btn { min-height:50px; font-size:0.8rem; padding:8px 4px; border-radius:10px; }
 
-        /* 优化后的帮助样式 */
         .help-modal {
             position:fixed; top:0; left:0; width:100%; height:100%;
             background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:100;
         }
         .help-modal.open { display:flex; }
-        .help-content {
-            background:#fff; border-radius:20px; padding:28px 24px; max-width:380px; width:90%;
-            box-shadow:0 20px 40px rgba(0,0,0,0.2); text-align:left; line-height:1.6;
-        }
-        .help-content h3 { font-size:1.2rem; font-weight:600; margin-bottom:16px; color:var(--accent); display:flex; align-items:center; gap:6px; }
+        .help-content { background:#fff; border-radius:20px; padding:28px 24px; max-width:380px; width:90%; box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+        .help-content h3 { font-size:1.2rem; font-weight:600; margin-bottom:16px; color:var(--accent); }
         .help-step { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
-        .help-step .num {
-            background:var(--accent); color:#fff; width:24px; height:24px; border-radius:50%;
-            display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:600; flex-shrink:0;
-        }
+        .help-step .num { background:var(--accent); color:#fff; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:600; flex-shrink:0; }
         .help-step p { font-size:0.85rem; color:var(--text-dark); margin:0; }
         .help-step strong { color:var(--accent); }
-        .help-content .close-btn {
-            margin-top:20px; padding:12px 20px; border-radius:12px; background:var(--accent);
-            color:#fff; border:none; font-weight:600; cursor:pointer; width:100%; font-size:0.9rem;
-        }
+        .help-content .close-btn { margin-top:20px; padding:12px 20px; border-radius:12px; background:var(--accent); color:#fff; border:none; font-weight:600; cursor:pointer; width:100%; font-size:0.9rem; }
     </style>
 </head>
 <body>
@@ -180,13 +170,12 @@
     </div>
 </div>
 
-<!-- 优化后的教程弹窗 -->
 <div class="help-modal" id="helpModal">
     <div class="help-content">
         <h3>📖 快速上手</h3>
         <div class="help-step"><span class="num">1</span><p><strong>选模块</strong>：点击左侧模块卡片，进入放置模式。</p></div>
-        <div class="help-step"><span class="num">2</span><p><strong>放模块</strong>：在网格上滑动预览位置，点击右侧 ✅ 按钮确认放置。</p></div>
-        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：单击模块选中（蓝框），按住拖拽到新位置。</p></div>
+        <div class="help-step"><span class="num">2</span><p><strong>放模块</strong>：在网格上滑动预览位置，点击右侧 ✅ 确认放置。</p></div>
+        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：<strong>长按</strong>已放模块约0.6秒，然后拖拽到新位置（短按直接选中）。</p></div>
         <div class="help-step"><span class="num">4</span><p><strong>删模块</strong>：选中模块后，点击右侧 🗑 按钮（或按 Delete 键）。</p></div>
         <div class="help-step"><span class="num">5</span><p><strong>旋转</strong>：放置模式下，点击右侧 ↺ 按钮旋转 90°。</p></div>
         <div class="help-step"><span class="num">6</span><p><strong>缩放/平移</strong>：拖拽滑块或双指缩放；在空白区域拖拽可平移画面。</p></div>
@@ -556,41 +545,53 @@
     }
     function getTouchDist(touches){ if(touches.length<2) return 0; const dx=touches[0].clientX-touches[1].clientX, dy=touches[0].clientY-touches[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
 
-    // 交互
+    // ---------- 全新交互：单击选中，长按移动 ----------
     function onPointerDown(e) {
         e.preventDefault();
         const touches = e.touches;
         if(touches && touches.length === 2) { initialPinchDist = getTouchDist(touches); initialZoom = zoom; return; }
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
+        const clientX = touches ? touches[0].clientX : e.clientX;
+        const clientY = touches ? touches[0].clientY : e.clientY;
+
         if(e.button === 2 || (touches && touches.length > 1)) {
             if(cell && appState==='idle') { const m = getModuleAt(cell.gx,cell.gy); if(m) removeModule(m.id); }
             return;
         }
+
+        // 放置模式
         if(appState === 'placing') {
             if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); }
             return;
         }
+
+        // 空闲状态
         if(appState === 'idle' && cell) {
             const mod = getModuleAt(cell.gx, cell.gy);
             if(mod) {
+                // 记录模块原始位置，准备长按移动
                 movingModuleOrigX = mod.gridX; movingModuleOrigY = mod.gridY;
-                movingModuleId = mod.id; isDragging = false; hasMoved = false;
+                movingModuleId = mod.id;
+                isDragging = false;
+                // 启动长按定时器，600ms 后进入移动模式
                 clearTimeout(longPressTimer);
                 longPressTimer = setTimeout(() => {
-                    if(!hasMoved && movingModuleId === mod.id) {
-                        const newName = prompt('重命名：', mod.name);
-                        if(newName) renameModule(mod.id, newName);
-                        resetMoveState(); clearSelection();
+                    if(movingModuleId === mod.id) {
+                        // 长按触发移动
+                        isDragging = true;
+                        appState = 'moving';
+                        setStatus('info','移动中... 拖拽模块');
+                        // 此时手指未抬起，后续 onPointerMove 会更新位置
                     }
                 }, 600);
             } else {
+                // 点击空白区域，取消选中，开始画布平移
                 clearSelection();
-                panStartX = touches ? touches[0].clientX : e.clientX;
-                panStartY = touches ? touches[0].clientY : e.clientY;
+                panStartX = clientX; panStartY = clientY;
                 panStartScrollX = canvasWrapper.scrollLeft;
                 panStartScrollY = canvasWrapper.scrollTop;
-                hasMoved = false; appState = 'panning';
+                appState = 'panning';
             }
             return;
         }
@@ -608,8 +609,10 @@
         const clientY = touches ? touches[0].clientY : e.clientY;
         if(appState === 'panning') {
             const dx = clientX - panStartX, dy = clientY - panStartY;
-            if(!hasMoved && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) hasMoved = true;
-            if(hasMoved) { canvasWrapper.scrollLeft = panStartScrollX - dx; canvasWrapper.scrollTop = panStartScrollY - dy; }
+            if(Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+                canvasWrapper.scrollLeft = panStartScrollX - dx;
+                canvasWrapper.scrollTop = panStartScrollY - dy;
+            }
             return;
         }
         const coords = getCanvasCoordsFromEvent(e);
@@ -617,43 +620,26 @@
         if(appState === 'placing') { if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); } return; }
         hoveredGridX = cell?cell.gx:-1; hoveredGridY = cell?cell.gy:-1;
 
-        if(movingModuleId && !isDragging && cell) {
-            const mod = placedModules.find(m=>m.id===movingModuleId);
-            if(mod) {
-                const dx = Math.abs(coords.x - (movingModuleOrigX * cellSize));
-                const dy = Math.abs(coords.y - (movingModuleOrigY * cellSize));
-                const cellChanged = (cell.gx !== movingModuleOrigX || cell.gy !== movingModuleOrigY);
-                if((dx > 12 || dy > 12) && cellChanged) {
-                    clearTimeout(longPressTimer);
-                    hasMoved = true; isDragging = true;
-                    appState = 'moving'; setStatus('info','移动中...');
-                }
-            }
-        }
+        // 长按已触发，进入移动状态，模块跟随手指
         if(appState === 'moving' && movingModuleId && cell) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
+            render();
         }
-        render();
     }
 
     function onPointerUp(e) {
         e.preventDefault();
         if(e.touches && e.touches.length < 2) initialPinchDist = 0;
-        if(appState === 'panning') { appState = 'idle'; hasMoved = false; return; }
+        if(appState === 'panning') { appState = 'idle'; return; }
         clearTimeout(longPressTimer);
 
-        if(movingModuleId && !hasMoved) {
-            selectModule(movingModuleId);
-            resetMoveState();
-            render();
-            return;
-        }
-
+        // 如果处于移动状态，放下模块
         if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             const finalX = mod?mod.gridX:0, finalY = mod?mod.gridY:0;
             if(finalX === movingModuleOrigX && finalY === movingModuleOrigY) {
+                // 位置没变，视为单击选中
                 if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
                 selectModule(movingModuleId);
             } else {
@@ -662,23 +648,35 @@
                     setStatus('warning','无法放置到该位置');
                 }
             }
-            appState = 'idle'; resetMoveState();
+            appState = 'idle'; movingModuleId = null; isDragging = false;
             render();
             return;
         }
 
-        resetMoveState();
+        // 如果只是短按（未触发长按），单击选中模块
+        if(movingModuleId && !isDragging) {
+            selectModule(movingModuleId);
+            movingModuleId = null;
+            render();
+            return;
+        }
+
+        movingModuleId = null;
+        isDragging = false;
         render();
     }
 
     function onPointerLeave(e) {
         clearTimeout(longPressTimer);
         if(appState === 'panning') appState = 'idle';
-        if(appState === 'moving' && movingModuleId) { const mod = placedModules.find(m=>m.id===movingModuleId); if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; } appState = 'idle'; resetMoveState(); }
-        hoveredGridX = -1; hoveredGridY = -1; render();
+        if(appState === 'moving' && movingModuleId) {
+            const mod = placedModules.find(m=>m.id===movingModuleId);
+            if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
+            appState = 'idle'; movingModuleId = null; isDragging = false;
+        }
+        hoveredGridX = -1; hoveredGridY = -1;
+        render();
     }
-
-    function resetMoveState() { movingModuleId = null; movingModuleOrigX = null; movingModuleOrigY = null; isDragging = false; hasMoved = false; }
 
     canvas.addEventListener('mousedown', onPointerDown);
     canvas.addEventListener('mousemove', onPointerMove);
@@ -689,6 +687,18 @@
     canvas.addEventListener('touchend', onPointerUp);
     canvas.addEventListener('touchcancel', onPointerLeave);
     canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+    // 双击重命名（电脑端保留）
+    canvas.addEventListener('dblclick', e => {
+        const coords = getCanvasCoordsFromEvent(e);
+        const cell = getGridCell(coords.x, coords.y);
+        if (!cell || appState !== 'idle') return;
+        const mod = getModuleAt(cell.gx, cell.gy);
+        if(mod) {
+            const newName = prompt('重命名模块：', mod.name);
+            if(newName) renameModule(mod.id, newName);
+        }
+    });
 
     btnPlace.addEventListener('click', () => { if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) placeModule(hoveredGridX, hoveredGridY, selectedTemplate); else setStatus('warning','请先移动预览到目标位置'); });
     btnRotate.addEventListener('click', rotateTemplate);
