@@ -238,6 +238,12 @@
         longPressTimer: null
     };
 
+    // BUG FIX v2: 记录最后一次有效的放置位置,鼠标从画布外点 ✅ 也能用
+    let lastValidPlacement = { x: -1, y: -1 };
+
+    // BUG FIX v2: 跟踪鼠标是否在画布内,避免 mouseleave 误清状态
+    let pointerInsideCanvas = false;
+
     let initialPinchDist = 0;
     let initialZoom = 1.0;
     let panStartX = 0, panStartY = 0;
@@ -360,6 +366,8 @@
         selectedTemplate = null;
         hoveredGridX = -1;
         hoveredGridY = -1;
+        lastValidPlacement.x = -1; // BUG FIX v2: 重置
+        lastValidPlacement.y = -1;
         updateCardsHighlight();
         updatePlacementUI();
         startPlacementAnimation(newMod.id);
@@ -633,7 +641,7 @@
         }
 
         if(appState === 'placing') {
-            if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); }
+            if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; lastValidPlacement.x = cell.gx; lastValidPlacement.y = cell.gy; render(); }
             return;
         }
 
@@ -666,6 +674,11 @@
         }
     }
 
+    // BUG FIX v2: 跟踪鼠标是否在画布内,避免 mouseleave 误清状态
+    function onPointerEnter(e) {
+        pointerInsideCanvas = true;
+    }
+
     function onPointerMove(e) {
         e.preventDefault();
         const touches = e.touches;
@@ -688,7 +701,19 @@
 
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
-        if(appState === 'placing') { if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); } return; }
+
+        // BUG FIX v2: 放置模式下,鼠标回到画布上时只更新 hover,不要碰状态
+        if(appState === 'placing') {
+            if(cell) {
+                hoveredGridX = cell.gx;
+                hoveredGridY = cell.gy;
+                lastValidPlacement.x = cell.gx; // 记录最后一次有效位置
+                lastValidPlacement.y = cell.gy;
+                render();
+            }
+            return;
+        }
+
         hoveredGridX = cell?cell.gx:-1;
         hoveredGridY = cell?cell.gy:-1;
 
@@ -757,18 +782,22 @@
     }
 
     function onPointerLeave(e) {
-        if(appState === 'panning') appState = 'idle';
-        if(appState === 'moving' && pointer.moduleId) {
+        pointerInsideCanvas = false;
+        // BUG FIX v2: 鼠标移到画布外(比如去点 ✅ / ↺ 按钮)不能清掉状态/hover,
+        // 否则用户点不动确定按钮。只有真正"按到画布外"才考虑还原 moving 状态。
+        if(appState === 'moving' && pointer.moduleId && e.buttons === 0) {
+            // 鼠标已松开且离开 → 视为取消,还原
             const mod = placedModules.find(m=>m.id===pointer.moduleId);
             if(mod) { mod.gridX = pointer.origX; mod.gridY = pointer.origY; }
             appState = 'idle';
             clearPointer();
+            render();
         }
-        hoveredGridX = -1; hoveredGridY = -1;
-        render();
+        // 注意:不再清 hoveredGridX/Y,保留最后位置,方便用户从画布外点 ✅
     }
 
     canvas.addEventListener('mousedown', onPointerDown);
+    canvas.addEventListener('mouseenter', onPointerEnter);
     canvas.addEventListener('mousemove', onPointerMove);
     canvas.addEventListener('mouseup', onPointerUp);
     canvas.addEventListener('mouseleave', onPointerLeave);
@@ -791,7 +820,15 @@
     });
 
     // 按钮事件
-    btnPlace.addEventListener('click', () => { if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) placeModule(hoveredGridX, hoveredGridY, selectedTemplate); else setStatus('warning','请先移动预览到目标位置'); });
+    // BUG FIX v2: 记录最后一次有效的放置位置,鼠标从画布外点 ✅ 也能用
+    btnPlace.addEventListener('click', () => {
+        if(appState !== 'placing' || !selectedTemplate) return;
+        // 优先用当前 hover,没有就用最后一次有效位置
+        let gx = hoveredGridX >= 0 ? hoveredGridX : lastValidPlacement.x;
+        let gy = hoveredGridY >= 0 ? hoveredGridY : lastValidPlacement.y;
+        if(gx < 0 || gy < 0) { setStatus('warning','请先在网格上移动预览到目标位置'); return; }
+        placeModule(gx, gy, selectedTemplate);
+    });
     btnRotate.addEventListener('click', rotateTemplate);
     btnDelete.addEventListener('click', () => { if(selectedModuleId) { removeModule(selectedModuleId); clearSelection(); } });
     btnUndo.addEventListener('click', undo);
