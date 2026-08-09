@@ -146,13 +146,11 @@
 <div class="help-modal" id="helpModal">
     <div class="help-content">
         <h3>📖 快速上手</h3>
-        <div class="help-step"><span class="num">1</span><p><strong>选模块</strong>：点击左侧模块卡片，进入放置模式。</p></div>
-        <div class="help-step"><span class="num">2</span><p><strong>放模块</strong>：在网格上滑动预览位置，点击右侧 ✅ 确认放置。</p></div>
-        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：在模块上按住直接拖拽到新位置。</p></div>
-        <div class="help-step"><span class="num">4</span><p><strong>删模块</strong>：单击模块选中（蓝框），点击右侧 🗑 按钮。</p></div>
-        <div class="help-step"><span class="num">5</span><p><strong>旋转</strong>：放置模式下，点击右侧 ↺ 按钮旋转 90°。</p></div>
-        <div class="help-step"><span class="num">6</span><p><strong>缩放/平移</strong>：滑块或双指缩放；空白区域拖拽平移。</p></div>
-        <div class="help-step"><span class="num">7</span><p><strong>撤销/重做</strong>：点击 ↶ / ↷ 按钮，或键盘 Ctrl+Z / Ctrl+Y。</p></div>
+        <div class="help-step"><span class="num">1</span><p><strong>选模块</strong>：点击左侧模块卡片。</p></div>
+        <div class="help-step"><span class="num">2</span><p><strong>放模块</strong>：在网格上移动预览，点击 ✅ 放置。</p></div>
+        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：在模块上按住并拖动。</p></div>
+        <div class="help-step"><span class="num">4</span><p><strong>删模块</strong>：单击模块选中，点 🗑 删除。</p></div>
+        <div class="help-step"><span class="num">5</span><p><strong>重命名</strong>：长按模块约0.6秒，或选中后点“重命名”。</p></div>
         <button class="close-btn" id="btnCloseHelp">我知道啦</button>
     </div>
 </div>
@@ -192,9 +190,15 @@
     let appState = 'idle';
     let selectedTemplate = null;
     let hoveredGridX = -1, hoveredGridY = -1;
-    let movingModuleId = null, movingModuleOrigX = null, movingModuleOrigY = null;
-    let isDragging = false;
     let selectedModuleId = null;
+
+    // 拖拽/长按状态
+    let moveModuleId = null;
+    let moveStartX = 0, moveStartY = 0;
+    let moveOrigX = 0, moveOrigY = 0;
+    let pointerDownTime = 0;
+    let hasMoved = false;
+    let longPressTimer = null;
 
     let initialPinchDist = 0;
     let initialZoom = 1.0;
@@ -348,7 +352,12 @@
     function renameModule(id, newName) { const mod = placedModules.find(m=>m.id===id); if(mod && newName.trim()) { saveState(); mod.name = newName.trim(); render(); updateSelectionInfo(); setStatus('info',`已重命名：${mod.name}`); } }
 
     function clearSelection() { selectedModuleId = null; btnDelete.style.display = 'none'; btnRename.style.display = 'none'; selectedInfo.textContent = ''; render(); }
-    function selectModule(id) { selectedModuleId = id; const mod = placedModules.find(m=>m.id===id); if(mod) { btnDelete.style.display = 'block'; btnRename.style.display = 'inline-block'; selectedInfo.textContent = `选中：${mod.name}`; } render(); }
+    function selectModule(id) {
+        selectedModuleId = id;
+        const mod = placedModules.find(m=>m.id===id);
+        if(mod) { btnDelete.style.display = 'block'; btnRename.style.display = 'inline-block'; selectedInfo.textContent = `选中：${mod.name}`; }
+        render();
+    }
     function updateSelectionInfo() { if(selectedModuleId) { const mod = placedModules.find(m=>m.id===selectedModuleId); if(mod) selectedInfo.textContent = `选中：${mod.name}`; else clearSelection(); } }
 
     function clearAll() { if(placedModules.length && confirm('清空所有模块？')) { saveState(); placedModules = []; appState='idle'; selectedTemplate=null; clearSelection(); updatePlacementUI(); render(); setStatus('warning','已清空'); } }
@@ -465,9 +474,13 @@
     function updateStats(){ const total=gridWidth*gridHeight; const used=new Set(); for(const m of placedModules) for(let dx=0;dx<m.width;dx++) for(let dy=0;dy<m.height;dy++) used.add(`${m.gridX+dx},${m.gridY+dy}`); statUsed.textContent=used.size; statTotal.textContent=total; statModules.textContent=placedModules.length; statRatio.textContent=total?Math.round((used.size/total)*100)+'%':'0%'; }
     function getTouchDist(touches){ if(touches.length<2) return 0; const dx=touches[0].clientX-touches[1].clientX, dy=touches[0].clientY-touches[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
 
-    // ---------- 全新交互：纯拖拽移动，单击选中 ----------
-    let dragStartPos = null; // 记录拖拽起始坐标 {x, y}
-    let dragMoved = false;
+    // ---------- 最终版交互：单击选中/取消，长按重命名，拖拽移动 ----------
+    function resetMoveState() {
+        moveModuleId = null;
+        hasMoved = false;
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+    }
 
     function onPointerDown(e) {
         e.preventDefault();
@@ -491,14 +504,27 @@
         if(appState === 'idle' && cell) {
             const mod = getModuleAt(cell.gx, cell.gy);
             if(mod) {
-                // 开始可能拖拽
-                movingModuleId = mod.id;
-                movingModuleOrigX = mod.gridX;
-                movingModuleOrigY = mod.gridY;
-                dragStartPos = { x: clientX, y: clientY };
-                dragMoved = false;
-                isDragging = false;
+                // 开始可能拖拽/长按
+                moveModuleId = mod.id;
+                moveOrigX = mod.gridX;
+                moveOrigY = mod.gridY;
+                moveStartX = clientX;
+                moveStartY = clientY;
+                pointerDownTime = Date.now();
+                hasMoved = false;
+                // 启动长按定时器
+                clearTimeout(longPressTimer);
+                longPressTimer = setTimeout(() => {
+                    if(!hasMoved && moveModuleId === mod.id) {
+                        // 长按重命名
+                        const newName = prompt('重命名模块：', mod.name);
+                        if(newName) renameModule(mod.id, newName);
+                        resetMoveState();
+                        clearSelection();
+                    }
+                }, 600);
             } else {
+                // 空白区域平移
                 clearSelection();
                 panStartX = clientX; panStartY = clientY;
                 panStartScrollX = canvasWrapper.scrollLeft;
@@ -534,26 +560,20 @@
         if(appState === 'placing') { if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); } return; }
         hoveredGridX = cell?cell.gx:-1; hoveredGridY = cell?cell.gy:-1;
 
-        // 拖拽模块逻辑
-        if(movingModuleId && !isDragging && dragStartPos) {
-            const dx = clientX - dragStartPos.x;
-            const dy = clientY - dragStartPos.y;
+        // 拖拽模块检测
+        if(moveModuleId && !hasMoved) {
+            const dx = clientX - moveStartX;
+            const dy = clientY - moveStartY;
             if(Math.abs(dx) > 8 || Math.abs(dy) > 8) {
-                // 开始拖拽移动
-                isDragging = true;
-                dragMoved = true;
+                clearTimeout(longPressTimer);
+                hasMoved = true;
                 appState = 'moving';
                 setStatus('info','移动中...');
-                // 将模块移动到当前格子
-                if(cell) {
-                    const mod = placedModules.find(m=>m.id===movingModuleId);
-                    if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
-                }
             }
         }
 
-        if(appState === 'moving' && movingModuleId && cell) {
-            const mod = placedModules.find(m=>m.id===movingModuleId);
+        if(appState === 'moving' && moveModuleId && cell) {
+            const mod = placedModules.find(m=>m.id===moveModuleId);
             if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
         }
         render();
@@ -562,45 +582,54 @@
     function onPointerUp(e) {
         e.preventDefault();
         if(e.touches && e.touches.length < 2) initialPinchDist = 0;
+
         if(appState === 'panning') { appState = 'idle'; return; }
 
-        // 处理拖拽结束
-        if(appState === 'moving' && movingModuleId) {
-            const mod = placedModules.find(m=>m.id===movingModuleId);
+        clearTimeout(longPressTimer);
+
+        // 处理移动结束
+        if(appState === 'moving' && moveModuleId) {
+            const mod = placedModules.find(m=>m.id===moveModuleId);
             const finalX = mod?mod.gridX:0, finalY = mod?mod.gridY:0;
-            if(finalX === movingModuleOrigX && finalY === movingModuleOrigY) {
-                // 没移动，恢复并选中
-                if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
-                selectModule(movingModuleId);
+            if(finalX === moveOrigX && finalY === moveOrigY) {
+                if(mod) { mod.gridX = moveOrigX; mod.gridY = moveOrigY; }
+                selectModule(moveModuleId);
             } else {
-                if(!moveModuleTo(movingModuleId, finalX, finalY)) {
-                    if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
+                if(!moveModuleTo(moveModuleId, finalX, finalY)) {
+                    if(mod) { mod.gridX = moveOrigX; mod.gridY = moveOrigY; }
                     setStatus('warning','无法放置到该位置');
                 }
             }
-            appState = 'idle'; movingModuleId = null; isDragging = false; dragStartPos = null;
+            appState = 'idle';
+            resetMoveState();
             render();
             return;
         }
 
-        // 如果按在模块上但未拖拽，视为单击选中
-        if(movingModuleId && !dragMoved) {
-            selectModule(movingModuleId);
-            movingModuleId = null; dragStartPos = null;
+        // 短按：单击选中/取消选中
+        if(moveModuleId && !hasMoved) {
+            if(selectedModuleId === moveModuleId) {
+                clearSelection();
+            } else {
+                selectModule(moveModuleId);
+            }
+            resetMoveState();
             render();
             return;
         }
 
-        movingModuleId = null; dragStartPos = null; dragMoved = false;
+        resetMoveState();
         render();
     }
 
     function onPointerLeave(e) {
+        clearTimeout(longPressTimer);
         if(appState === 'panning') appState = 'idle';
-        if(appState === 'moving' && movingModuleId) {
-            const mod = placedModules.find(m=>m.id===movingModuleId);
-            if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
-            appState = 'idle'; movingModuleId = null; isDragging = false; dragStartPos = null;
+        if(appState === 'moving' && moveModuleId) {
+            const mod = placedModules.find(m=>m.id===moveModuleId);
+            if(mod) { mod.gridX = moveOrigX; mod.gridY = moveOrigY; }
+            appState = 'idle';
+            resetMoveState();
         }
         hoveredGridX = -1; hoveredGridY = -1;
         render();
@@ -616,7 +645,7 @@
     canvas.addEventListener('touchcancel', onPointerLeave);
     canvas.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 双击重命名
+    // 双击重命名（电脑端保留）
     canvas.addEventListener('dblclick', e => {
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
