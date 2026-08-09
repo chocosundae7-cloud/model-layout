@@ -205,7 +205,7 @@
     // === 状态变量 ===
     let gridWidth = 8, gridHeight = 8, cellSize = DEFAULT_CELL_SIZE, zoom = 1.0;
     let placedModules = [];
-    let moduleIdCounter = 0;
+    let moduleIdCounter = 1; // BUG FIX: 初始为 1,避免首个模块 id=0 导致 falsy 误判
     let appState = 'idle'; // idle | placing | moving | panning
     let selectedTemplate = null;
     let hoveredGridX = -1, hoveredGridY = -1;
@@ -249,8 +249,8 @@
     // ========== 工具函数 ==========
     function getCanvasCoordsFromEvent(e) {
         const rect = canvas.getBoundingClientRect();
-        const cx = e.touches ? e.touches[0].clientX : e.clientX;
-        const cy = e.touches ? e.touches[0].clientY : e.clientY;
+        const cx = e.touches && e.touches.length ? e.touches[0].clientX : e.clientX;
+        const cy = e.touches && e.touches.length ? e.touches[0].clientY : e.clientY;
         return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
     }
     function getGridCell(cx, cy) {
@@ -283,6 +283,8 @@
     }
     function loadState(snapshot) {
         placedModules = snapshot.map(m => ({...m}));
+        // BUG FIX: 同步 ID 计数器,避免撤销/重做后新模块 id 撞车
+        moduleIdCounter = placedModules.reduce((max,m)=>Math.max(max, m.id||0), 0) + 1;
         clearSelection();
         animatingModule = null;
         render();
@@ -345,8 +347,12 @@
             animScale: 0.85
         };
         placedModules.push(newMod);
-        appState = 'idle'; selectedTemplate = null;
-        updateCardsHighlight(); updatePlacementUI();
+        appState = 'idle';
+        selectedTemplate = null;
+        hoveredGridX = -1;
+        hoveredGridY = -1;
+        updateCardsHighlight();
+        updatePlacementUI();
         startPlacementAnimation(newMod.id);
         render();
         setStatus('success', `已放置：${newMod.name}`);
@@ -542,10 +548,16 @@
             for(let x=0; x<gridWidth; x++) for(let y=0; y<gridHeight; y++) ctx.fillText(`${x+1},${y+1}`, (x+0.5)*cellSize, (y+0.5)*cellSize);
         }
 
+        // BUG FIX: 选中模块最后渲染,虚线边框不会被其他模块压住
+        let selectedMod = null;
         for(const mod of placedModules) {
-            const isSelected = (mod.id === selectedModuleId);
+            if (mod.id === selectedModuleId) { selectedMod = mod; continue; }
             const scale = mod.animScale || 1.0;
-            drawModule(mod.gridX, mod.gridY, mod.width, mod.height, mod.color, mod.name, 1.0, false, null, isSelected, scale);
+            drawModule(mod.gridX, mod.gridY, mod.width, mod.height, mod.color, mod.name, 1.0, false, null, false, scale);
+        }
+        if (selectedMod) {
+            const scale = selectedMod.animScale || 1.0;
+            drawModule(selectedMod.gridX, selectedMod.gridY, selectedMod.width, selectedMod.height, selectedMod.color, selectedMod.name, 1.0, false, null, true, scale);
         }
 
         if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) {
@@ -603,8 +615,8 @@
         if(touches && touches.length === 2) { initialPinchDist = getTouchDist(touches); initialZoom = zoom; return; }
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
-        const clientX = touches ? touches[0].clientX : e.clientX;
-        const clientY = touches ? touches[0].clientY : e.clientY;
+        const clientX = touches && touches.length ? touches[0].clientX : e.clientX;
+        const clientY = touches && touches.length ? touches[0].clientY : e.clientY;
 
         if(e.button === 2 || (touches && touches.length > 1)) {
             if(cell && appState==='idle') { const m = getModuleAt(cell.gx,cell.gy); if(m) removeModule(m.id); }
@@ -619,7 +631,6 @@
         if(appState === 'idle' && cell) {
             const mod = getModuleAt(cell.gx, cell.gy);
             if(mod) {
-                // 开始追踪
                 clearPointer();
                 pointer.moduleId = mod.id;
                 pointer.startX = clientX;
@@ -628,17 +639,14 @@
                 pointer.origY = mod.gridY;
                 pointer.startTime = Date.now();
                 pointer.moved = false;
-                // 长按定时器
                 pointer.longPressTimer = setTimeout(() => {
                     if(pointer.moduleId === mod.id && !pointer.moved) {
                         const newName = prompt('重命名模块：', mod.name);
                         if(newName) renameModule(mod.id, newName);
                         clearPointer();
-                        clearSelection();
                     }
                 }, 600);
             } else {
-                // 空白区域平移
                 clearSelection();
                 panStartX = clientX; panStartY = clientY;
                 panStartScrollX = canvasWrapper.scrollLeft;
@@ -657,8 +665,8 @@
             applyZoom(initialZoom * newDist / initialPinchDist);
             return;
         }
-        const clientX = touches ? touches[0].clientX : e.clientX;
-        const clientY = touches ? touches[0].clientY : e.clientY;
+        const clientX = touches && touches.length ? touches[0].clientX : e.clientX;
+        const clientY = touches && touches.length ? touches[0].clientY : e.clientY;
 
         if(appState === 'panning') {
             const dx = clientX - panStartX, dy = clientY - panStartY;
@@ -684,7 +692,6 @@
                 pointer.moved = true;
                 appState = 'moving';
                 setStatus('info','移动中...');
-                // 立即将模块移到当前格子
                 if(cell) {
                     const mod = placedModules.find(m=>m.id===pointer.moduleId);
                     if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
@@ -857,6 +864,10 @@
     // 初始化
     history.push(placedModules.map(m=>({...m}))); historyIndex = 0;
     renderPresetModules(); updateCanvasSize(); autoFitZoom();
+
+    // BUG FIX: 防止旧 animScale 残留影响首次渲染的边界判断
+    animatingModule = null;
+    for(const m of placedModules) m.animScale = 1.0;
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
