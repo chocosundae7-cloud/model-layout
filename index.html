@@ -72,12 +72,13 @@
 
         .help-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:100; }
         .help-modal.open { display:flex; }
-        .help-content { background:#fff; border-radius:20px; padding:28px 24px; max-width:380px; width:90%; box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+        .help-content { background:#fff; border-radius:20px; padding:28px 24px; max-width:420px; width:92%; max-height:85vh; overflow-y:auto; box-shadow:0 20px 40px rgba(0,0,0,0.2); }
         .help-content h3 { font-size:1.2rem; font-weight:600; margin-bottom:16px; color:var(--accent); }
         .help-step { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
         .help-step .num { background:var(--accent); color:#fff; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.8rem; font-weight:600; flex-shrink:0; }
-        .help-step p { font-size:0.85rem; color:var(--text-dark); margin:0; }
+        .help-step p { font-size:0.85rem; color:var(--text-dark); margin:0; line-height:1.5; }
         .help-step strong { color:var(--accent); }
+        .help-step code { background:#F5F5F7; padding:1px 5px; border-radius:4px; font-size:0.78rem; color:#1D1D1F; }
         .help-content .close-btn { margin-top:20px; padding:12px 20px; border-radius:12px; background:var(--accent); color:#fff; border:none; font-weight:600; cursor:pointer; width:100%; font-size:0.9rem; }
     </style>
 </head>
@@ -146,11 +147,19 @@
 <div class="help-modal" id="helpModal">
     <div class="help-content">
         <h3>📖 快速上手</h3>
-        <div class="help-step"><span class="num">1</span><p><strong>选模块</strong>：点击左侧模块卡片。</p></div>
-        <div class="help-step"><span class="num">2</span><p><strong>放模块</strong>：在网格上移动预览，点击 ✅ 放置。</p></div>
-        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：在模块上按住并拖动。</p></div>
-        <div class="help-step"><span class="num">4</span><p><strong>删模块</strong>：单击模块选中，点 🗑 删除。</p></div>
-        <div class="help-step"><span class="num">5</span><p><strong>重命名</strong>：长按模块约0.6秒，或选中后点“重命名”。</p></div>
+        <div class="help-step"><span class="num">1</span><p><strong>选模块</strong>：点击左侧模块卡片，进入"放置"模式。</p></div>
+        <div class="help-step"><span class="num">2</span><p><strong>放模块</strong>：在网格上移动预览，点击 ✅ 放置；按 ↺ 可旋转方向。</p></div>
+        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：在模块上按住并拖动，移动超过 5 像素才视为拖动。</p></div>
+        <div class="help-step"><span class="num">4</span><p><strong>删模块</strong>：单击模块选中（出现绿色虚线），点 🗑 删除；电脑端右键也能直接删。</p></div>
+        <div class="help-step"><span class="num">5</span><p><strong>重命名</strong>：长按模块约 0.6 秒，或选中后点"重命名"。</p></div>
+        <div class="help-step"><span class="num">6</span><p><strong>改底板</strong>：改顶部"宽 × 高"数字，点"应用"；若有模块超出新边界会询问是否移除。</p></div>
+        <div class="help-step"><span class="num">7</span><p><strong>自定义模块</strong>：填宽 / 高 / 颜色 / 名称，点"添加"，会自动进入放置模式。</p></div>
+        <div class="help-step"><span class="num">8</span><p><strong>💾 保存</strong>：把当前底板尺寸 + 所有模块布局存到浏览器 localStorage（仅本机、不上云）。</p></div>
+        <div class="help-step"><span class="num">9</span><p><strong>📂 加载</strong>：读回之前保存的布局，恢复底板与所有模块位置和名称。</p></div>
+        <div class="help-step"><span class="num">10</span><p><strong>📷 导出 JPG</strong>：把整个画布（背景、刻度、所有模块）转成图片下载，文件名形如 <code>怪兽沙盒排版_8x8.jpg</code>。</p></div>
+        <div class="help-step"><span class="num">11</span><p><strong>↶ ↷ 撤销/重做</strong>：最多保留 50 步历史；快捷键 <code>Ctrl+Z</code> / <code>Ctrl+Y</code>（Mac 用 ⌘ 代替 Ctrl）。</p></div>
+        <div class="help-step"><span class="num">12</span><p><strong>🔍 缩放</strong>：拖动滑块，或在画布上双指捏合（手机 / 平板）。</p></div>
+        <div class="help-step"><span class="num">13</span><p><strong>Esc</strong> 取消当前放置或移动；<strong>Delete</strong> 删除选中模块。</p></div>
         <button class="close-btn" id="btnCloseHelp">我知道啦</button>
     </div>
 </div>
