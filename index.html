@@ -35,69 +35,42 @@
             -webkit-font-smoothing: antialiased;
         }
         .app-container { width:100%; max-width:900px; display:flex; flex-direction:column; gap:12px; padding:0 12px 16px; }
-        .header {
-            background:#fff; padding:14px 16px; display:flex; align-items:center; justify-content:space-between;
-            border-bottom:1px solid var(--border-light); position:sticky; top:0; z-index:50; width:100%; max-width:900px; margin:0 auto;
-        }
+        .header { background:#fff; padding:14px 16px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border-light); position:sticky; top:0; z-index:50; width:100%; max-width:900px; margin:0 auto; }
         .header h1 { font-size:1.1rem; font-weight:500; }
         .help-icon { width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:1rem; font-weight:bold; cursor:pointer; border:none; }
         .card { background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:16px; }
         .section-title { font-size:0.9rem; font-weight:500; color:var(--text-dark); display:flex; align-items:center; gap:6px; }
         .preset-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(85px,1fr)); gap:8px; }
-        .module-card {
-            display:flex; flex-direction:column; align-items:center; justify-content:center;
-            padding:10px 4px; border-radius:var(--radius-sm); background:#fff; box-shadow:var(--shadow-sm);
-            cursor:pointer; position:relative; border:1px solid transparent; transition:all .2s; text-align:center;
-        }
+        .module-card { display:flex; flex-direction:column; align-items:center; justify-content:center; padding:10px 4px; border-radius:var(--radius-sm); background:#fff; box-shadow:var(--shadow-sm); cursor:pointer; position:relative; border:1px solid transparent; transition:all .2s; text-align:center; }
         .module-card.active { border-color:var(--accent); box-shadow:0 0 0 3px rgba(94,122,74,0.1); }
         .module-card .size-label { font-size:0.85rem; font-weight:500; }
         .module-card .color-dot { width:8px; height:8px; border-radius:50%; margin:4px 0; }
         .module-card .name-label { font-size:0.7rem; color:var(--text-secondary); }
-        .module-card .delete-btn {
-            position:absolute; top:4px; right:4px; width:16px; height:16px;
-            background:rgba(0,0,0,0.2); color:#fff; border-radius:50%; font-size:10px;
-            display:none; align-items:center; justify-content:center; cursor:pointer;
-        }
+        .module-card .delete-btn { position:absolute; top:4px; right:4px; width:16px; height:16px; background:rgba(0,0,0,0.2); color:#fff; border-radius:50%; font-size:10px; display:none; align-items:center; justify-content:center; cursor:pointer; }
         .module-card:hover .delete-btn { display:flex; }
         .custom-form { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
         .custom-form input { width:48px; padding:6px 8px; border:1px solid #E5E5E5; border-radius:6px; font-size:0.82rem; text-align:center; }
         .custom-form input[type="color"] { width:32px; height:32px; padding:2px; }
         .custom-form .name-input { width:80px; }
-        .btn {
-            padding:10px 18px; border-radius:8px; border:none; background:#F5F5F7; color:var(--text-dark);
-            font-weight:500; font-size:0.85rem; cursor:pointer; transition:all .2s; font-family:var(--font-sans);
-            border:1px solid #E5E5E5; white-space:nowrap; min-height:44px; display:flex; align-items:center; justify-content:center;
-        }
+        .btn { padding:10px 18px; border-radius:8px; border:none; background:#F5F5F7; color:var(--text-dark); font-weight:500; font-size:0.85rem; cursor:pointer; transition:all .2s; font-family:var(--font-sans); border:1px solid #E5E5E5; white-space:nowrap; min-height:44px; display:flex; align-items:center; justify-content:center; }
         .btn-accent { background:var(--accent); color:#fff; border:none; }
         .btn-danger { background:var(--danger); color:#fff; border:none; }
         .btn-sm { padding:6px 14px; font-size:0.78rem; }
         .btn-tool { width:100%; margin-bottom:6px; }
 
         .canvas-row { display:flex; gap:12px; flex:1; min-height:0; }
-        .canvas-area {
-            background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--shadow-sm);
-            padding:12px; flex:1; display:flex; flex-direction:column; min-width:0;
-        }
-        .canvas-wrapper {
-            position:relative; overflow:auto; border-radius:var(--radius-sm); background:#fff;
-            border:1px solid var(--border-light); touch-action:none; flex:1; min-height:0;
-            display:flex; align-items:center; justify-content:center;
-        }
+        .canvas-area { background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--shadow-sm); padding:12px; flex:1; display:flex; flex-direction:column; min-width:0; }
+        .canvas-wrapper { position:relative; overflow:auto; border-radius:var(--radius-sm); background:#fff; border:1px solid var(--border-light); touch-action:none; flex:1; min-height:0; display:flex; align-items:center; justify-content:center; }
         canvas { display:block; flex-shrink:0; }
         .canvas-info { display:flex; flex-wrap:wrap; gap:10px; font-size:0.78rem; color:var(--text-secondary); margin-top:8px; }
         .canvas-info strong { font-weight:500; color:var(--text-dark); }
         .zoom-row { display:flex; align-items:center; gap:6px; }
         .zoom-row input[type="range"] { width:70px; accent-color:var(--accent); }
 
-        .toolbar {
-            display:flex; flex-direction:column; gap:8px; width:80px; flex-shrink:0;
-        }
+        .toolbar { display:flex; flex-direction:column; gap:8px; width:80px; flex-shrink:0; }
         .toolbar .btn { min-height:50px; font-size:0.8rem; padding:8px 4px; border-radius:10px; }
 
-        .help-modal {
-            position:fixed; top:0; left:0; width:100%; height:100%;
-            background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:100;
-        }
+        .help-modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); display:none; align-items:center; justify-content:center; z-index:100; }
         .help-modal.open { display:flex; }
         .help-content { background:#fff; border-radius:20px; padding:28px 24px; max-width:380px; width:90%; box-shadow:0 20px 40px rgba(0,0,0,0.2); }
         .help-content h3 { font-size:1.2rem; font-weight:600; margin-bottom:16px; color:var(--accent); }
@@ -175,12 +148,11 @@
         <h3>📖 快速上手</h3>
         <div class="help-step"><span class="num">1</span><p><strong>选模块</strong>：点击左侧模块卡片，进入放置模式。</p></div>
         <div class="help-step"><span class="num">2</span><p><strong>放模块</strong>：在网格上滑动预览位置，点击右侧 ✅ 确认放置。</p></div>
-        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：<strong>长按</strong>已放模块约0.6秒，然后拖拽到新位置（短按直接选中）。</p></div>
-        <div class="help-step"><span class="num">4</span><p><strong>删模块</strong>：选中模块后，点击右侧 🗑 按钮（或按 Delete 键）。</p></div>
+        <div class="help-step"><span class="num">3</span><p><strong>移模块</strong>：在模块上按住直接拖拽到新位置。</p></div>
+        <div class="help-step"><span class="num">4</span><p><strong>删模块</strong>：单击模块选中（蓝框），点击右侧 🗑 按钮。</p></div>
         <div class="help-step"><span class="num">5</span><p><strong>旋转</strong>：放置模式下，点击右侧 ↺ 按钮旋转 90°。</p></div>
-        <div class="help-step"><span class="num">6</span><p><strong>缩放/平移</strong>：拖拽滑块或双指缩放；在空白区域拖拽可平移画面。</p></div>
-        <div class="help-step"><span class="num">7</span><p><strong>撤销/重做</strong>：点击 ↶ / ↷ 按钮，或使用键盘 Ctrl+Z / Ctrl+Y。</p></div>
-        <div class="help-step"><span class="num">8</span><p><strong>导出图片</strong>：点击底部 📷 导出JPG，将当前排版保存为图片。</p></div>
+        <div class="help-step"><span class="num">6</span><p><strong>缩放/平移</strong>：滑块或双指缩放；空白区域拖拽平移。</p></div>
+        <div class="help-step"><span class="num">7</span><p><strong>撤销/重做</strong>：点击 ↶ / ↷ 按钮，或键盘 Ctrl+Z / Ctrl+Y。</p></div>
         <button class="close-btn" id="btnCloseHelp">我知道啦</button>
     </div>
 </div>
@@ -223,7 +195,6 @@
     let movingModuleId = null, movingModuleOrigX = null, movingModuleOrigY = null;
     let isDragging = false;
     let selectedModuleId = null;
-    let longPressTimer;
 
     let initialPinchDist = 0;
     let initialZoom = 1.0;
@@ -266,7 +237,6 @@
 
     function getNextColor() { return paletteColors[paletteIndex++ % paletteColors.length]; }
 
-    // 历史
     function saveState() {
         if (historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
         history.push(placedModules.map(m => ({...m})));
@@ -277,15 +247,9 @@
     function loadState(snapshot) { placedModules = snapshot.map(m => ({...m})); clearSelection(); animatingModule = null; render(); }
     function undo() { if (historyIndex > 0) { historyIndex--; loadState(history[historyIndex]); setStatus('info','已撤销'); } }
     function redo() { if (historyIndex < history.length - 1) { historyIndex++; loadState(history[historyIndex]); setStatus('info','已重做'); } }
-    function updateUndoRedoButtons() {
-        btnUndo.style.opacity = historyIndex > 0 ? '1' : '0.5';
-        btnRedo.style.opacity = historyIndex < history.length - 1 ? '1' : '0.5';
-    }
+    function updateUndoRedoButtons() { btnUndo.style.opacity = historyIndex > 0 ? '1' : '0.5'; btnRedo.style.opacity = historyIndex < history.length - 1 ? '1' : '0.5'; }
 
-    function saveToStorage() {
-        localStorage.setItem('monster_layout', JSON.stringify({gridWidth, gridHeight, placedModules}));
-        setStatus('success','布局已保存');
-    }
+    function saveToStorage() { localStorage.setItem('monster_layout', JSON.stringify({gridWidth, gridHeight, placedModules})); setStatus('success','布局已保存'); }
     function loadFromStorage() {
         const saved = localStorage.getItem('monster_layout');
         if(!saved) { setStatus('warning','没有已保存的布局'); return; }
@@ -327,10 +291,7 @@
         const cy = e.touches ? e.touches[0].clientY : e.clientY;
         return { x: (cx - rect.left) * (canvas.width / rect.width), y: (cy - rect.top) * (canvas.height / rect.height) };
     }
-    function getGridCell(cx, cy) {
-        const gx = Math.floor(cx / cellSize), gy = Math.floor(cy / cellSize);
-        return (gx>=0 && gx<gridWidth && gy>=0 && gy<gridHeight) ? {gx,gy} : null;
-    }
+    function getGridCell(cx, cy) { const gx = Math.floor(cx / cellSize), gy = Math.floor(cy / cellSize); return (gx>=0 && gx<gridWidth && gy>=0 && gy<gridHeight) ? {gx,gy} : null; }
     function getModuleBounds(m) { return { x1:m.gridX, y1:m.gridY, x2:m.gridX+m.width-1, y2:m.gridY+m.height-1 }; }
     function rectsOverlap(a,b) { return !(a.x2<b.x1 || a.x1>b.x2 || a.y2<b.y1 || a.y1>b.y2); }
     function isPlacementValid(gx,gy,w,h,excludeId=null) {
@@ -339,15 +300,12 @@
         for(const m of placedModules) if(m.id!==excludeId && rectsOverlap(cand, getModuleBounds(m))) return false;
         return true;
     }
-    function getModuleAt(gx,gy) {
-        for(const m of placedModules) { const b = getModuleBounds(m); if(gx>=b.x1 && gx<=b.x2 && gy>=b.y1 && gy<=b.y2) return m; }
-        return null;
-    }
+    function getModuleAt(gx,gy) { for(const m of placedModules) { const b = getModuleBounds(m); if(gx>=b.x1 && gx<=b.x2 && gy>=b.y1 && gy<=b.y2) return m; } return null; }
 
     function placeModule(gx, gy, template) {
         if(!isPlacementValid(gx,gy,template.width,template.height)) return false;
         saveState();
-        const newMod = { id: moduleIdCounter++, name: template.name, width: template.width, height: template.height, gridX: gx, gridY: gy, color: template.color, animScale: 0.85 };
+        const newMod = { id: moduleIdCounter++, name: template.name, width: template.width, height: template.height, gridX: gx, gridY: gy, color: template.color, animScale: 1.0 };
         placedModules.push(newMod);
         appState = 'idle'; selectedTemplate = null;
         updateCardsHighlight(); updatePlacementUI();
@@ -387,43 +345,21 @@
         render(); setStatus('info', `已移动：${mod.name}`);
         return true;
     }
-    function renameModule(id, newName) {
-        const mod = placedModules.find(m=>m.id===id);
-        if(mod && newName.trim()) { saveState(); mod.name = newName.trim(); render(); updateSelectionInfo(); setStatus('info',`已重命名：${mod.name}`); }
-    }
+    function renameModule(id, newName) { const mod = placedModules.find(m=>m.id===id); if(mod && newName.trim()) { saveState(); mod.name = newName.trim(); render(); updateSelectionInfo(); setStatus('info',`已重命名：${mod.name}`); } }
 
     function clearSelection() { selectedModuleId = null; btnDelete.style.display = 'none'; btnRename.style.display = 'none'; selectedInfo.textContent = ''; render(); }
-    function selectModule(id) {
-        selectedModuleId = id;
-        const mod = placedModules.find(m=>m.id===id);
-        if(mod) { btnDelete.style.display = 'block'; btnRename.style.display = 'inline-block'; selectedInfo.textContent = `选中：${mod.name}`; }
-        render();
-    }
-    function updateSelectionInfo() {
-        if(selectedModuleId) { const mod = placedModules.find(m=>m.id===selectedModuleId); if(mod) selectedInfo.textContent = `选中：${mod.name}`; else clearSelection(); }
-    }
+    function selectModule(id) { selectedModuleId = id; const mod = placedModules.find(m=>m.id===id); if(mod) { btnDelete.style.display = 'block'; btnRename.style.display = 'inline-block'; selectedInfo.textContent = `选中：${mod.name}`; } render(); }
+    function updateSelectionInfo() { if(selectedModuleId) { const mod = placedModules.find(m=>m.id===selectedModuleId); if(mod) selectedInfo.textContent = `选中：${mod.name}`; else clearSelection(); } }
 
-    function clearAll() {
-        if(placedModules.length && confirm('清空所有模块？')) { saveState(); placedModules = []; appState='idle'; selectedTemplate=null; clearSelection(); updatePlacementUI(); render(); setStatus('warning','已清空'); }
-    }
+    function clearAll() { if(placedModules.length && confirm('清空所有模块？')) { saveState(); placedModules = []; appState='idle'; selectedTemplate=null; clearSelection(); updatePlacementUI(); render(); setStatus('warning','已清空'); } }
 
-    function rotateTemplate() {
-        if(appState==='placing' && selectedTemplate) { const w=selectedTemplate.width, h=selectedTemplate.height; selectedTemplate.width=h; selectedTemplate.height=w; setStatus('info',`已旋转：${selectedTemplate.name}`); render(); }
-    }
+    function rotateTemplate() { if(appState==='placing' && selectedTemplate) { const w=selectedTemplate.width, h=selectedTemplate.height; selectedTemplate.width=h; selectedTemplate.height=w; setStatus('info',`已旋转：${selectedTemplate.name}`); render(); } }
 
-    function updatePlacementUI() {
-        const isPlacing = appState === 'placing';
-        btnPlace.style.display = isPlacing ? 'block' : 'none';
-        btnRotate.style.display = isPlacing ? 'block' : 'none';
-    }
+    function updatePlacementUI() { const isPlacing = appState === 'placing'; btnPlace.style.display = isPlacing ? 'block' : 'none'; btnRotate.style.display = isPlacing ? 'block' : 'none'; }
 
     function setStatus(type, msg) { statusText.textContent = msg; clearTimeout(statusText._timeout); statusText._timeout = setTimeout(()=>{ statusText.textContent='就绪'; }, 2500); }
 
-    function updateCardsHighlight() {
-        document.querySelectorAll('.module-card').forEach(card => {
-            card.classList.toggle('active', appState==='placing' && selectedTemplate && selectedTemplate._cardId===card.dataset.templateId);
-        });
-    }
+    function updateCardsHighlight() { document.querySelectorAll('.module-card').forEach(card => { card.classList.toggle('active', appState==='placing' && selectedTemplate && selectedTemplate._cardId===card.dataset.templateId); }); }
 
     function selectTemplate(index) {
         const tmpl = availableTemplates[index];
@@ -441,8 +377,7 @@
     function updateCanvasSize() {
         const w = gridWidth * cellSize + LABEL_MARGIN_RIGHT;
         const h = gridHeight * cellSize + LABEL_MARGIN_BOTTOM;
-        canvas.width = w;
-        canvas.height = h;
+        canvas.width = w; canvas.height = h;
         canvas.style.width = w * zoom + 'px';
         canvas.style.height = h * zoom + 'px';
     }
@@ -477,16 +412,8 @@
         ctx.clearRect(0,0,w,h);
         ctx.fillStyle = '#fefefc'; ctx.fillRect(0,0,w,h);
         const gridW = gridWidth * cellSize, gridH = gridHeight * cellSize;
-        for(let x=0; x<=gridWidth; x++) {
-            ctx.strokeStyle = (x%4===0)?'#c0b7aa':'#e8e3db';
-            ctx.lineWidth = (x%4===0)?1.2:0.5;
-            ctx.beginPath(); ctx.moveTo(x*cellSize,0); ctx.lineTo(x*cellSize, gridH); ctx.stroke();
-        }
-        for(let y=0; y<=gridHeight; y++) {
-            ctx.strokeStyle = (y%4===0)?'#c0b7aa':'#e8e3db';
-            ctx.lineWidth = (y%4===0)?1.2:0.5;
-            ctx.beginPath(); ctx.moveTo(0,y*cellSize); ctx.lineTo(gridW, y*cellSize); ctx.stroke();
-        }
+        for(let x=0; x<=gridWidth; x++) { ctx.strokeStyle = (x%4===0)?'#c0b7aa':'#e8e3db'; ctx.lineWidth = (x%4===0)?1.2:0.5; ctx.beginPath(); ctx.moveTo(x*cellSize,0); ctx.lineTo(x*cellSize, gridH); ctx.stroke(); }
+        for(let y=0; y<=gridHeight; y++) { ctx.strokeStyle = (y%4===0)?'#c0b7aa':'#e8e3db'; ctx.lineWidth = (y%4===0)?1.2:0.5; ctx.beginPath(); ctx.moveTo(0,y*cellSize); ctx.lineTo(gridW, y*cellSize); ctx.stroke(); }
         ctx.strokeStyle = '#1D1D1F'; ctx.lineWidth = 2.5; ctx.strokeRect(0,0,gridW,gridH);
         ctx.fillStyle = '#1D1D1F'; ctx.font = `500 ${Math.max(9, cellSize*0.18)}px sans-serif`;
         ctx.textAlign = 'center'; ctx.textBaseline = 'top';
@@ -494,25 +421,23 @@
         ctx.fillText(`${(gridWidth*CM_PER_CELL).toFixed(1)}cm`, gridW/2, gridH+20);
         ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
         for(let y=0; y<=gridHeight; y++) ctx.fillText((y*CM_PER_CELL).toFixed(1), gridW+4, y*cellSize);
-        ctx.save(); ctx.translate(gridW+22, gridH/2); ctx.rotate(-Math.PI/2);
-        ctx.textAlign = 'center'; ctx.fillText(`${(gridHeight*CM_PER_CELL).toFixed(1)}cm`, 0, 0); ctx.restore();
+        ctx.save(); ctx.translate(gridW+22, gridH/2); ctx.rotate(-Math.PI/2); ctx.textAlign = 'center'; ctx.fillText(`${(gridHeight*CM_PER_CELL).toFixed(1)}cm`, 0, 0); ctx.restore();
 
         if(zoom*cellSize >= 14) {
             ctx.fillStyle = '#b5aaa0'; ctx.font = `${Math.max(8, cellSize*0.2)}px sans-serif`;
             ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            for(let x=0; x<gridWidth; x++) for(let y=0; y<gridHeight; y++)
-                ctx.fillText(`${x+1},${y+1}`, (x+0.5)*cellSize, (y+0.5)*cellSize);
+            for(let x=0; x<gridWidth; x++) for(let y=0; y<gridHeight; y++) ctx.fillText(`${x+1},${y+1}`, (x+0.5)*cellSize, (y+0.5)*cellSize);
         }
 
         for(const mod of placedModules) {
             const isSelected = (mod.id === selectedModuleId);
-            drawModule(mod.gridX, mod.gridY, mod.width, mod.height, mod.color, mod.name, 1.0, false, null, isSelected, mod.animScale||1.0);
+            const scale = mod.animScale || 1.0;
+            drawModule(mod.gridX, mod.gridY, mod.width, mod.height, mod.color, mod.name, 1.0, false, null, isSelected, scale);
         }
 
         if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) {
             const valid = isPlacementValid(hoveredGridX,hoveredGridY,selectedTemplate.width,selectedTemplate.height);
-            drawModule(hoveredGridX,hoveredGridY,selectedTemplate.width,selectedTemplate.height,
-                selectedTemplate.color,selectedTemplate.name, valid?0.55:0.3, false, valid?'#5E7A4A':'#C4825C');
+            drawModule(hoveredGridX,hoveredGridY,selectedTemplate.width,selectedTemplate.height, selectedTemplate.color,selectedTemplate.name, valid?0.55:0.3, false, valid?'#5E7A4A':'#C4825C');
         }
         updateStats();
     }
@@ -537,15 +462,13 @@
         ctx.restore();
     }
     function hexToRgba(hex,a){ const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},${a})`; }
-    function updateStats(){
-        const total=gridWidth*gridHeight; const used=new Set();
-        for(const m of placedModules) for(let dx=0;dx<m.width;dx++) for(let dy=0;dy<m.height;dy++) used.add(`${m.gridX+dx},${m.gridY+dy}`);
-        statUsed.textContent=used.size; statTotal.textContent=total; statModules.textContent=placedModules.length;
-        statRatio.textContent=total?Math.round((used.size/total)*100)+'%':'0%';
-    }
+    function updateStats(){ const total=gridWidth*gridHeight; const used=new Set(); for(const m of placedModules) for(let dx=0;dx<m.width;dx++) for(let dy=0;dy<m.height;dy++) used.add(`${m.gridX+dx},${m.gridY+dy}`); statUsed.textContent=used.size; statTotal.textContent=total; statModules.textContent=placedModules.length; statRatio.textContent=total?Math.round((used.size/total)*100)+'%':'0%'; }
     function getTouchDist(touches){ if(touches.length<2) return 0; const dx=touches[0].clientX-touches[1].clientX, dy=touches[0].clientY-touches[1].clientY; return Math.sqrt(dx*dx+dy*dy); }
 
-    // ---------- 全新交互：单击选中，长按移动 ----------
+    // ---------- 全新交互：纯拖拽移动，单击选中 ----------
+    let dragStartPos = null; // 记录拖拽起始坐标 {x, y}
+    let dragMoved = false;
+
     function onPointerDown(e) {
         e.preventDefault();
         const touches = e.touches;
@@ -560,33 +483,22 @@
             return;
         }
 
-        // 放置模式
         if(appState === 'placing') {
             if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); }
             return;
         }
 
-        // 空闲状态
         if(appState === 'idle' && cell) {
             const mod = getModuleAt(cell.gx, cell.gy);
             if(mod) {
-                // 记录模块原始位置，准备长按移动
-                movingModuleOrigX = mod.gridX; movingModuleOrigY = mod.gridY;
+                // 开始可能拖拽
                 movingModuleId = mod.id;
+                movingModuleOrigX = mod.gridX;
+                movingModuleOrigY = mod.gridY;
+                dragStartPos = { x: clientX, y: clientY };
+                dragMoved = false;
                 isDragging = false;
-                // 启动长按定时器，600ms 后进入移动模式
-                clearTimeout(longPressTimer);
-                longPressTimer = setTimeout(() => {
-                    if(movingModuleId === mod.id) {
-                        // 长按触发移动
-                        isDragging = true;
-                        appState = 'moving';
-                        setStatus('info','移动中... 拖拽模块');
-                        // 此时手指未抬起，后续 onPointerMove 会更新位置
-                    }
-                }, 600);
             } else {
-                // 点击空白区域，取消选中，开始画布平移
                 clearSelection();
                 panStartX = clientX; panStartY = clientY;
                 panStartScrollX = canvasWrapper.scrollLeft;
@@ -607,6 +519,7 @@
         }
         const clientX = touches ? touches[0].clientX : e.clientX;
         const clientY = touches ? touches[0].clientY : e.clientY;
+
         if(appState === 'panning') {
             const dx = clientX - panStartX, dy = clientY - panStartY;
             if(Math.abs(dx) > 8 || Math.abs(dy) > 8) {
@@ -615,31 +528,48 @@
             }
             return;
         }
+
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
         if(appState === 'placing') { if(cell) { hoveredGridX = cell.gx; hoveredGridY = cell.gy; render(); } return; }
         hoveredGridX = cell?cell.gx:-1; hoveredGridY = cell?cell.gy:-1;
 
-        // 长按已触发，进入移动状态，模块跟随手指
+        // 拖拽模块逻辑
+        if(movingModuleId && !isDragging && dragStartPos) {
+            const dx = clientX - dragStartPos.x;
+            const dy = clientY - dragStartPos.y;
+            if(Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+                // 开始拖拽移动
+                isDragging = true;
+                dragMoved = true;
+                appState = 'moving';
+                setStatus('info','移动中...');
+                // 将模块移动到当前格子
+                if(cell) {
+                    const mod = placedModules.find(m=>m.id===movingModuleId);
+                    if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
+                }
+            }
+        }
+
         if(appState === 'moving' && movingModuleId && cell) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) { mod.gridX = cell.gx; mod.gridY = cell.gy; }
-            render();
         }
+        render();
     }
 
     function onPointerUp(e) {
         e.preventDefault();
         if(e.touches && e.touches.length < 2) initialPinchDist = 0;
         if(appState === 'panning') { appState = 'idle'; return; }
-        clearTimeout(longPressTimer);
 
-        // 如果处于移动状态，放下模块
+        // 处理拖拽结束
         if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             const finalX = mod?mod.gridX:0, finalY = mod?mod.gridY:0;
             if(finalX === movingModuleOrigX && finalY === movingModuleOrigY) {
-                // 位置没变，视为单击选中
+                // 没移动，恢复并选中
                 if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
                 selectModule(movingModuleId);
             } else {
@@ -648,31 +578,29 @@
                     setStatus('warning','无法放置到该位置');
                 }
             }
-            appState = 'idle'; movingModuleId = null; isDragging = false;
+            appState = 'idle'; movingModuleId = null; isDragging = false; dragStartPos = null;
             render();
             return;
         }
 
-        // 如果只是短按（未触发长按），单击选中模块
-        if(movingModuleId && !isDragging) {
+        // 如果按在模块上但未拖拽，视为单击选中
+        if(movingModuleId && !dragMoved) {
             selectModule(movingModuleId);
-            movingModuleId = null;
+            movingModuleId = null; dragStartPos = null;
             render();
             return;
         }
 
-        movingModuleId = null;
-        isDragging = false;
+        movingModuleId = null; dragStartPos = null; dragMoved = false;
         render();
     }
 
     function onPointerLeave(e) {
-        clearTimeout(longPressTimer);
         if(appState === 'panning') appState = 'idle';
         if(appState === 'moving' && movingModuleId) {
             const mod = placedModules.find(m=>m.id===movingModuleId);
             if(mod) { mod.gridX = movingModuleOrigX; mod.gridY = movingModuleOrigY; }
-            appState = 'idle'; movingModuleId = null; isDragging = false;
+            appState = 'idle'; movingModuleId = null; isDragging = false; dragStartPos = null;
         }
         hoveredGridX = -1; hoveredGridY = -1;
         render();
@@ -688,16 +616,13 @@
     canvas.addEventListener('touchcancel', onPointerLeave);
     canvas.addEventListener('contextmenu', e => e.preventDefault());
 
-    // 双击重命名（电脑端保留）
+    // 双击重命名
     canvas.addEventListener('dblclick', e => {
         const coords = getCanvasCoordsFromEvent(e);
         const cell = getGridCell(coords.x, coords.y);
         if (!cell || appState !== 'idle') return;
         const mod = getModuleAt(cell.gx, cell.gy);
-        if(mod) {
-            const newName = prompt('重命名模块：', mod.name);
-            if(newName) renameModule(mod.id, newName);
-        }
+        if(mod) { const newName = prompt('重命名模块：', mod.name); if(newName) renameModule(mod.id, newName); }
     });
 
     btnPlace.addEventListener('click', () => { if(appState==='placing' && selectedTemplate && hoveredGridX>=0 && hoveredGridY>=0) placeModule(hoveredGridX, hoveredGridY, selectedTemplate); else setStatus('warning','请先移动预览到目标位置'); });
@@ -777,10 +702,7 @@
         render();
     }
 
-    window.addEventListener('resize', () => {
-        clearTimeout(window._resizeTimer);
-        window._resizeTimer = setTimeout(()=>{ autoFitZoom(); }, 200);
-    });
+    window.addEventListener('resize', () => { clearTimeout(window._resizeTimer); window._resizeTimer = setTimeout(()=>{ autoFitZoom(); }, 200); });
 
     history.push(placedModules.map(m=>({...m}))); historyIndex = 0;
     renderPresetModules(); updateCanvasSize(); autoFitZoom();
